@@ -231,6 +231,16 @@ namespace MarriageOverhaul
             }
         }
 
+        /// <summary>
+        /// Queue a mod letter for tomorrow. Fixed-ID mail is only delivered once per save (the ID is
+        /// recorded permanently in mailReceived), so clear that flag first to let repeatable letters resend.
+        /// </summary>
+        public void QueueRepeatableMail(string id)
+        {
+            try { Game1.player.mailReceived.Remove(id); } catch { }
+            try { Game1.addMailForTomorrow(id); } catch { }
+        }
+
         /// <summary>Show a narration / cutscene line immediately (queued safely by the game).</summary>
         public void ShowNarration(string text)
         {

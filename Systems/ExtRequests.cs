@@ -46,7 +46,7 @@ namespace MarriageOverhaul
             this.Data.LastRequestDay = this.AbsoluteDay;
             this.Data.PendingRequestLetterText = req.Note;
             this.Helper.GameContent.InvalidateCache("Data/mail");
-            Game1.addMailForTomorrow("MO.Request");
+            this.QueueRepeatableMail("MO.Request");
         }
 
         public void Requests_OnGiftToSpouse(NPC spouse, SObject gift)

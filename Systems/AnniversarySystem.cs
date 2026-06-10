@@ -48,7 +48,7 @@ namespace MarriageOverhaul
 
                 this.Data.PendingAnniversaryLetterText = SpouseContent.GetAnniversary(spouse.Name).Reminder;
                 this.Helper.GameContent.InvalidateCache("Data/mail");
-                Game1.addMailForTomorrow("MO.Anniversary");
+                this.QueueRepeatableMail("MO.Anniversary");
             }
         }
 

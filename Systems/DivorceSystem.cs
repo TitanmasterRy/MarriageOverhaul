@@ -46,7 +46,7 @@ namespace MarriageOverhaul
 
             this.Data.PendingWarningLetterText = this.BuildWarningLetter(spouse);
             this.Helper.GameContent.InvalidateCache("Data/mail");
-            Game1.addMailForTomorrow("MO.DivorceWarning");
+            this.QueueRepeatableMail("MO.DivorceWarning");
         }
 
         private string BuildWarningLetter(NPC spouse)

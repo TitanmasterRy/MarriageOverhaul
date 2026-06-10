@@ -107,7 +107,7 @@ namespace MarriageOverhaul
 
             this.Data.PendingLoveLetterText = letters[idx];
             this.Helper.GameContent.InvalidateCache("Data/mail");
-            Game1.addMailForTomorrow("MO.LoveLetter");
+            this.QueueRepeatableMail("MO.LoveLetter");
 
             this.Data.NextLetterDay = this.AbsoluteDay + 1 + this.Rng.Next(7, 15);
         }

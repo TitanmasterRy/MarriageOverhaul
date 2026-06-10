@@ -37,7 +37,7 @@ namespace MarriageOverhaul
             this.Data.PendingCheatLetterText = this.BuildCheatingLetter(spouse, partner);
 
             this.Helper.GameContent.InvalidateCache("Data/mail");
-            Game1.addMailForTomorrow("MO.Cheating");
+            this.QueueRepeatableMail("MO.Cheating");
         }
 
         /// <summary>Morning: deliver the heartbreak — the affair is revealed, and the spouse leaves.</summary>

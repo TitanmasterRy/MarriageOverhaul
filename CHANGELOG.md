@@ -2,6 +2,11 @@
 
 All notable changes to Marriage Overhaul are documented here.
 
+## 1.3.1
+
+### Fixed
+- Mod letters (divorce warning, anniversary reminder, romantic letters, spouse requests) used fixed mail IDs and so only ever delivered once per save. They now clear the received-flag before re-queueing, so they can be sent again. This also fixes the `mo_warn` debug command "not working" after its first use.
+
 ## 1.3.0
 
 ### Added — Extended Systems
