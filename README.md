@@ -1,6 +1,6 @@
 # Marriage Overhaul
 
-A deep marriage overhaul for [Stardew Valley](https://www.stardewvalley.net/) that makes married life feel alive. Your spouse now has moods, expects to be fed, gets jealous, remembers your anniversary, picks fights when things go wrong, and can even ask you out on a date. Every system is fully toggleable and works with **vanilla and modded spouses** alike.
+A deep marriage overhaul for [Stardew Valley](https://www.stardewvalley.net/) that makes married life feel alive. Your spouse now has moods, expects to be fed, gets jealous, remembers your anniversary, picks fights when things go wrong, and may even leave you if you neglect them. Every system is fully toggleable and works with **vanilla and modded spouses** alike.
 
 ## Features
 
@@ -19,16 +19,13 @@ Let things slide too far and your spouse mails an in-character **warning letter*
 Give a gift to someone your spouse considers a rival and they might notice — losing **−15 friendship** and giving you an earful the next morning. The odds rise if the gift was a loved item.
 
 ### 🙂 Mood
-Each day your spouse is **Happy, Neutral, or Grumpy**, based on recent friendship trends, whether they were fed, recent arguments, and a dash of randomness. Mood is expressed entirely through their greeting dialogue — you only know by talking to them.
+Each day your spouse is **Happy, Neutral, or Grumpy**, based on recent friendship trends, whether they were fed, recent arguments, the weather (most are gloomier in the rain — though Sebastian and Abigail are cheered by it), and a dash of randomness. Mood is expressed entirely through their greeting dialogue — you only know by talking to them, and the spouse's portrait reflects their mood. Neutral days pull from a pool of everyday married-life lines.
 
 ### 💝 Anniversary
 Your wedding date is remembered. Each year you get a morning reminder; gift your spouse that day for a **+200** bonus and a sweet scene, or forget and face **−100** and a disappointed morning.
 
 ### 🎁 Makeup Gifts
 After an argument you handled badly, your spouse wants to make up. They drop hints about a **category** of gift (something sweet, something from nature, something homemade). Give the right kind for **+150** and a reconciliation. Regular gifts give half friendship until you do.
-
-### 🌅 Date Nights
-Every couple of weeks your spouse may ask you out for the evening. Accept and meet them somewhere fitting their personality for **+100** friendship; decline and disappoint them for **−30**. Once the **movie theater** is unlocked, some dates become a trip to the movies. With cutscenes enabled, dates play out as **full positioned cutscenes** with portrait dialogue, emotes, music, and a kiss — each vanilla spouse has **three unique handcrafted scenes** plus a shared pool of **15 generic scenes**, tracked per save so they don't repeat.
 
 ### 💔 Ultimate Punishment (Cheating)
 If you badly neglect your spouse — letting friendship fall below the configurable threshold (default **4 hearts**) — they may begin an affair with another single marriage candidate, reveal it in a heartbroken letter, and leave you. Off by a single config toggle if it's too harsh for your game.
@@ -63,9 +60,6 @@ Every system can be toggled and tuned. Edit `config.json` (created after the fir
 | `EnableMoodSystem` | `true` | Daily Happy/Neutral/Grumpy mood dialogue. |
 | `EnableAnniversary` | `true` | Yearly anniversary reminders, bonuses, and penalties. |
 | `EnableMakeupGifts` | `true` | Makeup-gift state after a bad argument. |
-| `EnableDateNights` | `true` | Periodic date-night invitations. |
-| `EnableMovieDates` | `true` | Movie-theater dates once the theater is unlocked. |
-| `EnableDateCutscenes` | `false` | **Experimental:** play dates as full positioned cutscenes instead of a narration line. |
 | `EnableCheating` | `true` | The "ultimate punishment" — a neglected spouse can have an affair and leave you. |
 | `ArgumentThresholdHearts` | `10` | Friendship (in hearts) below which arguments can trigger. |
 | `DivorceWarningThresholdHearts` | `8` | Friendship (in hearts) below which the warning letter is sent. |
@@ -78,7 +72,7 @@ Every system can be toggled and tuned. Edit `config.json` (created after the fir
 
 ## Debug commands
 
-Set `EnableDebugCommands` to `true` (and restart) to register a suite of `mo_*` console commands for testing — for example `mo_status`, `mo_argue`, `mo_hearts <n>`, `mo_date`, `mo_dateevent`, `mo_listscenes`, `mo_playscene <id>`, and `mo_cheat`. These are intended for testing and development and are off by default.
+Set `EnableDebugCommands` to `true` (and restart) to register a suite of `mo_*` console commands for testing — for example `mo_status`, `mo_argue`, `mo_makeup`, `mo_hungry`, `mo_jealousy`, `mo_warn`, `mo_anniversary`, `mo_mood <mood>`, `mo_hearts <n>`, and `mo_cheat`. These are intended for testing and development and are off by default.
 
 ## Changelog
 

@@ -21,10 +21,7 @@ namespace MarriageOverhaul
 
         // Transient (per-day, not persisted) runtime flags.
         private bool argumentTriggeredToday;
-        private bool dateSceneShownToday;
         private bool forceGrumpyToday;
-        private bool pendingDateOffer;
-        private bool pendingDateOfferMovie;
 
         public override void Entry(IModHelper helper)
         {
@@ -38,7 +35,6 @@ namespace MarriageOverhaul
             helper.Events.GameLoop.DayStarted += this.OnDayStarted;
             helper.Events.GameLoop.DayEnding += this.OnDayEnding;
             helper.Events.GameLoop.TimeChanged += this.OnTimeChanged;
-            helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
             helper.Events.Content.AssetRequested += this.OnAssetRequested;
 
             if (this.Config.EnableDebugCommands)
@@ -75,9 +71,7 @@ namespace MarriageOverhaul
         private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
             this.argumentTriggeredToday = false;
-            this.dateSceneShownToday = false;
             this.forceGrumpyToday = false;
-            this.pendingDateOffer = false;
 
             NPC spouse = this.GetSpouse();
             if (spouse == null)
@@ -87,13 +81,9 @@ namespace MarriageOverhaul
             if (this.Config.EnableFeeding)
                 this.Feeding_EnsureWeeklySchedule();
 
-            // First time we see this marriage: record the wedding date and start the date-night
-            // cooldown so the spouse doesn't ask for a date on the wedding day itself.
+            // First time we see this marriage: record the wedding date for anniversaries.
             if (this.Data.WeddingAbsoluteDay < 0)
-            {
                 this.Data.WeddingAbsoluteDay = this.AbsoluteDay;
-                this.Data.LastDateNightDay = this.AbsoluteDay;
-            }
 
             // Apply consequences queued from yesterday and inject morning dialogue.
             this.Cheating_OnDayStarted(spouse);
@@ -102,7 +92,6 @@ namespace MarriageOverhaul
             this.Anniversary_OnDayStarted(spouse);
             this.Makeup_OnDayStarted(spouse);
             this.Mood_OnDayStarted(spouse);
-            this.DateNight_OnDayStarted(spouse);
             this.Divorce_OnDayStarted(spouse);
         }
 
@@ -115,24 +104,10 @@ namespace MarriageOverhaul
             this.Feeding_OnDayEnding(spouse);
             this.Anniversary_OnDayEnding(spouse);
             this.Divorce_OnDayEnding(spouse);
-            this.DateNight_OnDayEnding(spouse);
             this.Cheating_OnDayEnding(spouse);
 
             // Record today's friendship for tomorrow's trend comparison.
             this.Data.LastFriendshipPoints = this.GetSpousePoints();
-        }
-
-        private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
-        {
-            if (!Context.IsWorldReady)
-                return;
-
-            // Present a queued date-night invitation only once the player is actually in control
-            // (never during the wedding cutscene, festivals, other events, or open menus).
-            this.DateNight_TryPresentPending();
-
-            // Bring the player home once a date cutscene finishes.
-            this.DateEvent_WatchForEnd();
         }
 
         private void OnTimeChanged(object sender, TimeChangedEventArgs e)
@@ -142,7 +117,6 @@ namespace MarriageOverhaul
                 return;
 
             this.Argument_OnTimeChanged(spouse, e.NewTime);
-            this.DateNight_OnTimeChanged(spouse, e.NewTime);
         }
 
         private void OnAssetRequested(object sender, AssetRequestedEventArgs e)

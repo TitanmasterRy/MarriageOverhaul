@@ -12,12 +12,8 @@ namespace MarriageOverhaul
         public bool EnableMoodSystem { get; set; } = true;
         public bool EnableAnniversary { get; set; } = true;
         public bool EnableMakeupGifts { get; set; } = true;
-        public bool EnableDateNights { get; set; } = true;
-        public bool EnableMovieDates { get; set; } = true;
         /// <summary>The "ultimate punishment": a badly neglected spouse can cheat and leave you.</summary>
         public bool EnableCheating { get; set; } = true;
-        /// <summary>EXPERIMENTAL: play a real positioned cutscene for the date instead of a narration line.</summary>
-        public bool EnableDateCutscenes { get; set; } = false;
 
         // Thresholds
         public int ArgumentThresholdHearts { get; set; } = 10;

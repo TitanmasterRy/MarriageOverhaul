@@ -62,21 +62,6 @@ namespace MarriageOverhaul
                 () => "After a bad argument, the spouse wants a specific category of gift to reconcile.");
 
             api.AddBoolOption(manifest,
-                () => this.Config.EnableDateNights, v => this.Config.EnableDateNights = v,
-                () => "Enable Date Nights",
-                () => "Every couple of weeks the spouse may ask to go out together in the evening.");
-
-            api.AddBoolOption(manifest,
-                () => this.Config.EnableMovieDates, v => this.Config.EnableMovieDates = v,
-                () => "Enable Movie Dates",
-                () => "Once the movie theater is unlocked, some date nights become a trip to the movies.");
-
-            api.AddBoolOption(manifest,
-                () => this.Config.EnableDateCutscenes, v => this.Config.EnableDateCutscenes = v,
-                () => "Date Cutscenes (Experimental)",
-                () => "Play a real positioned cutscene for dates instead of a narration line. Experimental - leave off if you experience crashes.");
-
-            api.AddBoolOption(manifest,
                 () => this.Config.EnableCheating, v => this.Config.EnableCheating = v,
                 () => "Enable Cheating (Ultimate Punishment)",
                 () => "If you badly neglect your spouse, they may have an affair with another single candidate and leave you. Harsh - disable to turn it off entirely.");

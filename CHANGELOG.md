@@ -2,6 +2,14 @@
 
 All notable changes to Marriage Overhaul are documented here.
 
+## 1.2.0
+
+### Removed
+- **Date nights.** The entire date-night feature — invitations, movie-theater dates, positioned cutscenes, the scene library, and all related config, save data, and debug commands — has been removed. (Date-night functionality is better handled by a dedicated mod.)
+
+### Notes
+- All other systems are unchanged: feeding, arguments, divorce warnings / auto-divorce, jealousy, mood, anniversaries, makeup gifts, and the cheating "ultimate punishment".
+
 ## 1.1.0
 
 ### Added

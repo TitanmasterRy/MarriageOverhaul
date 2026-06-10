@@ -55,22 +55,6 @@ namespace MarriageOverhaul
         public string MakeupCategory { get; set; } = "";
         public int MakeupStartDay { get; set; } = -1000;
 
-        // ── Date nights ───────────────────────────────────────────
-        public int LastDateNightDay { get; set; } = -1000;
-        /// <summary>Last date-event index used per spouse, to avoid back-to-back repeats (legacy).</summary>
-        public Dictionary<string, int> LastDateEventIndex { get; set; } = new Dictionary<string, int>();
-        /// <summary>Indexes of unique handcrafted date scenes already seen, per spouse.</summary>
-        public Dictionary<string, List<int>> SeenUniqueDateScenes { get; set; } = new Dictionary<string, List<int>>();
-        /// <summary>Indexes of generic-pool date scenes already seen, per spouse.</summary>
-        public Dictionary<string, List<int>> SeenGenericDateScenes { get; set; } = new Dictionary<string, List<int>>();
-        /// <summary>The last few generic-pool indexes used (any spouse), so none repeats within 3 dates.</summary>
-        public List<int> RecentGenericDateScenes { get; set; } = new List<int>();
-        public bool DateOfferedToday { get; set; } = false;
-        public bool DateAcceptedTonight { get; set; } = false;
-        public bool DatePlayedTonight { get; set; } = false;
-        /// <summary>Whether tonight's accepted date is a movie-theater outing rather than a location date.</summary>
-        public bool MovieDateTonight { get; set; } = false;
-
         // ── Cheating (ultimate punishment) ────────────────────────
         public int LastCheatDay { get; set; } = -1000;
         public bool PendingCheatReveal { get; set; } = false;

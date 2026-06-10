@@ -34,6 +34,18 @@ namespace MarriageOverhaul
         private static bool SpouseLovesRain(string name)
             => name == "Sebastian" || name == "Abigail";
 
+        private bool IsRainingNow()
+        {
+            try
+            {
+                return Game1.getFarm()?.IsRainingHere() ?? false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         private string ComputeMood()
         {
             // Sometimes a mood is just a mood — random, regardless of circumstances.
