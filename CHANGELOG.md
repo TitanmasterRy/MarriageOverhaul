@@ -2,6 +2,22 @@
 
 All notable changes to Marriage Overhaul are documented here.
 
+## 1.5.0
+
+### Added — Multiplayer support
+- **The mod now works in multiplayer.** Previously farmhands couldn't join a host running this mod, and spouse interactions broke on client machines. Every player (host and farmhands) now gets the full marriage overhaul for their own spouse, independently.
+- Persistence is host-authoritative: the host stores every player's data and syncs each farmhand's copy over mod messages (sent on join, saved each night). Farmhands no longer attempt host-only save-data calls, which is what was breaking the connection.
+- Existing single-player saves migrate automatically to the new per-player storage with no loss of progress.
+
+### Added — Friendship-tiered morning dialogue
+- The spouse's morning greeting now scales with your **current** friendship hearts: cold and clipped when low, flat and polite mid-range, warm when high, openly affectionate when very high. Over 200 new personalized lines (12 vanilla spouses × 4 tiers) plus generic fallback pools for modded spouses.
+- Lines are randomized and won't repeat two mornings in a row.
+- Integrates cleanly with the existing mood system: **friendship sets the baseline tone, mood shifts it one tier up (Happy) or down (Grumpy)** for daily variance — they never stack or double-fire. Event dialogue (arguments, divorce, sickness, anniversaries) still takes priority.
+- New "Morning Dialogue" GMCM section: master toggle `FriendshipTieredMorningDialogue` plus configurable heart thresholds for each tone tier. Turn it off to restore the old single mood greeting.
+
+### Fixed
+- Farmhands being unable to join a multiplayer game with the mod installed (host-only save-data call now guarded).
+
 ## 1.4.0
 
 ### Added

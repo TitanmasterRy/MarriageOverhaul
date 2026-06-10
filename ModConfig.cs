@@ -11,6 +11,17 @@ namespace MarriageOverhaul
         public bool EnableJealousy { get; set; } = true;
         public bool EnableMoodSystem { get; set; } = true;
         public bool EnableAnniversary { get; set; } = true;
+
+        // ── Friendship-tiered morning dialogue ──────────────────────
+        /// <summary>The spouse's morning greeting tone scales with your current friendship hearts (cold when low, loving when high). The mood system adds day-to-day variance on top.</summary>
+        public bool FriendshipTieredMorningDialogue { get; set; } = true;
+        /// <summary>Below this many hearts the spouse is cold and resentful in the morning.</summary>
+        public int MorningVeryLowHeartsMax { get; set; } = 3;
+        /// <summary>At or above this many hearts the spouse is warm and friendly in the morning.</summary>
+        public int MorningHighHeartsMin { get; set; } = 8;
+        /// <summary>At or above this many hearts the spouse is openly affectionate in the morning.</summary>
+        public int MorningVeryHighHeartsMin { get; set; } = 12;
+
         /// <summary>Mark your wedding anniversary on the in-game calendar (Billboard).</summary>
         public bool AnniversaryCalendarMarker { get; set; } = false;
         /// <summary>Mark your character's birthday on the in-game calendar (Billboard).</summary>

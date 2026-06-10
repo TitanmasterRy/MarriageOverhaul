@@ -36,6 +36,7 @@ namespace MarriageOverhaul
             helper.Events.GameLoop.DayEnding += this.OnDayEnding;
             helper.Events.GameLoop.TimeChanged += this.OnTimeChanged;
             helper.Events.Content.AssetRequested += this.OnAssetRequested;
+            helper.Events.Multiplayer.ModMessageReceived += this.OnModMessageReceived;
 
             if (this.Config.EnableDebugCommands)
                 this.RegisterDebugCommands();
@@ -60,18 +61,23 @@ namespace MarriageOverhaul
 
         private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
-            this.Data = this.Helper.Data.ReadSaveData<ModData>("main-data") ?? new ModData();
+            this.Multiplayer_OnSaveLoaded();
         }
 
         private void OnSaving(object sender, SavingEventArgs e)
         {
-            this.Helper.Data.WriteSaveData("main-data", this.Data);
+            this.Multiplayer_OnSaving();
         }
 
         private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
             this.argumentTriggeredToday = false;
             this.forceGrumpyToday = false;
+
+            // Farmhands wait for the host to send their saved data before acting (avoids placeholder-data
+            // glitches on the join day, e.g. re-firing one-time milestones). Resolves next day.
+            if (!this.dataReady)
+                return;
 
             NPC spouse = this.GetSpouse();
             if (spouse == null)
@@ -99,21 +105,27 @@ namespace MarriageOverhaul
         private void OnDayEnding(object sender, DayEndingEventArgs e)
         {
             NPC spouse = this.GetSpouse();
-            if (spouse == null)
-                return;
+            if (spouse != null)
+            {
+                this.Feeding_OnDayEnding(spouse);
+                this.Anniversary_OnDayEnding(spouse);
+                this.Divorce_OnDayEnding(spouse);
+                this.Cheating_OnDayEnding(spouse);
+                this.Extended_OnDayEnding(spouse);
 
-            this.Feeding_OnDayEnding(spouse);
-            this.Anniversary_OnDayEnding(spouse);
-            this.Divorce_OnDayEnding(spouse);
-            this.Cheating_OnDayEnding(spouse);
-            this.Extended_OnDayEnding(spouse);
+                // Record today's friendship for tomorrow's trend comparison.
+                this.Data.LastFriendshipPoints = this.GetSpousePoints();
+            }
 
-            // Record today's friendship for tomorrow's trend comparison.
-            this.Data.LastFriendshipPoints = this.GetSpousePoints();
+            // Farmhands persist through the host: push the day's final state for saving.
+            this.SendFarmhandDataToHost();
         }
 
         private void OnTimeChanged(object sender, TimeChangedEventArgs e)
         {
+            if (!this.dataReady)
+                return;
+
             NPC spouse = this.GetSpouse();
             if (spouse == null)
                 return;

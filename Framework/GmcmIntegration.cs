@@ -76,6 +76,32 @@ namespace MarriageOverhaul
                 () => "Enable Cheating (Ultimate Punishment)",
                 () => "If you badly neglect your spouse, they may have an affair with another single candidate and leave you. Harsh - disable to turn it off entirely.");
 
+            // ── Morning Dialogue ─────────────────────────────────────
+            api.AddSectionTitle(manifest, () => "Morning Dialogue");
+
+            api.AddBoolOption(manifest,
+                () => this.Config.FriendshipTieredMorningDialogue, v => this.Config.FriendshipTieredMorningDialogue = v,
+                () => "Friendship-Tiered Morning Dialogue",
+                () => "The spouse's morning greeting tone scales with your current hearts: cold and clipped when low, loving when high. The mood system still adds day-to-day variance on top. Turn off to use the old single mood greeting.");
+
+            api.AddNumberOption(manifest,
+                () => this.Config.MorningVeryLowHeartsMax, v => this.Config.MorningVeryLowHeartsMax = v,
+                () => "Cold Tone Below (hearts)",
+                () => "Below this many hearts the spouse is cold and resentful in the morning.",
+                min: 0, max: 14);
+
+            api.AddNumberOption(manifest,
+                () => this.Config.MorningHighHeartsMin, v => this.Config.MorningHighHeartsMin = v,
+                () => "Warm Tone At (hearts)",
+                () => "At or above this many hearts the spouse is warm and friendly in the morning (below it, the tone is flat and polite).",
+                min: 0, max: 14);
+
+            api.AddNumberOption(manifest,
+                () => this.Config.MorningVeryHighHeartsMin, v => this.Config.MorningVeryHighHeartsMin = v,
+                () => "Affectionate Tone At (hearts)",
+                () => "At or above this many hearts the spouse is openly affectionate in the morning.",
+                min: 0, max: 14);
+
             // ── Thresholds ───────────────────────────────────────────
             api.AddSectionTitle(manifest, () => "Thresholds");
 

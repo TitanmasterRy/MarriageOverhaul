@@ -37,6 +37,8 @@ namespace MarriageOverhaul
 
         // ── Mood ──────────────────────────────────────────────────
         public string Mood { get; set; } = "Neutral";
+        /// <summary>The morning greeting line shown yesterday, so we don't repeat it two mornings in a row.</summary>
+        public string LastMorningLine { get; set; } = "";
         /// <summary>Friendship points recorded at the start of yesterday, for trend detection.</summary>
         public int LastFriendshipPoints { get; set; } = -1;
 

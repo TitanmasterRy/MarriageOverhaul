@@ -16,6 +16,14 @@ namespace MarriageOverhaul
             string mood = this.forceGrumpyToday ? "Grumpy" : this.ComputeMood();
             this.Data.Mood = mood;
 
+            // Friendship tier sets the baseline tone; mood shifts it up/down for variance. One line, no stacking.
+            if (this.Config.FriendshipTieredMorningDialogue)
+            {
+                this.PushTieredMorningGreeting(spouse, mood);
+                return;
+            }
+
+            // Legacy behavior: a single mood-based greeting.
             switch (mood)
             {
                 case "Happy":

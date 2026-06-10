@@ -35,7 +35,7 @@ namespace MarriageOverhaul
     /// Static library of personalized content for the twelve vanilla marriage candidates,
     /// with graceful generic fallbacks for modded spouses.
     /// </summary>
-    public static class SpouseContent
+    public static partial class SpouseContent
     {
         public static readonly HashSet<string> VanillaSpouses = new HashSet<string>
         {
