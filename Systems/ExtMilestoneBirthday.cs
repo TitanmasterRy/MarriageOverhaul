@@ -43,16 +43,26 @@ namespace MarriageOverhaul
 
             var info = ExtendedContent.GetBirthday(spouse.Name);
 
-            // Leave the personalized "cooked" gift in the fridge.
-            Item gift = this.CreateItem(info.GiftItem);
-            if (gift != null)
-                this.PutInFridge(gift);
+            string line;
+            if (this.Rng.NextDouble() < this.Config.BirthdayGiftChance)
+            {
+                // A generally useful item instead of the usual breakfast.
+                string itemName = ExtendedContent.PickHelpfulBirthdayGift(this.Rng);
+                this.GiveItemToPlayerOrFridge(this.CreateItem(itemName));
+                line = ExtendedContent.GetHelpfulBirthdayLine(spouse.Name, itemName);
+            }
+            else
+            {
+                // The personalized "cooked" breakfast gift.
+                this.GiveItemToPlayerOrFridge(this.CreateItem(info.GiftItem));
+                line = info.Line;
+            }
 
-            // Sweet morning scene; add the pointed anniversary callback if one was missed in the last year.
-            string line = info.Line;
+            // Add the pointed anniversary callback if one was missed in the last year.
             if (this.AbsoluteDay - this.Data.LastMissedAnniversaryDay < DaysPerYear)
                 line += "^^" + info.PointedAddon;
 
+            // Show the special birthday dialogue right away (same as other one-time scenes, e.g. milestones).
             this.ShowSpouseSpeech(spouse, line, "love");
         }
     }

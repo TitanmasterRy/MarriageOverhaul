@@ -34,6 +34,20 @@ namespace MarriageOverhaul
             catch { return null; }
         }
 
+        /// <summary>Give an item directly to the player, falling back to the fridge if their inventory is full.</summary>
+        public bool GiveItemToPlayerOrFridge(Item item)
+        {
+            if (item == null)
+                return false;
+            try
+            {
+                if (Game1.player.addItemToInventoryBool(item))
+                    return true;
+            }
+            catch { }
+            return this.PutInFridge(item);
+        }
+
         /// <summary>Drop an item into the farmhouse fridge if there's room.</summary>
         public bool PutInFridge(Item item)
         {

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using StardewValley;
 using StardewValley.Menus;
 
 namespace MarriageOverhaul
@@ -12,6 +13,15 @@ namespace MarriageOverhaul
                 return -1;
             DecomposeDay(this.Data.WeddingAbsoluteDay, out int wSeason, out int wDay, out _);
             return wSeason == this.CurrentSeasonIndex ? wDay : -1;
+        }
+
+        /// <summary>The configured player birthday day-of-month if it falls in the currently displayed season, else -1.</summary>
+        public int BirthdayDayThisSeason()
+        {
+            if (this.Config.PlayerBirthdayDay <= 0 || string.IsNullOrWhiteSpace(this.Config.PlayerBirthdaySeason))
+                return -1;
+            int birthSeason = Utility.getSeasonNumber(this.Config.PlayerBirthdaySeason);
+            return birthSeason == this.CurrentSeasonIndex ? this.Config.PlayerBirthdayDay : -1;
         }
 
         /// <summary>Reflectively fetch the calendar's per-day clickable components (null on the daily-quest board).</summary>

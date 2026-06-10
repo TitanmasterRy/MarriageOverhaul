@@ -2,6 +2,27 @@
 
 All notable changes to Marriage Overhaul are documented here.
 
+## 1.4.0
+
+### Added
+- **Spouse forage loot tables.** When your spouse does the forage chore they now bring back items from a personalized loot table (Common / Uncommon / Rare tiers) instead of just picking up forage already on the farm. All 12 vanilla spouses have their own themed table, with a generic table for modded spouses. Higher-quality foraging skews toward better tiers.
+- **Prismatic Shard jackpot.** Every spouse has a very small chance per forage to find a Prismatic Shard, with a unique shocked/confused reaction line for each spouse. The shard is handed to you (or left in the fridge if your inventory is full).
+- **Skill milestone rewards.** When any of the five skills (Farming, Fishing, Foraging, Mining, Combat) reaches level 5 or 10, the spouse gives special one-time dialogue and a small gift. Personalized lines for all 12 vanilla spouses with a generic fallback. Each milestone fires exactly once per save. If several milestones land on the same morning, all give a gift but only one dialogue plays (no spam).
+- **Birthday calendar marker.** Optional gold marker on your birthday on the in-game calendar (distinct from the anniversary heart). Off by default.
+
+### Changed
+- **Birthday gift overhaul.** On your birthday the spouse now has a chance to give a generally useful item (coffee, espresso, energy tonic, etc.) instead of the usual breakfast, with matching dialogue. Gifts are handed directly to you (falling back to the fridge) rather than only left in the fridge.
+
+### Fixed
+- The anniversary calendar heart now skips the daily-quest / special-orders board (it previously could try to draw on the wrong Billboard page).
+
+### Config
+- Renamed `ShowAnniversaryOnCalendar` to `AnniversaryCalendarMarker`. **This one setting will reset to its default (off) on first load** — re-enable it in config or GMCM if you had it on.
+- Added: `BirthdayCalendarMarker`, `BirthdayGiftChance`, `EnableForageLoot`, `ForageHaulQuantity`, `ForageCommonWeight`, `ForageUncommonWeight`, `ForageRareWeight`, `ForagePrismaticShardChance`, `EnableSkillMilestoneRewards`, `MilestoneGiftItemId`, `MilestoneGiftQuantity` — all exposed through GMCM with tooltips.
+
+### Notes
+- All new dialogue is stored in external content files; everything is additive and individually toggleable.
+
 ## 1.3.1
 
 ### Fixed

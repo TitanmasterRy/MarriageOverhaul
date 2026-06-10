@@ -135,5 +135,11 @@ namespace MarriageOverhaul
 
         // ── Interaction tracking (seasonal decay / bad days) ──────
         public int LastTalkedDay { get; set; } = -1000;
+
+        // ── Skill milestones ───────────────────────────────────────
+        /// <summary>The most recently recorded level for each skill (Farming/Fishing/Foraging/Mining/Combat).</summary>
+        public Dictionary<string, int> SkillLevelSnapshot { get; set; } = new Dictionary<string, int>();
+        /// <summary>"{Skill}{Level}" keys (e.g. "Farming5") for milestones already celebrated this save.</summary>
+        public List<string> SkillMilestonesFired { get; set; } = new List<string>();
     }
 }

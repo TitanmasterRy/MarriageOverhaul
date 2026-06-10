@@ -57,9 +57,14 @@ namespace MarriageOverhaul
                 () => "Yearly anniversary reminder, with a bonus for gifting and a penalty for forgetting.");
 
             api.AddBoolOption(manifest,
-                () => this.Config.ShowAnniversaryOnCalendar, v => this.Config.ShowAnniversaryOnCalendar = v,
-                () => "Show Anniversary on Calendar",
-                () => "Mark your wedding anniversary with a heart on the in-game calendar.");
+                () => this.Config.AnniversaryCalendarMarker, v => this.Config.AnniversaryCalendarMarker = v,
+                () => "Anniversary Calendar Marker",
+                () => "Mark your wedding anniversary with a heart icon on the in-game calendar.");
+
+            api.AddBoolOption(manifest,
+                () => this.Config.BirthdayCalendarMarker, v => this.Config.BirthdayCalendarMarker = v,
+                () => "Birthday Calendar Marker",
+                () => "Mark your character's birthday with a gift icon on the in-game calendar (requires 'Your Birthday Day' to be set below).");
 
             api.AddBoolOption(manifest,
                 () => this.Config.EnableMakeupGifts, v => this.Config.EnableMakeupGifts = v,
@@ -187,7 +192,7 @@ namespace MarriageOverhaul
             api.AddBoolOption(manifest,
                 () => this.Config.EnableBirthdaySystem, v => this.Config.EnableBirthdaySystem = v,
                 () => "Enable Birthday System",
-                () => "On your birthday the spouse leaves a special gift and a sweet morning scene.");
+                () => "On your birthday the spouse has a small gift and special dialogue waiting for you when you next talk to them.");
 
             api.AddTextOption(manifest,
                 () => this.Config.PlayerBirthdaySeason, v => this.Config.PlayerBirthdaySeason = v,
@@ -200,6 +205,12 @@ namespace MarriageOverhaul
                 () => "Your Birthday Day",
                 () => "The day of the month of your birthday (1-28). Set to 0 to disable the birthday system.",
                 min: 0, max: 28);
+
+            api.AddNumberOption(manifest,
+                () => this.Config.BirthdayGiftChance, v => this.Config.BirthdayGiftChance = v,
+                () => "Birthday Helpful Gift Chance",
+                () => "Chance your spouse gives you a generally useful item instead of a personalized breakfast on your birthday (0.0 - 1.0).",
+                min: 0f, max: 1f, interval: 0.05f);
 
             api.AddBoolOption(manifest,
                 () => this.Config.EnableTownGossip, v => this.Config.EnableTownGossip = v,
@@ -236,6 +247,60 @@ namespace MarriageOverhaul
                 () => this.Config.EnableProductivityScaling, v => this.Config.EnableProductivityScaling = v,
                 () => "Enable Productivity Scaling",
                 () => "Chore quality and frequency follow the spouse's recent happiness (no visible score).");
+
+            // ── Forage Loot ──────────────────────────────────────────
+            api.AddSectionTitle(manifest, () => "Forage Loot");
+
+            api.AddBoolOption(manifest,
+                () => this.Config.EnableForageLoot, v => this.Config.EnableForageLoot = v,
+                () => "Enable Forage Loot Table",
+                () => "When the spouse forages, they bring back items from a per-spouse loot table instead of picking up forage on the farm. Requires Spouse Chores to be enabled.");
+
+            api.AddNumberOption(manifest,
+                () => this.Config.ForageHaulQuantity, v => this.Config.ForageHaulQuantity = v,
+                () => "Forage Haul Quantity",
+                () => "How many items the spouse brings back from a successful forage.",
+                min: 1, max: 10);
+
+            api.AddNumberOption(manifest,
+                () => this.Config.ForageCommonWeight, v => this.Config.ForageCommonWeight = v,
+                () => "Forage Common Weight",
+                () => "Relative chance of a common-tier item per foraged item (higher = more common items).",
+                min: 0f, max: 100f, interval: 1f);
+
+            api.AddNumberOption(manifest,
+                () => this.Config.ForageUncommonWeight, v => this.Config.ForageUncommonWeight = v,
+                () => "Forage Uncommon Weight",
+                () => "Relative chance of an uncommon-tier item per foraged item.",
+                min: 0f, max: 100f, interval: 1f);
+
+            api.AddNumberOption(manifest,
+                () => this.Config.ForageRareWeight, v => this.Config.ForageRareWeight = v,
+                () => "Forage Rare Weight",
+                () => "Relative chance of a rare-tier item per foraged item.",
+                min: 0f, max: 100f, interval: 1f);
+
+            api.AddNumberOption(manifest,
+                () => this.Config.ForagePrismaticShardChance, v => this.Config.ForagePrismaticShardChance = v,
+                () => "Forage Prismatic Shard Chance",
+                () => "Chance per forage that the spouse finds a Prismatic Shard, with a unique shocked reaction. Very small by design (0.0 - 0.05).",
+                min: 0f, max: 0.05f, interval: 0.001f);
+
+            api.AddBoolOption(manifest,
+                () => this.Config.EnableSkillMilestoneRewards, v => this.Config.EnableSkillMilestoneRewards = v,
+                () => "Enable Skill Milestone Rewards",
+                () => "When Farming, Fishing, Foraging, Mining, or Combat reaches level 5 or 10, the spouse gives special dialogue and a small gift.");
+
+            api.AddTextOption(manifest,
+                () => this.Config.MilestoneGiftItemId, v => this.Config.MilestoneGiftItemId = v,
+                () => "Milestone Gift Item",
+                () => "The name of the item the spouse gives as a skill milestone gift (e.g. 'Life Elixir').");
+
+            api.AddNumberOption(manifest,
+                () => this.Config.MilestoneGiftQuantity, v => this.Config.MilestoneGiftQuantity = v,
+                () => "Milestone Gift Quantity",
+                () => "How many of the milestone gift item the spouse gives.",
+                min: 1, max: 99);
 
             // ── Debug ────────────────────────────────────────────────
             api.AddSectionTitle(manifest, () => "Debug");

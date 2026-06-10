@@ -42,32 +42,56 @@ namespace MarriageOverhaul
                 harmony.Patch(billboardDraw, postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(Billboard_Draw_Postfix)));
         }
 
-        /// <summary>Draw a small heart on the anniversary day of the calendar (if enabled).</summary>
+        /// <summary>Draw the anniversary heart and/or birthday gift icons on the calendar (if enabled).</summary>
         private static void Billboard_Draw_Postfix(Billboard __instance, SpriteBatch b)
         {
             try
             {
                 ModEntry mod = ModEntry.Instance;
-                if (mod == null || mod.Config == null || !mod.Config.ShowAnniversaryOnCalendar)
-                    return;
-                if (mod.GetSpouse() == null)
+                if (mod == null || mod.Config == null)
                     return;
 
-                int day = mod.AnniversaryDayThisSeason();
-                if (day < 1)
+                // Only draw on the calendar page, not the daily-quest/special-orders board.
+                bool? isQuestBoard = mod.Helper.Reflection.GetField<bool>(__instance, "dailyQuestBoard", required: false)?.GetValue();
+                if (isQuestBoard == true)
                     return;
 
                 List<ClickableTextureComponent> days = mod.GetCalendarDayComponents(__instance);
-                if (days == null || days.Count < day)
+                if (days == null)
                     return;
 
-                Rectangle bounds = days[day - 1].bounds;
-                // A heart icon in the top-left of the anniversary day's tile.
-                b.Draw(
-                    Game1.mouseCursors,
-                    new Vector2(bounds.X + 6, bounds.Y + 6),
-                    new Rectangle(211, 428, 7, 6),
-                    Color.White, 0f, Vector2.Zero, 3f, SpriteEffects.None, 1f);
+                // Anniversary heart.
+                if (mod.Config.AnniversaryCalendarMarker && mod.GetSpouse() != null)
+                {
+                    int annivDay = mod.AnniversaryDayThisSeason();
+                    if (annivDay >= 1 && days.Count >= annivDay)
+                    {
+                        Rectangle bounds = days[annivDay - 1].bounds;
+                        // A heart icon in the top-left of the anniversary day's tile.
+                        b.Draw(
+                            Game1.mouseCursors,
+                            new Vector2(bounds.X + 6, bounds.Y + 6),
+                            new Rectangle(211, 428, 7, 6),
+                            Color.White, 0f, Vector2.Zero, 3f, SpriteEffects.None, 1f);
+                    }
+                }
+
+                // Player birthday marker.
+                if (mod.Config.BirthdayCalendarMarker)
+                {
+                    int birthDay = mod.BirthdayDayThisSeason();
+                    if (birthDay >= 1 && days.Count >= birthDay)
+                    {
+                        Rectangle bounds = days[birthDay - 1].bounds;
+                        // The same heart shape, tinted gold and placed in the top-right corner so it
+                        // can't be confused with the anniversary heart even on the same day.
+                        b.Draw(
+                            Game1.mouseCursors,
+                            new Vector2(bounds.Right - 27, bounds.Y + 6),
+                            new Rectangle(211, 428, 7, 6),
+                            Color.Gold, 0f, Vector2.Zero, 3f, SpriteEffects.None, 1f);
+                    }
+                }
             }
             catch (Exception ex)
             {

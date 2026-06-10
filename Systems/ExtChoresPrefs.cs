@@ -45,11 +45,17 @@ namespace MarriageOverhaul
 
             this.Data.LastChoreDay = this.AbsoluteDay;
             string key = ChoreKeys[this.Rng.Next(ChoreKeys.Length)];
-            this.PerformChore(key, highQuality);
-            this.PushDialogue(spouse, ExtendedContent.ChoreLine(key, highQuality, this.Rng), "happy");
+
+            // A chore may return an override line (e.g. the forage jackpot reaction); otherwise use the normal chore line.
+            string overrideLine = this.PerformChore(key, highQuality);
+            if (overrideLine != null)
+                this.PushDialogue(spouse, overrideLine, "neutral");
+            else
+                this.PushDialogue(spouse, ExtendedContent.ChoreLine(key, highQuality, this.Rng), "happy");
         }
 
-        private void PerformChore(string key, bool high)
+        /// <summary>Apply a chore's effect. Returns a dialogue line to use in place of the normal chore line, or null.</summary>
+        private string PerformChore(string key, bool high)
         {
             try
             {
@@ -59,13 +65,14 @@ namespace MarriageOverhaul
                     case "collect": this.Chore_Collect(high ? 6 : 2); break;
                     case "cook": this.Chore_Cook(high); break;
                     case "gold": Game1.player.Money += high ? 250 : 50; break;
-                    case "forage": this.Chore_Forage(high ? 6 : 2); break;
+                    case "forage": return this.Chore_Forage(high);
                 }
             }
             catch (Exception ex)
             {
                 this.Monitor.Log($"Chore '{key}' effect failed (line still shows): {ex.Message}", LogLevel.Trace);
             }
+            return null;
         }
 
         private void Chore_Water(int max)
@@ -118,25 +125,6 @@ namespace MarriageOverhaul
                 if (high) obj.Quality = 2;
                 this.PutInFridge(obj);
             }
-        }
-
-        private void Chore_Forage(int max)
-        {
-            var farm = Game1.getFarm();
-            if (farm == null) return;
-            var picked = new List<Vector2>();
-            foreach (var pair in farm.objects.Pairs)
-            {
-                if (pair.Value is SObject o && o.IsSpawnedObject)
-                {
-                    Item copy = o.getOne();
-                    if (copy != null && this.PutInFridge(copy))
-                        picked.Add(pair.Key);
-                    if (picked.Count >= max) break;
-                }
-            }
-            foreach (var tile in picked)
-                farm.objects.Remove(tile);
         }
 
         // ── F3: Evolving gift preferences ─────────────────────────

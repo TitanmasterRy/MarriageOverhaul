@@ -13,6 +13,7 @@ namespace MarriageOverhaul
             this.Preferences_OnDayStarted(spouse);
             this.Milestone_OnDayStarted(spouse);
             this.Birthday_OnDayStarted(spouse);
+            this.SkillMilestone_OnDayStarted(spouse);
             this.Sickness_OnDayStarted(spouse);
             this.BadDay_OnDayStarted(spouse);
             this.Achievements_OnDayStarted(spouse);

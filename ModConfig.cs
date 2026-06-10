@@ -12,7 +12,9 @@ namespace MarriageOverhaul
         public bool EnableMoodSystem { get; set; } = true;
         public bool EnableAnniversary { get; set; } = true;
         /// <summary>Mark your wedding anniversary on the in-game calendar (Billboard).</summary>
-        public bool ShowAnniversaryOnCalendar { get; set; } = false;
+        public bool AnniversaryCalendarMarker { get; set; } = false;
+        /// <summary>Mark your character's birthday on the in-game calendar (Billboard).</summary>
+        public bool BirthdayCalendarMarker { get; set; } = false;
         public bool EnableMakeupGifts { get; set; } = true;
         /// <summary>The "ultimate punishment": a badly neglected spouse can cheat and leave you.</summary>
         public bool EnableCheating { get; set; } = true;
@@ -45,6 +47,8 @@ namespace MarriageOverhaul
         // Vanilla has no player birthday, so set yours here for the birthday system (day 0 = disabled).
         public string PlayerBirthdaySeason { get; set; } = "spring";
         public int PlayerBirthdayDay { get; set; } = 0;
+        /// <summary>Chance the spouse gives a generally useful item instead of a personalized breakfast on your birthday.</summary>
+        public float BirthdayGiftChance { get; set; } = 0.5f;
         public bool EnableTownGossip { get; set; } = true;
         public bool EnableHoneymoonPhase { get; set; } = true;
         public int HoneymoonDuration { get; set; } = 30;
@@ -52,6 +56,28 @@ namespace MarriageOverhaul
         public bool EnableSharedDreams { get; set; } = true;
         public bool EnableVisitorJealousy { get; set; } = true;
         public bool EnableProductivityScaling { get; set; } = true;
+
+        // ── Forage loot ─────────────────────────────────────────────
+        /// <summary>When the spouse does the forage chore, they bring back items from a per-spouse loot table (with a rare Prismatic Shard chance) instead of picking up forage already on the farm.</summary>
+        public bool EnableForageLoot { get; set; } = true;
+        /// <summary>How many items the spouse brings back from a successful forage.</summary>
+        public int ForageHaulQuantity { get; set; } = 3;
+        /// <summary>Relative weight of the common tier when rolling each foraged item.</summary>
+        public float ForageCommonWeight { get; set; } = 55f;
+        /// <summary>Relative weight of the uncommon tier when rolling each foraged item.</summary>
+        public float ForageUncommonWeight { get; set; } = 30f;
+        /// <summary>Relative weight of the rare tier when rolling each foraged item.</summary>
+        public float ForageRareWeight { get; set; } = 15f;
+        /// <summary>Chance per forage that the spouse finds a Prismatic Shard (the jackpot). Very small by design.</summary>
+        public float ForagePrismaticShardChance { get; set; } = 0.005f;
+
+        // ── Skill milestones ────────────────────────────────────────
+        /// <summary>When a skill reaches level 5 or 10, the spouse gives special dialogue and a small gift.</summary>
+        public bool EnableSkillMilestoneRewards { get; set; } = true;
+        /// <summary>Item name/ID used as the skill milestone gift (resolved by name, e.g. "Life Elixir").</summary>
+        public string MilestoneGiftItemId { get; set; } = "Life Elixir";
+        /// <summary>How many of the milestone gift item to give.</summary>
+        public int MilestoneGiftQuantity { get; set; } = 1;
 
         // Debug
         public bool EnableDebugCommands { get; set; } = false;
