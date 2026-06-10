@@ -19,17 +19,30 @@ namespace MarriageOverhaul
             switch (mood)
             {
                 case "Happy":
-                    this.PushDialogue(spouse, SpouseContent.GetHappyMood(spouse.Name));
+                    this.PushDialogue(spouse, SpouseContent.GetHappyMood(spouse.Name), "happy");
                     break;
                 case "Grumpy":
-                    this.PushDialogue(spouse, SpouseContent.GetGrumpyMood(spouse.Name));
+                    this.PushDialogue(spouse, SpouseContent.GetGrumpyMood(spouse.Name), "angry");
                     break;
-                // Neutral: no injection — leave the vanilla tone intact.
+                default: // Neutral — share an everyday line from the general pool.
+                    this.PushDialogue(spouse, SpouseContent.GetRandomGeneralLine(Game1.random));
+                    break;
             }
         }
 
+        // Spouses who are cheered rather than dampened by rainy weather.
+        private static bool SpouseLovesRain(string name)
+            => name == "Sebastian" || name == "Abigail";
+
         private string ComputeMood()
         {
+            // Sometimes a mood is just a mood — random, regardless of circumstances.
+            if (Game1.random.NextDouble() < 0.2)
+            {
+                int r = Game1.random.Next(3);
+                return r == 0 ? "Happy" : r == 1 ? "Grumpy" : "Neutral";
+            }
+
             int score = 0;
 
             // Friendship trend vs. yesterday.
@@ -52,6 +65,10 @@ namespace MarriageOverhaul
             // Being in a makeup state weighs on them.
             if (this.Data.MakeupNeeded)
                 score--;
+
+            // Weather colors the mood — most are gloomier in the rain, a few are cheered by it.
+            if (this.IsRainingNow())
+                score += SpouseLovesRain(this.SpouseName) ? 1 : -1;
 
             // Small random nudge.
             score += Game1.random.Next(-1, 2); // -1, 0, or 1

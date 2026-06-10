@@ -39,17 +39,19 @@ namespace MarriageOverhaul
         public string Scene;        // line shown during the date
     }
 
-    /// <summary>A real positioned cutscene: a map, a staging tile, and choreographed beats.</summary>
-    public class DateEventScript
+    /// <summary>Where a date cutscene is staged: a map, a tile, and which way the actors face.</summary>
+    public class DateSpot
     {
         public string Map;              // location internal name (e.g. "Beach")
         public int X;                   // farmer staging tile X
         public int Y;                   // farmer staging tile Y
-        public int Facing = 2;          // initial facing for both actors (2 = down/south = toward the ocean)
-        public int SpouseDX = 1;        // spouse tile offset from the farmer (default: one tile east)
-        public int SpouseDY = 0;
+        public int Facing = 2;          // initial facing for both actors (2 = down/south)
+    }
+
+    /// <summary>A date cutscene: choreographed beats. Staged at the spouse's date spot.</summary>
+    public class DateEventScript
+    {
         public List<string> Beats;      // raw event-command snippets joined with '/'; "{n}" = spouse's name
-        public List<string> Lines;      // simple fallback: each becomes a spoken line with a heart on the first
     }
 
     /// <summary>
@@ -557,6 +559,40 @@ namespace MarriageOverhaul
         private const string GenericGrumpy =
             "Oh. Morning. I'm not really feeling up to talking right now. Sorry.";
 
+        // ─────────────────────────────────────────────────────────────
+        //  GENERAL POOL (everyday married flavor, used on neutral days)
+        // ─────────────────────────────────────────────────────────────
+        private static readonly List<string> GeneralPool = new List<string>
+        {
+            "Morning. I put the kettle on already, figured you'd want some before the work starts.",
+            "I was just thinking about you. ...Well, I'm always thinking about you, but more than usual.",
+            "Don't work yourself too hard out there today, okay? Come home to me in one piece.",
+            "I had the strangest dream last night. You were in it, of course. You always are.",
+            "It's a good life we've got here, isn't it? Quiet. Ours.",
+            "I saved you the last of the breakfast. Don't tell anyone I'm that soft.",
+            "Every time you walk back through that door, my whole day gets a little better.",
+            "I keep catching myself smiling for no reason. Then I remember the reason. It's you.",
+            "Whatever today throws at us, we handle it together. That's the deal, right?",
+            "You looked so peaceful sleeping I almost didn't want to wake you.",
+            "Come find me later, would you? Even five minutes with you beats a whole day without.",
+            "I love the little ordinary moments most. Coffee, quiet, you across the room.",
+            "Be careful in those mines if you head down there. I need you back tonight.",
+            "I was humming a song all morning and only just realized it's the one from our wedding.",
+            "Some days I still can't believe you picked me. Then I get over it and just feel lucky.",
+            "The house feels right with you in it. Too empty when you're gone long.",
+            "I'll keep dinner warm if you're out late. Just... don't be TOO late.",
+            "You've got that look like you're already planning ten things. Don't forget to breathe.",
+            "Give me a kiss before you head out? ...For luck. Obviously.",
+            "Thanks for yesterday. And every day, really. I don't say it enough.",
+            "There's nowhere I'd rather wake up than right here, next to you.",
+            "If you find anything pretty out there today, think of me, yeah?",
+            "I'm proud of you. Of us. Of whatever it is we're building here.",
+            "Stay safe today. And hurry home. I get bored of missing you."
+        };
+
+        public static string GetRandomGeneralLine(System.Random rng)
+            => GeneralPool[rng.Next(GeneralPool.Count)];
+
         public static string GetHappyMood(string name)
             => IsVanilla(name) && HappyMood.ContainsKey(name) ? HappyMood[name] : GenericHappy;
 
@@ -867,106 +903,202 @@ namespace MarriageOverhaul
             => IsVanilla(name) && MovieDates.ContainsKey(name) ? MovieDates[name] : GenericMovieDate;
 
         // ─────────────────────────────────────────────────────────────
-        //  REAL DATE CUTSCENES (positioned event, portrait dialogue)
-        //  Spouses without a defined event fall back to narration scenes.
+        //  REAL DATE CUTSCENES (positioned events, portrait dialogue)
+        //  Each spouse has ONE unique cutscene staged at a themed spot, plus
+        //  access to a shared pool of romantic cutscenes so dates stay varied.
+        //  "{n}" is replaced with the spouse's internal name. Unknown event
+        //  commands/sounds are skipped harmlessly by the game's event parser.
         // ─────────────────────────────────────────────────────────────
-        // Beach pier staging (facing 2 = south, toward the ocean). Coordinates can be tuned with mo_tile.
-        private const int PierX = 38;
-        private const int PierY = 19;
 
-        // Sprite frame where Haley holds her camera up to take a photo. Confirm in-game with mo_frametest
-        // and adjust this single number; it's woven into her photo beats below via showFrame.
-        private const int HaleyCameraFrame = 25;
-
-        // "{n}" is replaced with the spouse's internal name. The camera flourish (cameraNoise + screenFlash)
-        // gives Haley her photo-taking; unknown commands/sounds are skipped harmlessly by the event parser.
-        private static readonly Dictionary<string, List<DateEventScript>> DateEvents = new Dictionary<string, List<DateEventScript>>
+        // Themed staging spots (Map + tile + facing). Coordinates are best-guesses for
+        // non-beach maps; confirm/adjust them in-game with mo_tile. Facing 2 = south.
+        private static readonly Dictionary<string, DateSpot> DateSpots = new Dictionary<string, DateSpot>
         {
-            ["Haley"] = new List<DateEventScript>
-            {
-                new DateEventScript { Map = "Beach", X = PierX, Y = PierY, Facing = 2, Beats = new List<string>
-                {
-                    "speak {n} \"Mmm, this spot's perfect. The whole ocean... and my favorite person. Lucky me.\"",
-                    "faceDirection {n} 3", "faceDirection farmer 1", "pause 500",
-                    "speak {n} \"Hold still, handsome. I want to remember exactly how you look right now.\"",
-                    $"showFrame {{n}} {HaleyCameraFrame}", "pause 800",
-                    "playSound cameraNoise", "screenFlash 0.8", "shake farmer 500", "emote {n} 20",
-                    "speak {n} \"...*click* Oh, that's a keeper. Almost as gorgeous as the real thing in front of me.\"",
-                    "faceDirection {n} 2", "faceDirection farmer 2", "pause 500",
-                    "speak {n} \"Stay out here with me a while longer? I'm not nearly done with you tonight.\""
-                }},
-                new DateEventScript { Map = "Beach", X = PierX, Y = PierY, Facing = 2, Beats = new List<string>
-                {
-                    "speak {n} \"You, me, the moonlight on the water... careful, I might never let you go home.\"",
-                    "faceDirection {n} 3", "faceDirection farmer 1", "pause 400",
-                    "speak {n} \"Smile for me, gorgeous.\"",
-                    $"showFrame {{n}} {HaleyCameraFrame}", "pause 800",
-                    "playSound cameraNoise", "screenFlash 0.8", "emote {n} 20",
-                    "speak {n} \"*click* Mmm. That one's going right above our bed. Every picture of you turns out perfect.\"",
-                    "faceDirection {n} 2", "faceDirection farmer 2", "pause 400",
-                    "speak {n} \"Come here. Closer. I want to feel you next to me while we watch the waves.\""
-                }},
-                new DateEventScript { Map = "Beach", X = PierX, Y = PierY, Facing = 2, Beats = new List<string>
-                {
-                    "speak {n} \"This pier at night... it's like the whole sky dressed up just for our date.\"",
-                    "faceDirection {n} 3", "faceDirection farmer 1", "pause 400",
-                    "speak {n} \"One more picture. Look at me like you're crazy about me. ...Oh, you don't have to fake it, do you?\"",
-                    $"showFrame {{n}} {HaleyCameraFrame}", "pause 800",
-                    "playSound cameraNoise", "screenFlash 0.8", "shake farmer 400", "emote {n} 20",
-                    "speak {n} \"*click* Perfect. Keeping that one right next to my heart.\"",
-                    "faceDirection {n} 2", "faceDirection farmer 2", "pause 400",
-                    "speak {n} \"I never thought anyone could sweep me off my feet. Then you ruined that for good. ...Don't stop.\""
-                }}
-            },
-            ["Alex"] = new List<DateEventScript>
-            {
-                new DateEventScript { Map = "Beach", X = PierX, Y = PierY, Facing = 2, Beats = new List<string>
-                {
-                    "speak {n} \"Just you and me and the waves, huh? Don't tell the guys, but this beats any game night.\"",
-                    "faceDirection {n} 3", "faceDirection farmer 1", "emote {n} 20", "pause 400",
-                    "speak {n} \"C'mere. I've been wanting you all to myself all day.\"",
-                    "jump {n}",
-                    "speak {n} \"You make my heart race more than the final play, and that's sayin' somethin', gorgeous.\"",
-                    "faceDirection {n} 2", "faceDirection farmer 2", "pause 400",
-                    "speak {n} \"Stay close. I could hold onto a night like this, and you, forever.\""
-                }},
-                new DateEventScript { Map = "Beach", X = PierX, Y = PierY, Facing = 2, Beats = new List<string>
-                {
-                    "speak {n} \"Moonlit beach, nobody around... yeah, I planned this. Wanted you all to myself.\"",
-                    "faceDirection {n} 3", "faceDirection farmer 1", "pause 400",
-                    "speak {n} \"You're somethin' else, you know that? Gorgeous, tough, and somehow all mine. How'd I get this lucky?\"",
-                    "emote {n} 20", "pause 300",
-                    "speak {n} \"C'mere and give me a kiss before the tide comes in. ...What? Had to shoot my shot.\"",
-                    "faceDirection {n} 2", "faceDirection farmer 2", "pause 400",
-                    "speak {n} \"Best date of my life. And I'm countin' on a whole lot more of 'em with you.\""
-                }}
-            },
-            ["Elliott"] = new List<DateEventScript>
-            {
-                new DateEventScript { Map = "Beach", X = PierX, Y = PierY, Facing = 2, Beats = new List<string>
-                {
-                    "speak {n} \"The sea, the stars, and you at my side. Even my finest prose could not flatter this moment.\"",
-                    "faceDirection {n} 3", "faceDirection farmer 1", "pause 400",
-                    "speak {n} \"Come closer, my muse. Let me memorize the way the moonlight adores your skin.\"",
-                    "emote {n} 20",
-                    "speak {n} \"'Her touch, a tide that pulls me home...' Ah. You make a poet of me, every single time.\"",
-                    "faceDirection {n} 2", "faceDirection farmer 2", "pause 400",
-                    "speak {n} \"Stay, and let the waves keep time while I lose myself entirely in you.\""
-                }},
-                new DateEventScript { Map = "Beach", X = PierX, Y = PierY, Facing = 2, Beats = new List<string>
-                {
-                    "speak {n} \"Walk the water's edge with me. I confess, I arranged this whole evening to have you alone.\"",
-                    "faceDirection {n} 3", "faceDirection farmer 1", "emote {n} 20", "pause 400",
-                    "speak {n} \"You are the verse I never knew my heart was missing. And now I cannot stop writing you.\"",
-                    "speak {n} \"Might I be so bold... as to steal a kiss beneath this generous moon?\"",
-                    "faceDirection {n} 2", "faceDirection farmer 2", "pause 400",
-                    "speak {n} \"Whatever stories the tide tells tonight, my love, let ours be the one without an ending.\""
-                }}
-            }
+            ["Haley"]     = new DateSpot { Map = "Beach",           X = 38, Y = 19, Facing = 2 },
+            ["Alex"]      = new DateSpot { Map = "Beach",           X = 41, Y = 19, Facing = 2 },
+            ["Elliott"]   = new DateSpot { Map = "Beach",           X = 35, Y = 19, Facing = 2 },
+            ["Abigail"]   = new DateSpot { Map = "Mountain",        X = 54, Y = 7,  Facing = 0 },
+            ["Sebastian"] = new DateSpot { Map = "Mountain",        X = 40, Y = 20, Facing = 2 },
+            ["Maru"]      = new DateSpot { Map = "Mountain",        X = 38, Y = 20, Facing = 2 },
+            ["Penny"]     = new DateSpot { Map = "ArchaeologyHouse",X = 10, Y = 9,  Facing = 0 },
+            ["Emily"]     = new DateSpot { Map = "Town",            X = 45, Y = 57, Facing = 2 },
+            ["Sam"]       = new DateSpot { Map = "Town",            X = 48, Y = 57, Facing = 2 },
+            ["Harvey"]    = new DateSpot { Map = "Town",            X = 50, Y = 57, Facing = 2 },
+            ["Leah"]      = new DateSpot { Map = "Forest",          X = 50, Y = 40, Facing = 2 },
+            ["Shane"]     = new DateSpot { Map = "Forest",          X = 53, Y = 40, Facing = 2 }
         };
 
-        /// <summary>Real positioned cutscenes for this spouse, or null to use the narration fallback.</summary>
+        private static readonly DateSpot FallbackSpot = new DateSpot { Map = "Beach", X = 38, Y = 19, Facing = 2 };
+
+        /// <summary>The themed staging spot for this spouse (or a safe beach fallback for modded spouses).</summary>
+        public static DateSpot GetDateSpot(string name)
+            => IsVanilla(name) && DateSpots.ContainsKey(name) ? DateSpots[name] : FallbackSpot;
+
+        // One unique, in-character cutscene per vanilla spouse.
+        private static readonly Dictionary<string, DateEventScript> UniqueDateEvents = new Dictionary<string, DateEventScript>
+        {
+            ["Haley"] = new DateEventScript { Beats = new List<string>
+            {
+                "speak {n} \"The pier all to ourselves, the tide rolling in... I picked this spot on purpose, you know.\"",
+                "faceDirection {n} 3", "faceDirection farmer 1", "pause 600",
+                "speak {n} \"Stop looking at the water. Look at me.\"", "pause 500",
+                "speak {n} \"...There. That's better.\"",
+                "emote {n} 20", "playSound dwop", "shake farmer 500", "pause 700",
+                "speak {n} \"Mm. Been wanting to do that all night. Don't tell anyone I'm this soft for you.\"",
+                "faceDirection {n} 2", "faceDirection farmer 2", "pause 400",
+                "speak {n} \"Stay out here with me. I'm in no hurry to share you with the world again.\""
+            }},
+            ["Alex"] = new DateEventScript { Beats = new List<string>
+            {
+                "speak {n} \"Moonlight, the waves, nobody watchin'. Yeah, I set this up. Wanted you all to myself.\"",
+                "faceDirection {n} 3", "faceDirection farmer 1", "pause 500",
+                "speak {n} \"Everybody sees the big tough gridball guy. You're the only one who gets the real me. That's not nothin'.\"",
+                "emote {n} 20", "playSound dwop", "shake farmer 500", "pause 600",
+                "speak {n} \"C'mere. ...Best night of my life, and I've had some good ones. You're my favorite play I ever made.\""
+            }},
+            ["Elliott"] = new DateEventScript { Beats = new List<string>
+            {
+                "speak {n} \"The sea, the stars, and you. I've written a hundred love scenes, yet none rival standing here with you.\"",
+                "faceDirection {n} 3", "faceDirection farmer 1", "pause 600",
+                "speak {n} \"You are not merely my muse, my love. You are the whole story. Every page, every line.\"",
+                "emote {n} 20", "playSound dwop", "pause 700",
+                "speak {n} \"...Forgive me. Some feelings outrun even a writer's words. Stay close, and let me try to find them.\""
+            }},
+            ["Abigail"] = new DateEventScript { Beats = new List<string>
+            {
+                "speak {n} \"Out here by the mountain, away from everyone... feels like the start of an adventure. My favorite kind, with you.\"",
+                "faceDirection {n} 3", "faceDirection farmer 1", "pause 500",
+                "speak {n} \"Most people see a weird girl who likes monsters and the dark. You saw me. Do you know what that does to me?\"",
+                "emote {n} 20", "playSound dwop", "shake farmer 400", "pause 600",
+                "speak {n} \"...Yeah. That's what it does. Come on, partner. Let's go get lost together for a while.\""
+            }},
+            ["Penny"] = new DateEventScript { Beats = new List<string>
+            {
+                "speak {n} \"I used to hide in here with a book, dreaming someone might choose a quiet life with me. Then you did.\"",
+                "faceDirection {n} 3", "faceDirection farmer 1", "pause 600",
+                "speak {n} \"You make me feel like I'm worth staying for. You're the best chapter of my whole story.\"",
+                "speak {n} \"...Come here. Let me show you how much you mean to me. No words needed.\"",
+                "emote {n} 20", "playSound dwop", "shake farmer 400", "pause 700",
+                "speak {n} \"I love you. More every single day.\""
+            }},
+            ["Emily"] = new DateEventScript { Beats = new List<string>
+            {
+                "speak {n} \"Feel that? The town's asleep, but the air's practically humming. It wanted us to have this night.\"",
+                "faceDirection {n} 3", "faceDirection farmer 1", "pause 500",
+                "speak {n} \"Your spirit and mine, woven together. I saw it the moment we met. I just had to wait for you to feel it too.\"",
+                "emote {n} 20", "playSound dwop", "pause 600",
+                "speak {n} \"Mm. Our colors are dancing. Stay in this moment with me a little longer.\""
+            }},
+            ["Sam"] = new DateEventScript { Beats = new List<string>
+            {
+                "speak {n} \"Whole town to ourselves, the quiet's kinda perfect. I even wrote you something. ...Maybe later, I'm too nervous.\"",
+                "faceDirection {n} 3", "faceDirection farmer 1", "pause 500",
+                "speak {n} \"You make me wanna be better, you know? Like I could actually be someone. That's all you.\"",
+                "emote {n} 20", "playSound dwop", "shake farmer 400", "pause 600",
+                "speak {n} \"...Whoa. Okay. Yeah. Best chorus I never wrote. C'mere, let's make tonight last.\""
+            }},
+            ["Harvey"] = new DateEventScript { Beats = new List<string>
+            {
+                "speak {n} \"I, ah... I rehearsed what to say tonight about a dozen times. And now, looking at you, I've forgotten all of it.\"",
+                "faceDirection {n} 3", "faceDirection farmer 1", "pause 600",
+                "speak {n} \"You steady my heart and set it racing all at once. As a doctor I should be alarmed. As your partner... I adore it.\"",
+                "emote {n} 20", "playSound dwop", "shake farmer 400", "pause 600",
+                "speak {n} \"...Goodness. Well. That was worth forgetting the speech for. I love you. Truly.\""
+            }},
+            ["Maru"] = new DateEventScript { Beats = new List<string>
+            {
+                "speak {n} \"I ran the numbers: statistically, this is the best night of the year. The variable that changed everything? You.\"",
+                "faceDirection {n} 3", "faceDirection farmer 1", "pause 500",
+                "speak {n} \"I spend all day measuring things. You're the one thing I can't quantify, and don't want to. I just want to feel it.\"",
+                "emote {n} 20", "playSound dwop", "pause 600",
+                "speak {n} \"...Hypothesis confirmed. I am completely, hopelessly in love with you.\""
+            }},
+            ["Sebastian"] = new DateEventScript { Beats = new List<string>
+            {
+                "speak {n} \"Up here by the lake, away from everyone telling me who to be... this is where I breathe. I wanted you in it.\"",
+                "faceDirection {n} 3", "faceDirection farmer 1", "pause 600",
+                "speak {n} \"I don't let people in. But you? I'd let you into all of it. That's not something I say.\"",
+                "emote {n} 20", "playSound dwop", "shake farmer 400", "pause 600",
+                "speak {n} \"...Yeah. That just happened. Don't make it weird. ...Okay, make it a little weird. Stay with me.\""
+            }},
+            ["Shane"] = new DateEventScript { Beats = new List<string>
+            {
+                "speak {n} \"Out here by the cliffs, the water all lit up... I used to come here on bad nights. Tonight I just wanted to share a good one.\"",
+                "faceDirection {n} 3", "faceDirection farmer 1", "pause 600",
+                "speak {n} \"A while back I didn't think I'd get nights like this. Or deserve 'em. You changed that. You changed me.\"",
+                "emote {n} 20", "playSound dwop", "pause 700",
+                "speak {n} \"...Thanks. For not givin' up on me. C'mere. I'm not lettin' go of this. Or you.\""
+            }},
+            ["Leah"] = new DateEventScript { Beats = new List<string>
+            {
+                "speak {n} \"The forest at night, just us and the crickets. This is the life I ran away to find. I didn't know you'd be in it.\"",
+                "faceDirection {n} 3", "faceDirection farmer 1", "pause 600",
+                "speak {n} \"You're my favorite thing I never planned for. Come here, you.\"",
+                "emote {n} 20", "playSound dwop", "shake farmer 400", "pause 600",
+                "speak {n} \"...Heh. Now THAT'S art. Let's stay out here till the stars give up.\""
+            }}
+        };
+
+        // Shared pool: romantic cutscenes ANY spouse can play, staged at their own date spot.
+        private static readonly List<DateEventScript> SharedDatePool = new List<DateEventScript>
+        {
+            // The kiss
+            new DateEventScript { Beats = new List<string>
+            {
+                "speak {n} \"Come here. I've been waiting all day to have you to myself.\"",
+                "faceDirection {n} 3", "faceDirection farmer 1", "pause 600",
+                "speak {n} \"No words. Just... hold still.\"",
+                "emote {n} 20", "playSound dwop", "shake farmer 500", "pause 700",
+                "speak {n} \"Mm. I could get used to ending every day exactly like that.\""
+            }},
+            // Slow dance
+            new DateEventScript { Beats = new List<string>
+            {
+                "speak {n} \"There's no music out here. Dance with me anyway?\"",
+                "faceDirection {n} 3", "faceDirection farmer 1", "pause 600",
+                "speak {n} \"Just sway with me. Close. ...Like that.\"",
+                "emote {n} 20", "pause 800",
+                "speak {n} \"Funny how the whole world goes quiet when it's only us.\""
+            }},
+            // Stargazing confession (ends in a kiss)
+            new DateEventScript { Beats = new List<string>
+            {
+                "speak {n} \"Look up. All those stars, and I still can't take my eyes off you.\"", "pause 600",
+                "faceDirection {n} 3", "faceDirection farmer 1",
+                "speak {n} \"I don't say it enough, so hear me now: choosing you was the best thing I've ever done.\"",
+                "emote {n} 20", "pause 500",
+                "speak {n} \"...Now you've gone and made me blush. Come closer before I lose my nerve.\"",
+                "playSound dwop", "shake farmer 400", "pause 600",
+                "speak {n} \"Yeah. That. Every night, if you'll let me.\""
+            }},
+            // Playful tease (ends in a kiss)
+            new DateEventScript { Beats = new List<string>
+            {
+                "speak {n} \"Catch me if you can—\"", "jump {n}", "pause 300",
+                "speak {n} \"...Okay, you caught me. Maybe I wanted you to.\"",
+                "faceDirection {n} 3", "faceDirection farmer 1",
+                "emote {n} 20", "playSound dwop", "pause 600",
+                "speak {n} \"You're trouble. The good kind. Don't you dare ever change.\""
+            }},
+            // Quiet gratitude (tender, no kiss)
+            new DateEventScript { Beats = new List<string>
+            {
+                "speak {n} \"Hey. Thank you. For tonight. For all of it. For staying.\"",
+                "faceDirection {n} 3", "faceDirection farmer 1", "pause 600",
+                "speak {n} \"Whatever tomorrow throws at us, I've got you, and you've got me. That's everything.\"",
+                "emote {n} 20", "pause 500",
+                "speak {n} \"Now come on. Let's make the most of what's left of tonight.\""
+            }}
+        };
+
+        /// <summary>The full date-cutscene pool for a spouse: their unique event (if any) plus the shared pool.</summary>
         public static List<DateEventScript> GetDateEvents(string name)
-            => IsVanilla(name) && DateEvents.ContainsKey(name) ? DateEvents[name] : null;
+        {
+            var list = new List<DateEventScript>();
+            if (name != null && UniqueDateEvents.TryGetValue(name, out var unique))
+                list.Add(unique);
+            list.AddRange(SharedDatePool);
+            return list;
+        }
     }
 }

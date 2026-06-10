@@ -1,7 +1,7 @@
 {
   "Name": "Marriage Overhaul",
   "Author": "TitanmasterRy",
-  "Version": "1.0.0",
+  "Version": "1.1.0",
   "Description": "A deep marriage overhaul adding arguments, divorce warnings, feeding mechanics, jealousy, anniversaries, mood, date nights, and makeup gifts.",
   "UniqueID": "TitanmasterRy.MarriageOverhaul",
   "EntryDll": "MarriageOverhaul.dll",

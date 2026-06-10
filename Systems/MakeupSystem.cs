@@ -38,7 +38,7 @@ namespace MarriageOverhaul
             if (this.AbsoluteDay - this.Data.MakeupStartDay >= MakeupWindowDays)
             {
                 this.ClearMakeup();
-                this.PushDialogue(spouse, SpouseContent.GetMakeup(spouse.Name).Resigned);
+                this.PushDialogue(spouse, SpouseContent.GetMakeup(spouse.Name).Resigned, "sad");
                 return;
             }
 

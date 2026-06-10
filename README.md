@@ -28,7 +28,10 @@ Your wedding date is remembered. Each year you get a morning reminder; gift your
 After an argument you handled badly, your spouse wants to make up. They drop hints about a **category** of gift (something sweet, something from nature, something homemade). Give the right kind for **+150** and a reconciliation. Regular gifts give half friendship until you do.
 
 ### 🌅 Date Nights
-Every couple of weeks your spouse may ask you out for the evening. Accept and meet them somewhere fitting their personality for **+100** friendship; decline and disappoint them for **−30**. Once the **movie theater** is unlocked, some dates become a trip to the movies. Beach spouses (Haley, Alex, Elliott) feature optional **real positioned cutscenes** with portrait dialogue.
+Every couple of weeks your spouse may ask you out for the evening. Accept and meet them somewhere fitting their personality for **+100** friendship; decline and disappoint them for **−30**. Once the **movie theater** is unlocked, some dates become a trip to the movies. With cutscenes enabled, dates play out as **full positioned cutscenes** with portrait dialogue, emotes, music, and a kiss — each vanilla spouse has **three unique handcrafted scenes** plus a shared pool of **15 generic scenes**, tracked per save so they don't repeat.
+
+### 💔 Ultimate Punishment (Cheating)
+If you badly neglect your spouse — letting friendship fall below the configurable threshold (default **4 hearts**) — they may begin an affair with another single marriage candidate, reveal it in a heartbroken letter, and leave you. Off by a single config toggle if it's too harsh for your game.
 
 ## Compatibility
 
@@ -62,17 +65,24 @@ Every system can be toggled and tuned. Edit `config.json` (created after the fir
 | `EnableMakeupGifts` | `true` | Makeup-gift state after a bad argument. |
 | `EnableDateNights` | `true` | Periodic date-night invitations. |
 | `EnableMovieDates` | `true` | Movie-theater dates once the theater is unlocked. |
-| `EnableDateCutscenes` | `false` | **Experimental:** real positioned cutscenes for beach spouse dates. |
+| `EnableDateCutscenes` | `false` | **Experimental:** play dates as full positioned cutscenes instead of a narration line. |
+| `EnableCheating` | `true` | The "ultimate punishment" — a neglected spouse can have an affair and leave you. |
 | `ArgumentThresholdHearts` | `10` | Friendship (in hearts) below which arguments can trigger. |
 | `DivorceWarningThresholdHearts` | `8` | Friendship (in hearts) below which the warning letter is sent. |
 | `ConsecutiveDaysBeforeAutoDivorce` | `7` | Days below the warning threshold (after the letter) before divorce. |
+| `CheatingThresholdHearts` | `4` | Friendship (in hearts) below which a neglected spouse may cheat. |
+| `CheatingChance` | `0.25` | Daily chance the spouse cheats while below the cheating threshold. |
 | `JealousyChance` | `0.20` | Chance the spouse notices a gift to a rival. |
 | `JealousyChanceLoved` | `0.40` | Chance the spouse notices when the gift was a loved item. |
 | `EnableDebugCommands` | `false` | Register the `mo_*` testing console commands (see below). |
 
 ## Debug commands
 
-Set `EnableDebugCommands` to `true` (and restart) to register a suite of `mo_*` console commands for testing — for example `mo_status`, `mo_argue`, `mo_hearts <n>`, `mo_date`, and `mo_dateevent`. These are intended for testing and development and are off by default.
+Set `EnableDebugCommands` to `true` (and restart) to register a suite of `mo_*` console commands for testing — for example `mo_status`, `mo_argue`, `mo_hearts <n>`, `mo_date`, `mo_dateevent`, `mo_listscenes`, `mo_playscene <id>`, and `mo_cheat`. These are intended for testing and development and are off by default.
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for the full version history.
 
 ## License
 

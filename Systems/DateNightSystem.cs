@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
@@ -91,7 +92,7 @@ namespace MarriageOverhaul
             {
                 this.ChangeSpouseFriendship(-30);
                 this.forceGrumpyToday = true;
-                this.PushDialogue(spouse, "...Oh. Okay. Maybe another time, then.");
+                this.PushDialogue(spouse, "...Oh. Okay. Maybe another time, then.", "sad");
             }
         }
 
@@ -111,13 +112,10 @@ namespace MarriageOverhaul
 
             bool movie = this.Data.MovieDateTonight;
 
-            // Prefer a real positioned cutscene when one exists — but only if the (experimental) option is on.
-            List<DateEventScript> events = (movie || !this.Config.EnableDateCutscenes) ? null : SpouseContent.GetDateEvents(spouse.Name);
-            if (events != null && events.Count > 0)
+            // A real handcrafted cutscene plays when cutscenes are enabled and it isn't a movie night.
+            if (!movie && this.Config.EnableDateCutscenes)
             {
-                this.ChangeSpouseFriendship(100);
-                int idx = this.PickDateEventIndex(spouse.Name, events.Count);
-                this.StartDateCutscene(spouse, events[idx]);
+                this.ChooseAndPlayDateScene(spouse);
                 return;
             }
 
@@ -125,6 +123,107 @@ namespace MarriageOverhaul
             DateInfo info = movie ? SpouseContent.GetMovieDate(spouse.Name) : SpouseContent.GetDate(spouse.Name);
             this.ShowNarration(info.Scene);
             this.ChangeSpouseFriendship(movie ? 120 : 100); // a movie night is a slightly bigger treat
+        }
+
+        /// <summary>
+        /// Select tonight's date scene and play it: a spouse's unseen unique scenes first (random order,
+        /// weather-aware), then the generic pool (rotating, no repeat within 3), then a freeform scene.
+        /// </summary>
+        internal void ChooseAndPlayDateScene(NPC spouse)
+        {
+            this.ChangeSpouseFriendship(100);
+
+            DateScene scene = this.SelectDateScene(spouse.Name);
+            if (scene != null)
+                this.StartDateScene(spouse, scene);
+            else
+                this.PlayFreeformDate(spouse);
+        }
+
+        private DateScene SelectDateScene(string name)
+        {
+            // 1) Unique handcrafted scenes first, in random order, respecting weather requirements.
+            var unique = DateScenes.GetUnique(name);
+            if (unique != null && unique.Count > 0)
+            {
+                List<int> seen = this.GetSeenList(this.Data.SeenUniqueDateScenes, name);
+                var playable = Enumerable.Range(0, unique.Count)
+                    .Where(i => !seen.Contains(i) && this.WeatherAllows(unique[i]))
+                    .ToList();
+                if (playable.Count > 0)
+                {
+                    int idx = playable[Game1.random.Next(playable.Count)];
+                    seen.Add(idx);
+                    return unique[idx];
+                }
+                // Remaining unique scenes exist but can't play tonight (e.g. waiting on rain) — use the
+                // generic pool for now and leave the gated scene unseen so it can play another night.
+            }
+
+            // 2) Generic pool: rotate through unseen, avoiding anything used within the last 3 dates.
+            int genCount = DateScenes.GenericCount;
+            List<int> gseen = this.GetSeenList(this.Data.SeenGenericDateScenes, name);
+            var gunseen = Enumerable.Range(0, genCount).Where(i => !gseen.Contains(i)).ToList();
+            if (gunseen.Count > 0)
+            {
+                var candidates = gunseen.Where(i => !this.Data.RecentGenericDateScenes.Contains(i)).ToList();
+                if (candidates.Count == 0)
+                    candidates = gunseen;
+                int idx = candidates[Game1.random.Next(candidates.Count)];
+                gseen.Add(idx);
+                this.PushRecentGeneric(idx);
+                return DateScenes.GenericPool[idx];
+            }
+
+            // 3) Everything has been seen — assemble a freeform scene from the shared dialogue pool.
+            return null;
+        }
+
+        private void PlayFreeformDate(NPC spouse)
+        {
+            var beats = DateDialoguePool.BuildFreeformBeats(Game1.random);
+            var scene = new DateScene { Map = "FarmHouse", X = 6, Y = 8, Facing = 2, Beats = beats };
+            this.StartDateScene(spouse, scene);
+        }
+
+        private List<int> GetSeenList(Dictionary<string, List<int>> map, string name)
+        {
+            if (map == null)
+                return new List<int>();
+            if (!map.TryGetValue(name, out var list))
+            {
+                list = new List<int>();
+                map[name] = list;
+            }
+            return list;
+        }
+
+        private void PushRecentGeneric(int idx)
+        {
+            this.Data.RecentGenericDateScenes.Add(idx);
+            while (this.Data.RecentGenericDateScenes.Count > 3)
+                this.Data.RecentGenericDateScenes.RemoveAt(0);
+        }
+
+        private bool WeatherAllows(DateScene scene)
+        {
+            if (string.IsNullOrEmpty(scene.Weather))
+                return true;
+            if (scene.Weather == "Rain")
+                return this.IsRainingNow();
+            return true;
+        }
+
+        private bool IsRainingNow()
+        {
+            try
+            {
+                return Game1.getFarm()?.IsRainingHere() ?? false;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         private void DateNight_OnDayEnding(NPC spouse)

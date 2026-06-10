@@ -74,7 +74,12 @@ namespace MarriageOverhaul
             api.AddBoolOption(manifest,
                 () => this.Config.EnableDateCutscenes, v => this.Config.EnableDateCutscenes = v,
                 () => "Date Cutscenes (Experimental)",
-                () => "Play a real positioned cutscene for dates (beach spouses only for now) instead of a narration line. Experimental - leave off if you experience crashes.");
+                () => "Play a real positioned cutscene for dates instead of a narration line. Experimental - leave off if you experience crashes.");
+
+            api.AddBoolOption(manifest,
+                () => this.Config.EnableCheating, v => this.Config.EnableCheating = v,
+                () => "Enable Cheating (Ultimate Punishment)",
+                () => "If you badly neglect your spouse, they may have an affair with another single candidate and leave you. Harsh - disable to turn it off entirely.");
 
             // ── Thresholds ───────────────────────────────────────────
             api.AddSectionTitle(manifest, () => "Thresholds");
@@ -96,6 +101,18 @@ namespace MarriageOverhaul
                 () => "Consecutive Days Before Auto Divorce",
                 () => "Days the relationship must stay below the warning threshold (after the letter) before divorce.",
                 min: 1, max: 60);
+
+            api.AddNumberOption(manifest,
+                () => this.Config.CheatingThresholdHearts, v => this.Config.CheatingThresholdHearts = v,
+                () => "Cheating Threshold (hearts)",
+                () => "Below this many hearts, a neglected spouse may start an affair and leave you.",
+                min: 0, max: 14);
+
+            api.AddNumberOption(manifest,
+                () => this.Config.CheatingChance, v => this.Config.CheatingChance = v,
+                () => "Cheating Chance (per day)",
+                () => "Daily chance the spouse cheats while below the cheating threshold (0.0 - 1.0).",
+                min: 0f, max: 1f, interval: 0.05f);
 
             // ── Jealousy ─────────────────────────────────────────────
             api.AddSectionTitle(manifest, () => "Jealousy");

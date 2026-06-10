@@ -96,6 +96,7 @@ namespace MarriageOverhaul
             }
 
             // Apply consequences queued from yesterday and inject morning dialogue.
+            this.Cheating_OnDayStarted(spouse);
             this.Jealousy_OnDayStarted(spouse);
             this.Feeding_OnDayStarted(spouse);
             this.Anniversary_OnDayStarted(spouse);
@@ -115,6 +116,7 @@ namespace MarriageOverhaul
             this.Anniversary_OnDayEnding(spouse);
             this.Divorce_OnDayEnding(spouse);
             this.DateNight_OnDayEnding(spouse);
+            this.Cheating_OnDayEnding(spouse);
 
             // Record today's friendship for tomorrow's trend comparison.
             this.Data.LastFriendshipPoints = this.GetSpousePoints();
@@ -154,6 +156,8 @@ namespace MarriageOverhaul
                         dict["MO.DivorceWarning"] = this.Data.PendingWarningLetterText;
                     if (!string.IsNullOrEmpty(this.Data?.PendingAnniversaryLetterText))
                         dict["MO.Anniversary"] = this.Data.PendingAnniversaryLetterText;
+                    if (!string.IsNullOrEmpty(this.Data?.PendingCheatLetterText))
+                        dict["MO.Cheating"] = this.Data.PendingCheatLetterText;
                 });
             }
         }
@@ -211,6 +215,41 @@ namespace MarriageOverhaul
             catch (Exception ex)
             {
                 this.Monitor.Log($"Could not push dialogue for {npc.Name}: {ex.Message}", LogLevel.Trace);
+            }
+        }
+
+        /// <summary>Push a line with a matching facial expression (angry / sad / happy / love / neutral).</summary>
+        public void PushDialogue(NPC npc, string text, string emotion)
+        {
+            this.PushDialogue(npc, EmotionPrefix(emotion) + text);
+        }
+
+        /// <summary>The dialogue portrait token for an emotion. The game maps it to that NPC's portrait.</summary>
+        private static string EmotionPrefix(string emotion)
+        {
+            switch (emotion)
+            {
+                case "angry": return "$a ";
+                case "sad": return "$s ";
+                case "happy": return "$h ";
+                case "love": return "$l ";
+                default: return ""; // neutral — no token
+            }
+        }
+
+        /// <summary>Show the spouse speaking a single line now, with a matching facial expression.</summary>
+        public void ShowSpouseSpeech(NPC npc, string text, string emotion)
+        {
+            if (npc == null || string.IsNullOrWhiteSpace(text))
+                return;
+            try
+            {
+                npc.CurrentDialogue.Push(new Dialogue(npc, null, EmotionPrefix(emotion) + text));
+                Game1.drawDialogue(npc);
+            }
+            catch
+            {
+                this.ShowNarration(text);
             }
         }
 

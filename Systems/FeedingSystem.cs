@@ -58,7 +58,7 @@ namespace MarriageOverhaul
 
             if (this.Data.WentHungry)
             {
-                this.PushDialogue(spouse, SpouseContent.GetHungryLine(name));
+                this.PushDialogue(spouse, SpouseContent.GetHungryLine(name), "angry");
                 this.Data.WentHungry = false;
                 // A hungry spouse is grumpy regardless of other factors.
                 this.forceGrumpyToday = true;

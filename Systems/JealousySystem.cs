@@ -65,7 +65,7 @@ namespace MarriageOverhaul
 
             this.Data.PendingJealousy = false;
             this.ChangeSpouseFriendship(-15);
-            this.PushDialogue(spouse, SpouseContent.GetJealousy(spouse.Name));
+            this.PushDialogue(spouse, SpouseContent.GetJealousy(spouse.Name), "angry");
             this.forceGrumpyToday = true;
         }
     }

@@ -69,10 +69,12 @@ namespace MarriageOverhaul
             };
 
             GameLocation location = Game1.currentLocation;
+            // Show the argument with the spouse's portrait, wearing an angry expression.
             location.createQuestionDialogue(
-                scenario.Intro,
+                "$a " + scenario.Intro,
                 responses,
-                (Farmer who, string answer) => this.ResolveArgument(spouse, scenario, answer));
+                (Farmer who, string answer) => this.ResolveArgument(spouse, scenario, answer),
+                spouse);
         }
 
         private void ResolveArgument(NPC spouse, ArgumentScenario scenario, string answer)
@@ -81,12 +83,12 @@ namespace MarriageOverhaul
             {
                 case "MO_good":
                     this.ChangeSpouseFriendship(50);
-                    this.ShowNarration(scenario.GoodReply);
+                    this.ShowSpouseSpeech(spouse, scenario.GoodReply, "happy");
                     break;
 
                 case "MO_bad":
                     this.ChangeSpouseFriendship(-80);
-                    this.ShowNarration(scenario.BadReply);
+                    this.ShowSpouseSpeech(spouse, scenario.BadReply, "angry");
                     // A bad argument puts the spouse into a makeup-gift state.
                     if (this.Config.EnableMakeupGifts)
                         this.Makeup_Begin(spouse);
@@ -94,7 +96,7 @@ namespace MarriageOverhaul
                     break;
 
                 default:
-                    this.ShowNarration(scenario.NeutralReply);
+                    this.ShowSpouseSpeech(spouse, scenario.NeutralReply, "neutral");
                     break;
             }
         }

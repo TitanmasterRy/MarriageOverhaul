@@ -13,7 +13,7 @@ namespace MarriageOverhaul
             if (this.Data.AnniversaryMissed)
             {
                 this.Data.AnniversaryMissed = false;
-                this.PushDialogue(spouse, SpouseContent.GetAnniversary(spouse.Name).Disappointed);
+                this.PushDialogue(spouse, SpouseContent.GetAnniversary(spouse.Name).Disappointed, "sad");
                 this.forceGrumpyToday = true;
             }
         }
