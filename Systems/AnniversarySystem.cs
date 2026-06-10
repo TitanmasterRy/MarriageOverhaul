@@ -31,6 +31,7 @@ namespace MarriageOverhaul
                 {
                     this.ChangeSpouseFriendship(-100);
                     this.Data.AnniversaryMissed = true;
+                    this.Data.LastMissedAnniversaryDay = this.AbsoluteDay;
                 }
                 this.Data.IsAnniversaryToday = false;
                 this.Data.AnniversaryGiftGivenToday = false;

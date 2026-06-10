@@ -30,6 +30,11 @@ After an argument you handled badly, your spouse wants to make up. They drop hin
 ### 💔 Ultimate Punishment (Cheating)
 If you badly neglect your spouse — letting friendship fall below the configurable threshold (default **4 hearts**) — they may begin an affair with another single marriage candidate, reveal it in a heartbroken letter, and leave you. Off by a single config toggle if it's too harsh for your game.
 
+### ➕ Extended Systems
+A further seventeen optional systems deepen married life, each individually toggleable under the **Extended Systems** GMCM section: relationship **milestones** (year 1/3/5 scenes), spouse **daily chores**, **evolving gift preferences**, **sickness**, **inside jokes**, **achievement pride**, **children interactions**, **romantic letters**, **seasonal affection**, **bad days**, a **birthday system**, **town gossip**, a **honeymoon phase**, **spouse requests**, **shared dreams**, **visitor jealousy**, and **productivity scaling**. All are personalized per vanilla spouse with generic fallbacks for modded ones. See the [changelog](CHANGELOG.md) for details.
+
+> Note: vanilla Stardew has no player birthday, so the birthday system uses a configurable date (`PlayerBirthdaySeason` / `PlayerBirthdayDay`; day `0` disables it).
+
 ## Compatibility
 
 All systems fall back gracefully to natural, generic behavior for **modded spouses** (such as those from Stardew Valley Expanded) that don't have personalized content defined. Nothing is hardcoded in a way that breaks when NPC mods are installed.

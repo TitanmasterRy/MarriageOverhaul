@@ -2,6 +2,35 @@
 
 All notable changes to Marriage Overhaul are documented here.
 
+## 1.3.0
+
+### Added — Extended Systems
+Seventeen new, individually toggleable systems (GMCM section "Extended Systems"):
+- **Relationship milestones** — one-time scenes on your 1st, 3rd and 5th anniversary.
+- **Spouse daily chores** — morning farm help (watering, collecting, cooking, gold, forage); chance and quality scale with hearts and recent happiness.
+- **Evolving gift preferences** — after a year, the spouse comes to love new gifts tied to your history.
+- **Spouse sickness** — once per season they may fall ill and need soup, medicine, or tea.
+- **Inside jokes** — shared moments accumulate and resurface in casual dialogue.
+- **Achievement pride** — the spouse references big accomplishments (mines, Skull Cavern, Community Center, perfection, legendary fish, skill mastery).
+- **Children interactions** — references, a weekly time-with-kids request, harsher arguments with kids home.
+- **Romantic letters** — handwritten love letters in the mailbox every week or two.
+- **Seasonal affection** — favorite/least season per spouse affects mood, gift bonus, and decay.
+- **Bad days** — the spouse occasionally has a rough day; comfort them to help.
+- **Birthday system** — a special gift and scene on your (config-set) birthday.
+- **Town gossip** — townsfolk mention how your spouse speaks of you.
+- **Honeymoon phase** — boosted friendship and no arguments for the first weeks.
+- **Spouse requests** — mailed requests to fulfill within 3 days.
+- **Shared dreams** — morning journal entries describing the spouse's dreams.
+- **Visitor jealousy** — dry comments when other NPCs visit the farm.
+- **Productivity scaling** — chore quality follows the spouse's recent happiness.
+
+### Added — Other
+- Optional `ShowAnniversaryOnCalendar` (default off) marks your anniversary with a heart on the in-game calendar.
+
+### Notes
+- All new dialogue is stored in external content files. No existing systems were changed; everything is additive.
+- Vanilla has no player birthday, so the birthday system uses a configurable `PlayerBirthdaySeason` / `PlayerBirthdayDay` (day 0 = disabled).
+
 ## 1.2.0
 
 ### Removed

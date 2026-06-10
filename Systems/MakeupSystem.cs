@@ -14,6 +14,7 @@ namespace MarriageOverhaul
                 return;
             this.Anniversary_OnGiftToSpouse(spouse);
             this.Makeup_OnGiftToSpouse(spouse, gift);
+            this.Extended_OnGiftToSpouse(spouse, gift);
         }
 
         /// <summary>Put the spouse into the "needs makeup gift" state (after a bad argument).</summary>
@@ -55,6 +56,7 @@ namespace MarriageOverhaul
                 this.ClearMakeup();
                 this.ChangeSpouseFriendship(150);
                 this.ShowNarration(SpouseContent.GetMakeup(spouse.Name).Reconcile);
+                this.InsideJokes_Record(spouse);
             }
         }
 

@@ -13,6 +13,10 @@ namespace MarriageOverhaul
             if (!this.Config.EnableArguments || this.argumentTriggeredToday)
                 return;
 
+            // The honeymoon phase suppresses arguments entirely.
+            if (this.IsHoneymoon())
+                return;
+
             // Evening only, and only when the spouse is home with the player and no menu is open.
             if (time < 1800 || time > 2200)
                 return;
@@ -84,10 +88,14 @@ namespace MarriageOverhaul
                 case "MO_good":
                     this.ChangeSpouseFriendship(50);
                     this.ShowSpouseSpeech(spouse, scenario.GoodReply, "happy");
+                    // A well-handled argument becomes part of your shared history.
+                    this.InsideJokes_Record(spouse);
                     break;
 
                 case "MO_bad":
                     this.ChangeSpouseFriendship(-80);
+                    // Children in the house make a bad argument hurt more.
+                    this.Children_ExtraArgumentPenalty(spouse);
                     this.ShowSpouseSpeech(spouse, scenario.BadReply, "angry");
                     // A bad argument puts the spouse into a makeup-gift state.
                     if (this.Config.EnableMakeupGifts)

@@ -47,6 +47,8 @@ namespace MarriageOverhaul
         public int LastAnniversaryYearProcessed { get; set; } = -1;
         /// <summary>Set when an anniversary passed without a gift; drives the disappointed morning.</summary>
         public bool AnniversaryMissed { get; set; } = false;
+        /// <summary>Absolute day the most recent anniversary was forgotten (used by the birthday callback).</summary>
+        public int LastMissedAnniversaryDay { get; set; } = -1000;
         /// <summary>Text injected into the anniversary reminder mail asset.</summary>
         public string PendingAnniversaryLetterText { get; set; } = "";
 
@@ -61,5 +63,77 @@ namespace MarriageOverhaul
         public string CheatPartner { get; set; } = "";
         /// <summary>Text injected into the cheating reveal letter mail asset.</summary>
         public string PendingCheatLetterText { get; set; } = "";
+
+        // ── F1: Milestones ────────────────────────────────────────
+        /// <summary>Milestone years (1/3/5) whose scene has already played this save.</summary>
+        public List<int> MilestonesFired { get; set; } = new List<int>();
+
+        // ── F2/F17: Chores ────────────────────────────────────────
+        public int LastChoreDay { get; set; } = -1000;
+        /// <summary>Recent per-day mood scores (rolling window) driving chore quality.</summary>
+        public List<int> RollingMoodScores { get; set; } = new List<int>();
+
+        // ── F3: Evolving preferences ──────────────────────────────
+        public bool PreferencesEvolved { get; set; } = false;
+
+        // ── F4: Sickness ──────────────────────────────────────────
+        public bool SpouseSickToday { get; set; } = false;
+        public bool SickCuredToday { get; set; } = false;
+        public int LastSicknessSeason { get; set; } = -1;
+        public int TiredDaysRemaining { get; set; } = 0;
+
+        // ── F5: Inside jokes ──────────────────────────────────────
+        /// <summary>Accumulated inside-joke callback line indexes (per spouse name).</summary>
+        public Dictionary<string, List<int>> InsideJokes { get; set; } = new Dictionary<string, List<int>>();
+        public int LastInsideJokeDay { get; set; } = -1000;
+
+        // ── F6: Achievements ──────────────────────────────────────
+        public List<string> AchievementsCelebrated { get; set; } = new List<string>();
+        public string PendingAchievement { get; set; } = "";
+
+        // ── F7: Children ──────────────────────────────────────────
+        public int LastChildRequestWeek { get; set; } = -1;
+        public bool ChildRequestActive { get; set; } = false;
+
+        // ── F8: Romantic letters ──────────────────────────────────
+        public int NextLetterDay { get; set; } = -1;
+        public string PendingLoveLetterText { get; set; } = "";
+        public List<int> RecentLetters { get; set; } = new List<int>();
+
+        // ── F10: Bad days ─────────────────────────────────────────
+        public bool BadDayToday { get; set; } = false;
+        public bool BadDayResolved { get; set; } = false;
+        public int LastBadDay { get; set; } = -1000;
+        public int FlatDaysRemaining { get; set; } = 0;
+        public int BadDayLineIndex { get; set; } = -1;
+        public bool BadDayRecoveredPending { get; set; } = false;
+
+        // ── F11: Birthday ─────────────────────────────────────────
+        public int LastBirthdayYearProcessed { get; set; } = -1;
+
+        // ── F12: Town gossip ──────────────────────────────────────
+        public int LastGossipWeek { get; set; } = -1;
+        /// <summary>Rolling record of recent friendship points for the 7-day average.</summary>
+        public List<int> RollingFriendship { get; set; } = new List<int>();
+
+        // ── F14: Spouse requests ──────────────────────────────────
+        public bool RequestActive { get; set; } = false;
+        public string RequestId { get; set; } = "";
+        public int RequestStartDay { get; set; } = -1000;
+        public int LastRequestDay { get; set; } = -1000;
+        public Dictionary<string, int> LastRequestIndex { get; set; } = new Dictionary<string, int>();
+        public string PendingRequestLetterText { get; set; } = "";
+
+        // ── F15: Shared dreams ────────────────────────────────────
+        public int LastDreamDay { get; set; } = -1000;
+        public List<int> RecentDreams { get; set; } = new List<int>();
+
+        // ── F16: Visitor jealousy ─────────────────────────────────
+        public bool VisitorSeenToday { get; set; } = false;
+        public string VisitorName { get; set; } = "";
+        public bool PendingVisitorComment { get; set; } = false;
+
+        // ── Interaction tracking (seasonal decay / bad days) ──────
+        public int LastTalkedDay { get; set; } = -1000;
     }
 }

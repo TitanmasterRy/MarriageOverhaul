@@ -93,6 +93,7 @@ namespace MarriageOverhaul
             this.Makeup_OnDayStarted(spouse);
             this.Mood_OnDayStarted(spouse);
             this.Divorce_OnDayStarted(spouse);
+            this.Extended_OnDayStarted(spouse);
         }
 
         private void OnDayEnding(object sender, DayEndingEventArgs e)
@@ -105,6 +106,7 @@ namespace MarriageOverhaul
             this.Anniversary_OnDayEnding(spouse);
             this.Divorce_OnDayEnding(spouse);
             this.Cheating_OnDayEnding(spouse);
+            this.Extended_OnDayEnding(spouse);
 
             // Record today's friendship for tomorrow's trend comparison.
             this.Data.LastFriendshipPoints = this.GetSpousePoints();
@@ -117,6 +119,7 @@ namespace MarriageOverhaul
                 return;
 
             this.Argument_OnTimeChanged(spouse, e.NewTime);
+            this.Extended_OnTimeChanged(spouse, e.NewTime);
         }
 
         private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
@@ -132,6 +135,7 @@ namespace MarriageOverhaul
                         dict["MO.Anniversary"] = this.Data.PendingAnniversaryLetterText;
                     if (!string.IsNullOrEmpty(this.Data?.PendingCheatLetterText))
                         dict["MO.Cheating"] = this.Data.PendingCheatLetterText;
+                    this.Extended_InjectMail(dict);
                 });
             }
         }

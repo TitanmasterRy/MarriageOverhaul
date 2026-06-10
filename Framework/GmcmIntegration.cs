@@ -57,6 +57,11 @@ namespace MarriageOverhaul
                 () => "Yearly anniversary reminder, with a bonus for gifting and a penalty for forgetting.");
 
             api.AddBoolOption(manifest,
+                () => this.Config.ShowAnniversaryOnCalendar, v => this.Config.ShowAnniversaryOnCalendar = v,
+                () => "Show Anniversary on Calendar",
+                () => "Mark your wedding anniversary with a heart on the in-game calendar.");
+
+            api.AddBoolOption(manifest,
                 () => this.Config.EnableMakeupGifts, v => this.Config.EnableMakeupGifts = v,
                 () => "Enable Makeup Gifts",
                 () => "After a bad argument, the spouse wants a specific category of gift to reconcile.");
@@ -113,6 +118,124 @@ namespace MarriageOverhaul
                 () => "Jealousy Chance (Loved Gift)",
                 () => "Chance the spouse notices when the rival gift was a loved item (0.0 - 1.0).",
                 min: 0f, max: 1f, interval: 0.05f);
+
+            // ── Extended Systems ─────────────────────────────────────
+            api.AddSectionTitle(manifest, () => "Extended Systems");
+
+            api.AddBoolOption(manifest,
+                () => this.Config.EnableMilestones, v => this.Config.EnableMilestones = v,
+                () => "Enable Milestones",
+                () => "One-time scenes on your 1st, 3rd and 5th anniversary as the relationship grows.");
+
+            api.AddBoolOption(manifest,
+                () => this.Config.EnableSpouseChores, v => this.Config.EnableSpouseChores = v,
+                () => "Enable Spouse Chores",
+                () => "The spouse may do a helpful farm chore in the morning; chance and quality scale with hearts.");
+
+            api.AddNumberOption(manifest,
+                () => this.Config.ChoreChanceAtMaxHearts, v => this.Config.ChoreChanceAtMaxHearts = v,
+                () => "Chore Chance (at 14 hearts)",
+                () => "The daily chore chance at maximum friendship (0.0 - 1.0).",
+                min: 0f, max: 1f, interval: 0.05f);
+
+            api.AddBoolOption(manifest,
+                () => this.Config.EnableEvolvingPreferences, v => this.Config.EnableEvolvingPreferences = v,
+                () => "Enable Evolving Preferences",
+                () => "After a year of marriage, the spouse comes to love new gifts tied to your shared history.");
+
+            api.AddBoolOption(manifest,
+                () => this.Config.EnableSpouseSickness, v => this.Config.EnableSpouseSickness = v,
+                () => "Enable Spouse Sickness",
+                () => "Once per season the spouse may fall ill and need soup, medicine, or tea to recover.");
+
+            api.AddNumberOption(manifest,
+                () => this.Config.SicknessChancePerSeason, v => this.Config.SicknessChancePerSeason = v,
+                () => "Sickness Chance (per season)",
+                () => "The chance the spouse gets sick at some point each season (0.0 - 1.0).",
+                min: 0f, max: 1f, interval: 0.05f);
+
+            api.AddBoolOption(manifest,
+                () => this.Config.EnableInsideJokes, v => this.Config.EnableInsideJokes = v,
+                () => "Enable Inside Jokes",
+                () => "The spouse occasionally references shared moments built up over the marriage.");
+
+            api.AddBoolOption(manifest,
+                () => this.Config.EnableAchievementDialogue, v => this.Config.EnableAchievementDialogue = v,
+                () => "Enable Achievement Dialogue",
+                () => "The spouse proudly references your big accomplishments (mines, perfection, legendary fish, etc.).");
+
+            api.AddBoolOption(manifest,
+                () => this.Config.EnableChildrenInteractions, v => this.Config.EnableChildrenInteractions = v,
+                () => "Enable Children Interactions",
+                () => "Extra dialogue and a weekly request involving your children, plus harsher arguments with kids home.");
+
+            api.AddBoolOption(manifest,
+                () => this.Config.EnableRomanticLetters, v => this.Config.EnableRomanticLetters = v,
+                () => "Enable Romantic Letters",
+                () => "Every week or two the spouse leaves a handwritten love letter in your mailbox (flavor only).");
+
+            api.AddBoolOption(manifest,
+                () => this.Config.EnableSeasonalAffection, v => this.Config.EnableSeasonalAffection = v,
+                () => "Enable Seasonal Affection",
+                () => "Warmer dialogue and a gift bonus in the spouse's favorite season; moodier in their least favorite.");
+
+            api.AddBoolOption(manifest,
+                () => this.Config.EnableBadDays, v => this.Config.EnableBadDays = v,
+                () => "Enable Bad Days",
+                () => "The spouse occasionally has a rough day. Comfort them (talk, food, or time) to help.");
+
+            api.AddBoolOption(manifest,
+                () => this.Config.EnableBirthdaySystem, v => this.Config.EnableBirthdaySystem = v,
+                () => "Enable Birthday System",
+                () => "On your birthday the spouse leaves a special gift and a sweet morning scene.");
+
+            api.AddTextOption(manifest,
+                () => this.Config.PlayerBirthdaySeason, v => this.Config.PlayerBirthdaySeason = v,
+                () => "Your Birthday Season",
+                () => "The season of your character's birthday (vanilla has no player birthday, so set it here).",
+                allowedValues: new[] { "spring", "summer", "fall", "winter" });
+
+            api.AddNumberOption(manifest,
+                () => this.Config.PlayerBirthdayDay, v => this.Config.PlayerBirthdayDay = v,
+                () => "Your Birthday Day",
+                () => "The day of the month of your birthday (1-28). Set to 0 to disable the birthday system.",
+                min: 0, max: 28);
+
+            api.AddBoolOption(manifest,
+                () => this.Config.EnableTownGossip, v => this.Config.EnableTownGossip = v,
+                () => "Enable Town Gossip",
+                () => "Townsfolk may mention how your spouse speaks of you, for better or worse (flavor only).");
+
+            api.AddBoolOption(manifest,
+                () => this.Config.EnableHoneymoonPhase, v => this.Config.EnableHoneymoonPhase = v,
+                () => "Enable Honeymoon Phase",
+                () => "For the first weeks of marriage: boosted friendship, no arguments or bad days, warm dialogue.");
+
+            api.AddNumberOption(manifest,
+                () => this.Config.HoneymoonDuration, v => this.Config.HoneymoonDuration = v,
+                () => "Honeymoon Duration (days)",
+                () => "How many in-game days the honeymoon phase lasts after the wedding.",
+                min: 0, max: 112);
+
+            api.AddBoolOption(manifest,
+                () => this.Config.EnableSpouseRequests, v => this.Config.EnableSpouseRequests = v,
+                () => "Enable Spouse Requests",
+                () => "The spouse occasionally mails a request; fulfill it within 3 days for a reward.");
+
+            api.AddBoolOption(manifest,
+                () => this.Config.EnableSharedDreams, v => this.Config.EnableSharedDreams = v,
+                () => "Enable Shared Dreams",
+                () => "Now and then you wake to a journal entry describing a dream the spouse had about you.");
+
+            api.AddBoolOption(manifest,
+                () => this.Config.EnableVisitorJealousy, v => this.Config.EnableVisitorJealousy = v,
+                () => "Enable Visitor Jealousy",
+                () => "The spouse may make a dry comment when other NPCs visit the farm (flavor only).");
+
+            api.AddBoolOption(manifest,
+                () => this.Config.EnableProductivityScaling, v => this.Config.EnableProductivityScaling = v,
+                () => "Enable Productivity Scaling",
+                () => "Chore quality and frequency follow the spouse's recent happiness (no visible score).");
 
             // ── Debug ────────────────────────────────────────────────
             api.AddSectionTitle(manifest, () => "Debug");
