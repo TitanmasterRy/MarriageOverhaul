@@ -40,6 +40,68 @@ namespace MarriageOverhaul
             var billboardDraw = AccessTools.Method(typeof(Billboard), nameof(Billboard.draw), new[] { typeof(SpriteBatch) });
             if (billboardDraw != null)
                 harmony.Patch(billboardDraw, postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(Billboard_Draw_Postfix)));
+
+            // Keep the vanilla spouse kiss/hug available even when the mod has queued dialogue.
+            var checkAction = AccessTools.Method(typeof(NPC), nameof(NPC.checkAction));
+            if (checkAction != null)
+                harmony.Patch(checkAction,
+                    prefix: new HarmonyMethod(typeof(HarmonyPatches), nameof(CheckAction_Prefix)),
+                    postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(CheckAction_Postfix)));
+        }
+
+        /// <summary>
+        /// Vanilla only kisses/hugs the spouse when their dialogue stack is empty, but this mod queues
+        /// morning dialogue there. When the player walks up empty-handed and hasn't been kissed today,
+        /// briefly set the queued dialogue aside so the real vanilla kiss runs (keeping other kiss mods
+        /// working); the postfix restores the dialogue so it's still readable on the next interaction.
+        /// </summary>
+        private static void CheckAction_Prefix(NPC __instance, Farmer who, ref Dialogue[] __state)
+        {
+            __state = null;
+            try
+            {
+                ModEntry mod = ModEntry.Instance;
+                if (mod?.Config == null || !mod.Config.AllowSpouseKiss)
+                    return;
+                if (who == null || !who.IsLocalPlayer || __instance == null)
+                    return;
+                if (who.spouse != __instance.Name)                 // not the player's spouse
+                    return;
+                if (__instance.hasBeenKissedToday.Value)            // already kissed today — let dialogue show
+                    return;
+                if (who.ActiveObject != null)                       // holding an item — let gifting/talking happen
+                    return;
+                if (__instance.CurrentDialogue.Count == 0)          // nothing queued — vanilla handles the kiss
+                    return;
+
+                // Step the queued dialogue aside so vanilla's kiss branch runs this interaction.
+                __state = __instance.CurrentDialogue.ToArray();     // top-first
+                __instance.CurrentDialogue.Clear();
+            }
+            catch (Exception ex)
+            {
+                __state = null;
+                Monitor?.Log($"checkAction prefix error: {ex.Message}", LogLevel.Trace);
+            }
+        }
+
+        private static void CheckAction_Postfix(NPC __instance, Dialogue[] __state)
+        {
+            if (__state == null)
+                return;
+            try
+            {
+                // Restore the queued dialogue (the kiss consumed this interaction; the lines stay for next talk).
+                if (__instance.CurrentDialogue.Count == 0)
+                {
+                    for (int i = __state.Length - 1; i >= 0; i--)
+                        __instance.CurrentDialogue.Push(__state[i]);
+                }
+            }
+            catch (Exception ex)
+            {
+                Monitor?.Log($"checkAction postfix error: {ex.Message}", LogLevel.Trace);
+            }
         }
 
         /// <summary>Draw the anniversary heart and/or birthday gift icons on the calendar (if enabled).</summary>

@@ -17,6 +17,7 @@ All notable changes to Marriage Overhaul are documented here.
 
 ### Fixed
 - Farmhands being unable to join a multiplayer game with the mod installed (host-only save-data call now guarded).
+- The mod's queued morning dialogue was blocking the vanilla kiss/hug (and breaking kiss-based mods). New "Allow Spouse Kiss/Hug" option (on by default): walk up to your spouse empty-handed to kiss/hug as normal, then talk again to read their dialogue. The real vanilla kiss runs, so other kiss mods work again. Can be turned off in config/GMCM.
 
 ## 1.4.0
 

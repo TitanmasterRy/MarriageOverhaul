@@ -52,6 +52,11 @@ namespace MarriageOverhaul
                 () => "The spouse's daily mood (Happy / Neutral / Grumpy) flavors their greeting dialogue.");
 
             api.AddBoolOption(manifest,
+                () => this.Config.AllowSpouseKiss, v => this.Config.AllowSpouseKiss = v,
+                () => "Allow Spouse Kiss/Hug",
+                () => "Keep the normal kiss/hug available even when the mod has queued morning dialogue. Walk up empty-handed to kiss; talk again to read their dialogue. Keeps kiss-based mods working. Turn off to revert to dialogue-only mornings.");
+
+            api.AddBoolOption(manifest,
                 () => this.Config.EnableAnniversary, v => this.Config.EnableAnniversary = v,
                 () => "Enable Anniversary",
                 () => "Yearly anniversary reminder, with a bonus for gifting and a penalty for forgetting.");

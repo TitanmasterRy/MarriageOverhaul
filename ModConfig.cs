@@ -10,6 +10,8 @@ namespace MarriageOverhaul
         public bool EnableAutoDivorce { get; set; } = true;
         public bool EnableJealousy { get; set; } = true;
         public bool EnableMoodSystem { get; set; } = true;
+        /// <summary>Keep the vanilla kiss/hug available even when the mod has queued spouse dialogue (preserves compatibility with kiss-based mods).</summary>
+        public bool AllowSpouseKiss { get; set; } = true;
         public bool EnableAnniversary { get; set; } = true;
 
         // ── Friendship-tiered morning dialogue ──────────────────────
