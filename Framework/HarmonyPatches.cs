@@ -86,7 +86,7 @@ namespace MarriageOverhaul
                     return;
                 if (who.getFriendshipHeartLevelForNPC(__instance.Name) <= 9) // below 10 hearts vanilla won't kiss anyway
                     return;
-                if (Game1.timeOfDay >= 2200 || __instance.isMoving())
+                if (Game1.timeOfDay >= 2200)
                     return;
 
                 // The kiss only fires when the spouse faces left/right, i.e. the player is beside them.
@@ -97,6 +97,12 @@ namespace MarriageOverhaul
                 bool hasMarriage = __instance.currentMarriageDialogue.Count > 0;
                 if (!hasCurrent && !hasMarriage)
                     return; // nothing blocking — vanilla already handles the kiss
+
+                // If the spouse is wandering, stop them so vanilla's own "not moving" kiss check passes
+                // (normally the game halts them when you talk, but the queued dialogue pre-empts that).
+                // Halt() clears the movement flags that isMoving() reads.
+                if (__instance.isMoving())
+                    __instance.Halt();
 
                 // Set both dialogue sources aside so vanilla's kiss branch runs this interaction.
                 __state = new KissState
