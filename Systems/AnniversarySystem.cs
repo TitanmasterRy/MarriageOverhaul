@@ -83,6 +83,24 @@ namespace MarriageOverhaul
             return false;
         }
 
+        /// <summary>The wedding day from vanilla friendship data (absolute day count), or -1 if unavailable.</summary>
+        private int GetVanillaWeddingAbsoluteDay()
+        {
+            try
+            {
+                string name = this.SpouseName;
+                if (string.IsNullOrEmpty(name))
+                    return -1;
+                if (!Game1.player.friendshipData.TryGetValue(name, out var f) || f == null)
+                    return -1;
+                WorldDate wd = f.WeddingDate;
+                if (wd == null)
+                    return -1;
+                return wd.TotalDays;
+            }
+            catch { return -1; }
+        }
+
         private static void DecomposeDay(int totalDays, out int seasonIndex, out int dayOfMonth, out int year)
         {
             seasonIndex = (totalDays / 28) % 4;

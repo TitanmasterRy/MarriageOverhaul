@@ -2,6 +2,11 @@
 
 All notable changes to Marriage Overhaul are documented here.
 
+## 1.5.4
+
+### Fixed
+- The anniversary used the day the mod was first installed, not your actual wedding day — so anyone who installed the mod after getting married had their anniversary on the wrong date. The wedding date is now read from vanilla's `Friendship.WeddingDate`, which is set the day you married and preserved across mod install/uninstall. Existing saves self-heal on next load: the stored date is corrected and this year's real anniversary is re-armed so it can still fire. Modded spouses without vanilla wedding data continue to use the "first day the mod sees the marriage" fallback.
+
 ## 1.5.3
 
 ### Added

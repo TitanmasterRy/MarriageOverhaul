@@ -87,9 +87,26 @@ namespace MarriageOverhaul
             if (this.Config.EnableFeeding)
                 this.Feeding_EnsureWeeklySchedule();
 
-            // First time we see this marriage: record the wedding date for anniversaries.
-            if (this.Data.WeddingAbsoluteDay < 0)
+            // Pull the real wedding date from vanilla friendship data when available. This self-heals
+            // saves where the mod was installed after marriage (those used to record "today" as the
+            // wedding date, giving everyone a wrong anniversary). Falls back to "today" only for
+            // modded spouses with no vanilla wedding data.
+            int realWedding = this.GetVanillaWeddingAbsoluteDay();
+            if (realWedding >= 0)
+            {
+                if (this.Data.WeddingAbsoluteDay != realWedding)
+                {
+                    bool wasSet = this.Data.WeddingAbsoluteDay >= 0;
+                    this.Data.WeddingAbsoluteDay = realWedding;
+                    // If we just corrected a wrong stored date, let this year's real anniversary fire.
+                    if (wasSet)
+                        this.Data.LastAnniversaryYearProcessed = -1;
+                }
+            }
+            else if (this.Data.WeddingAbsoluteDay < 0)
+            {
                 this.Data.WeddingAbsoluteDay = this.AbsoluteDay;
+            }
 
             // Apply consequences queued from yesterday and inject morning dialogue.
             this.Cheating_OnDayStarted(spouse);
