@@ -2,6 +2,11 @@
 
 All notable changes to Marriage Overhaul are documented here.
 
+## 1.5.1
+
+### Fixed
+- The 1.5.0 kiss/hug fix didn't fully work — interacting showed a single dialogue line, then a kiss, and the spouse's other dialogue was lost. The vanilla kiss actually requires both the spouse's dialogue stack *and* their daily marriage dialogue to be clear, but the previous fix only handled the first. The mod now correctly sets both aside (only when you're actually positioned for a kiss: 10+ hearts, slept in bed, empty-handed, standing beside your spouse, before 10pm) so the real kiss runs and all dialogue is preserved for the next interaction. Kiss-based mods work as expected.
+
 ## 1.5.0
 
 ### Added — Multiplayer support

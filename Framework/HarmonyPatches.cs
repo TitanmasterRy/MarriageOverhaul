@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -49,13 +50,21 @@ namespace MarriageOverhaul
                     postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(CheckAction_Postfix)));
         }
 
+        /// <summary>Dialogue set aside during a kiss interaction so it can be restored afterward.</summary>
+        private class KissState
+        {
+            public Dialogue[] Current;
+            public MarriageDialogueReference[] Marriage;
+        }
+
         /// <summary>
-        /// Vanilla only kisses/hugs the spouse when their dialogue stack is empty, but this mod queues
-        /// morning dialogue there. When the player walks up empty-handed and hasn't been kissed today,
-        /// briefly set the queued dialogue aside so the real vanilla kiss runs (keeping other kiss mods
-        /// working); the postfix restores the dialogue so it's still readable on the next interaction.
+        /// Vanilla only kisses the spouse when BOTH their dialogue stack and their daily marriage
+        /// dialogue are empty, but this mod queues morning dialogue. When the player is positioned for a
+        /// real kiss (10+ hearts, slept in bed, empty-handed, beside the spouse, before 10pm, not yet
+        /// kissed today) we briefly set that dialogue aside so the genuine vanilla kiss runs — which keeps
+        /// kiss-based mods working — then restore it so it's still readable on the next interaction.
         /// </summary>
-        private static void CheckAction_Prefix(NPC __instance, Farmer who, ref Dialogue[] __state)
+        private static void CheckAction_Prefix(NPC __instance, Farmer who, ref KissState __state)
         {
             __state = null;
             try
@@ -65,18 +74,39 @@ namespace MarriageOverhaul
                     return;
                 if (who == null || !who.IsLocalPlayer || __instance == null)
                     return;
-                if (who.spouse != __instance.Name)                 // not the player's spouse
+                if (__instance.Name != who.spouse)                          // not the player's spouse
                     return;
-                if (__instance.hasBeenKissedToday.Value)            // already kissed today — let dialogue show
+                if (__instance.hasBeenKissedToday.Value)                    // already kissed — let dialogue show
                     return;
-                if (who.ActiveObject != null)                       // holding an item — let gifting/talking happen
+                if (who.ActiveObject != null)                               // holding an item — let gifting/talking happen
                     return;
-                if (__instance.CurrentDialogue.Count == 0)          // nothing queued — vanilla handles the kiss
+                if (__instance.Sprite?.CurrentAnimation != null)            // mid-animation — vanilla skips the kiss
+                    return;
+                if (!__instance.sleptInBed.Value)                           // vanilla requires this for a kiss
+                    return;
+                if (who.getFriendshipHeartLevelForNPC(__instance.Name) <= 9) // below 10 hearts vanilla won't kiss anyway
+                    return;
+                if (Game1.timeOfDay >= 2200 || __instance.isMoving())
                     return;
 
-                // Step the queued dialogue aside so vanilla's kiss branch runs this interaction.
-                __state = __instance.CurrentDialogue.ToArray();     // top-first
+                // The kiss only fires when the spouse faces left/right, i.e. the player is beside them.
+                if ((int)who.Tile.Y != (int)__instance.Tile.Y || Math.Abs((int)who.Tile.X - (int)__instance.Tile.X) != 1)
+                    return;
+
+                bool hasCurrent = __instance.CurrentDialogue.Count > 0;
+                bool hasMarriage = __instance.currentMarriageDialogue.Count > 0;
+                if (!hasCurrent && !hasMarriage)
+                    return; // nothing blocking — vanilla already handles the kiss
+
+                // Set both dialogue sources aside so vanilla's kiss branch runs this interaction.
+                __state = new KissState
+                {
+                    Current = __instance.CurrentDialogue.ToArray(),                 // top-first
+                    Marriage = hasMarriage ? __instance.currentMarriageDialogue.ToArray() : null
+                };
                 __instance.CurrentDialogue.Clear();
+                if (hasMarriage)
+                    __instance.currentMarriageDialogue.Clear();
             }
             catch (Exception ex)
             {
@@ -85,17 +115,22 @@ namespace MarriageOverhaul
             }
         }
 
-        private static void CheckAction_Postfix(NPC __instance, Dialogue[] __state)
+        private static void CheckAction_Postfix(NPC __instance, KissState __state)
         {
             if (__state == null)
                 return;
             try
             {
-                // Restore the queued dialogue (the kiss consumed this interaction; the lines stay for next talk).
-                if (__instance.CurrentDialogue.Count == 0)
+                // Restore the dialogue (the kiss consumed this interaction; the lines stay for the next talk).
+                if (__state.Current != null && __instance.CurrentDialogue.Count == 0)
                 {
-                    for (int i = __state.Length - 1; i >= 0; i--)
-                        __instance.CurrentDialogue.Push(__state[i]);
+                    for (int i = __state.Current.Length - 1; i >= 0; i--)
+                        __instance.CurrentDialogue.Push(__state.Current[i]);
+                }
+                if (__state.Marriage != null && __instance.currentMarriageDialogue.Count == 0)
+                {
+                    foreach (MarriageDialogueReference r in __state.Marriage)
+                        __instance.currentMarriageDialogue.Add(r);
                 }
             }
             catch (Exception ex)
