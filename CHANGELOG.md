@@ -5,7 +5,7 @@ All notable changes to Marriage Overhaul are documented here.
 ## 1.5.3
 
 ### Added
-- New config/GMCM option **Feeding: Search Extra Storage** (on by default). Feeding now searches mini-fridges and the cellar fridge in addition to the built-in kitchen fridge, so modded house layouts that put the fridge on a different level (or have no main-level kitchen) work correctly. Chore meals, birthday gifts, and forage haul fallbacks also store across any available fridge. Turn off to restrict to the main kitchen fridge only.
+- New config/GMCM option **Feeding: Search Extra Storage** (off by default). When enabled, feeding searches mini-fridges and the cellar fridge in addition to the built-in kitchen fridge, so modded house layouts that put the fridge on a different level (or have no main-level kitchen) work correctly. Chore meals, birthday gifts, and forage haul fallbacks also store across any available fridge. Enable this if your fridge isn't on the main level of the farmhouse.
 
 ## 1.5.2
 
