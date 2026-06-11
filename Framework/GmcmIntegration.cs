@@ -27,6 +27,11 @@ namespace MarriageOverhaul
                 () => "Spouse expects food in the fridge on 'player provides' days, and cooks on others.");
 
             api.AddBoolOption(manifest,
+                () => this.Config.FeedingSearchExtraStorage, v => this.Config.FeedingSearchExtraStorage = v,
+                () => "Feeding: Search Extra Storage",
+                () => "Also search mini-fridges and the cellar fridge when feeding the spouse and storing chore meals. Helps with modded houses that put the fridge on a different level or have no main-level kitchen.");
+
+            api.AddBoolOption(manifest,
                 () => this.Config.EnableArguments, v => this.Config.EnableArguments = v,
                 () => "Enable Arguments",
                 () => "Trigger evening argument events when the relationship is strained.");

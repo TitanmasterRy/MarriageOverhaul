@@ -48,18 +48,22 @@ namespace MarriageOverhaul
             return this.PutInFridge(item);
         }
 
-        /// <summary>Drop an item into the farmhouse fridge if there's room.</summary>
+        /// <summary>Drop an item into any of the player's fridges (built-in, mini-fridges, cellar) if there's room.</summary>
         public bool PutInFridge(Item item)
         {
             if (item == null)
                 return false;
             try
             {
-                Chest fridge = this.GetSpouseFridge();
-                if (fridge == null)
-                    return false;
-                Item leftover = fridge.addItem(item);
-                return leftover == null;
+                foreach (Chest fridge in this.GetSpouseFridgeCandidates())
+                {
+                    if (fridge == null)
+                        continue;
+                    item = fridge.addItem(item);
+                    if (item == null)
+                        return true;
+                }
+                return false;
             }
             catch { return false; }
         }

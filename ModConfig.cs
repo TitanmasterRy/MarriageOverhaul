@@ -5,6 +5,8 @@ namespace MarriageOverhaul
     {
         // Systems
         public bool EnableFeeding { get; set; } = true;
+        /// <summary>Also search mini-fridges and the cellar fridge when feeding the spouse (helps with modded houses that put the fridge on a different level or have no main-level kitchen).</summary>
+        public bool FeedingSearchExtraStorage { get; set; } = true;
         public bool EnableArguments { get; set; } = true;
         public bool EnableDivorceWarning { get; set; } = true;
         public bool EnableAutoDivorce { get; set; } = true;

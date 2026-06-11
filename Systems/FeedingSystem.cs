@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using StardewValley;
 using StardewValley.Locations;
@@ -90,8 +91,14 @@ namespace MarriageOverhaul
                 return;
             }
 
-            Chest fridge = this.GetSpouseFridge();
-            Item food = this.FindEdibleItem(fridge);
+            // Walk every "fridge" the player has (built-in + mini-fridges + cellar) and eat the first edible item.
+            Chest fridge = null;
+            Item food = null;
+            foreach (Chest c in this.GetSpouseFridgeCandidates())
+            {
+                Item candidate = this.FindEdibleItem(c);
+                if (candidate != null) { fridge = c; food = candidate; break; }
+            }
 
             if (food != null)
             {
@@ -108,6 +115,7 @@ namespace MarriageOverhaul
             }
         }
 
+        /// <summary>Built-in kitchen fridge of the player's home, or null. Kept for callers that explicitly want the main fridge.</summary>
         private Chest GetSpouseFridge()
         {
             try
@@ -117,6 +125,66 @@ namespace MarriageOverhaul
             }
             catch { }
             return null;
+        }
+
+        /// <summary>
+        /// Every chest the mod will treat as a "fridge" for the player. Always includes the built-in
+        /// kitchen fridge (if any). When FeedingSearchExtraStorage is on, also includes mini-fridges and
+        /// fridge-flagged chests in the player's home and cellar — so modded houses without a main-level
+        /// kitchen, custom cellars, and mini-fridges all work.
+        /// </summary>
+        public List<Chest> GetSpouseFridgeCandidates()
+        {
+            var list = new List<Chest>();
+            try
+            {
+                FarmHouse home = Utility.getHomeOfFarmer(Game1.player) as FarmHouse;
+                Chest main = home?.fridge.Value;
+                if (main != null)
+                    list.Add(main);
+
+                if (!this.Config.FeedingSearchExtraStorage)
+                    return list;
+
+                var locs = new List<GameLocation>();
+                if (home != null)
+                    locs.Add(home);
+
+                // The cellar for this player's home (vanilla cellar location).
+                try
+                {
+                    string cellarName = home?.GetCellarName();
+                    if (!string.IsNullOrEmpty(cellarName))
+                    {
+                        GameLocation cellar = Game1.getLocationFromName(cellarName);
+                        if (cellar != null && !locs.Contains(cellar))
+                            locs.Add(cellar);
+                    }
+                }
+                catch { }
+
+                // Fallback for custom cellar mods that add their own location with "cellar" in the name.
+                foreach (GameLocation loc in Game1.locations)
+                {
+                    if (loc == null || locs.Contains(loc))
+                        continue;
+                    string n = loc.Name ?? "";
+                    if (n.IndexOf("cellar", StringComparison.OrdinalIgnoreCase) >= 0)
+                        locs.Add(loc);
+                }
+
+                // Mini-fridges and any chest marked as a fridge (Chest.fridge.Value).
+                foreach (GameLocation loc in locs)
+                {
+                    foreach (var pair in loc.objects.Pairs)
+                    {
+                        if (pair.Value is Chest c && !ReferenceEquals(c, main) && c.fridge.Value)
+                            list.Add(c);
+                    }
+                }
+            }
+            catch { }
+            return list;
         }
 
         private Item FindEdibleItem(Chest fridge)
