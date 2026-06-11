@@ -2,12 +2,10 @@
 
 All notable changes to Marriage Overhaul are documented here.
 
-## 1.5.4
+## 1.5.3
 
 ### Fixed
 - The anniversary used the day the mod was first installed, not your actual wedding day — so anyone who installed the mod after getting married had their anniversary on the wrong date. The wedding date is now read from vanilla's `Friendship.WeddingDate`, which is set the day you married and preserved across mod install/uninstall. Existing saves self-heal on next load: the stored date is corrected and this year's real anniversary is re-armed so it can still fire. Modded spouses without vanilla wedding data continue to use the "first day the mod sees the marriage" fallback.
-
-## 1.5.3
 
 ### Added
 - New config/GMCM option **Feeding: Search Extra Storage** (off by default). When enabled, feeding searches mini-fridges and the cellar fridge in addition to the built-in kitchen fridge, so modded house layouts that put the fridge on a different level (or have no main-level kitchen) work correctly. Chore meals, birthday gifts, and forage haul fallbacks also store across any available fridge. Enable this if your fridge isn't on the main level of the farmhouse.
