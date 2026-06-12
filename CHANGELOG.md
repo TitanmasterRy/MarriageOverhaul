@@ -2,9 +2,11 @@
 
 All notable changes to Marriage Overhaul are documented here.
 
-## 1.6.2
+## 1.6.0
 
 ### Added
+- **Translation support (i18n).** All ~1,400 dialogue lines are now translatable through SMAPI's standard translation system. A complete `i18n/default.json` ships with the mod; translators just copy it to `i18n/<locale>.json` (e.g. `es.json`) and translate the values — no code editing. Untranslated lines automatically fall back to English, and item names/identifiers are intentionally left untranslated so gifts still resolve.
+- **Spouse requests are now real journal quests.** When your spouse mails a request, it now also appears as a tracked quest in your quest log — with a title, the request note, and a clear objective ("Take X to <spouse>", "Bring <spouse> a gemstone", etc.) — instead of being just a letter. Fulfilling it shows the usual "Quest Complete!" feedback. The quest is rebuilt each morning from the mod's own data and removed before saving, so it never bloats or corrupts your save. New toggle **Spouse Requests as Journal Quest** (on by default) in config/GMCM; turn it off for letter-only requests.
 - **Creative/project requests now pay off with a handmade gift.** When a spouse asks for materials for something they're making, they finish it and give you the result a few days later, with a line explaining it:
   - **Maru** (refined quartz → a project) gives a **Quality Sprinkler**.
   - **Sebastian** (refined quartz → a build) gives a **Mini-Jukebox**.
@@ -13,15 +15,7 @@ All notable changes to Marriage Overhaul are documented here.
   - (Other requests — food cravings, flowers, time together — are unchanged.)
 
 ### Notes
-- Verified every requested item is real and obtainable (Refined Quartz, Pizza, Amethyst, Sunflower, Gold Bar, Cloth, Salad, Pomegranate, Coffee, Frozen Tear, Pepper Poppers, plus the book/cooking/gem/flower/forage categories).
-
-### Added
-- **Spouse requests are now real journal quests.** When your spouse mails a request, it now also appears as a tracked quest in your quest log — with a title, the request note, and a clear objective ("Take X to <spouse>", "Bring <spouse> a gemstone", etc.) — instead of being just a letter. Fulfilling it shows the usual "Quest Complete!" feedback. The quest is rebuilt each morning from the mod's own data and removed before saving, so it never bloats or corrupts your save. New toggle **Spouse Requests as Journal Quest** (on by default) in config/GMCM; turn it off for letter-only requests. Quest text is fully translatable.
-
-## 1.6.0
-
-### Added
-- **Translation support (i18n).** All ~1,400 dialogue lines are now translatable through SMAPI's standard translation system. A complete `i18n/default.json` ships with the mod; translators just copy it to `i18n/<locale>.json` (e.g. `es.json`) and translate the values — no code editing. Untranslated lines automatically fall back to English, and item names/identifiers are intentionally left untranslated so gifts still resolve. No gameplay changes.
+- All new quest and reward text is fully translatable. Verified every requested item is real and obtainable.
 
 ## 1.5.3
 
