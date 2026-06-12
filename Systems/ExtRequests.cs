@@ -16,9 +16,13 @@ namespace MarriageOverhaul
             // Always clear any stale quest first; only the host-readable local player's log is touched.
             this.RemoveRequestQuest();
 
-            if (!this.Config.EnableSpouseRequests || !this.Config.EnableSpouseRequestQuest)
+            if (!this.Config.EnableSpouseRequests)
                 return;
-            if (!this.Data.RequestActive)
+
+            // Deliver a project reward that's now due (a few days after fulfilling a "build" request).
+            this.Requests_DeliverPendingReward(spouse);
+
+            if (!this.Config.EnableSpouseRequestQuest || !this.Data.RequestActive)
                 return;
 
             var req = ExtendedContent.GetRequests(spouse.Name).FirstOrDefault(r => r.Id == this.Data.RequestId);
@@ -107,8 +111,36 @@ namespace MarriageOverhaul
                 this.CompleteRequestQuest(); // "Quest Complete!" feedback before we clear it
                 this.ChangeSpouseFriendship(100);
                 this.ShowNarration(req.Thank);
+
+                // Project-style requests: the spouse makes something and gives it back a few days later.
+                if (!string.IsNullOrEmpty(req.RewardItem))
+                {
+                    this.Data.PendingRewardItem = req.RewardItem;
+                    this.Data.PendingRewardQty = req.RewardQty > 0 ? req.RewardQty : 1;
+                    this.Data.PendingRewardDay = this.AbsoluteDay + 3;
+                    this.Data.PendingRewardLine = req.RewardLine ?? "";
+                }
+
                 this.ClearRequest();
             }
+        }
+
+        /// <summary>Hand over a project reward that's now due, with the spouse's "I made you this" line.</summary>
+        private void Requests_DeliverPendingReward(NPC spouse)
+        {
+            if (string.IsNullOrEmpty(this.Data.PendingRewardItem) || this.AbsoluteDay < this.Data.PendingRewardDay)
+                return;
+
+            Item gift = this.CreateItem(this.Data.PendingRewardItem, this.Data.PendingRewardQty > 0 ? this.Data.PendingRewardQty : 1);
+            if (gift != null)
+                this.GiveItemToPlayerOrFridge(gift);
+            if (!string.IsNullOrWhiteSpace(this.Data.PendingRewardLine))
+                this.ShowSpouseSpeech(spouse, this.Data.PendingRewardLine, "love");
+
+            this.Data.PendingRewardItem = "";
+            this.Data.PendingRewardQty = 0;
+            this.Data.PendingRewardDay = -1000;
+            this.Data.PendingRewardLine = "";
         }
 
         /// <summary>Build the quest objective line from what fulfills the request (item / category / attention).</summary>

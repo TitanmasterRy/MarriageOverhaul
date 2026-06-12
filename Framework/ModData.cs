@@ -125,6 +125,11 @@ namespace MarriageOverhaul
         public int LastRequestDay { get; set; } = -1000;
         public Dictionary<string, int> LastRequestIndex { get; set; } = new Dictionary<string, int>();
         public string PendingRequestLetterText { get; set; } = "";
+        /// <summary>A "made for you" reward the spouse delivers a few days after a project-style request is fulfilled.</summary>
+        public string PendingRewardItem { get; set; } = "";
+        public int PendingRewardQty { get; set; } = 0;
+        public int PendingRewardDay { get; set; } = -1000;
+        public string PendingRewardLine { get; set; } = "";
 
         // ── F15: Shared dreams ────────────────────────────────────
         public int LastDreamDay { get; set; } = -1000;

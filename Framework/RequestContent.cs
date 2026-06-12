@@ -10,6 +10,9 @@ namespace MarriageOverhaul
         public string[] Items;       // internal item names that fulfill it (null = any gift / attention)
         public int[] Categories;     // object category ids that fulfill it (optional)
         public string Thank;         // thank-you scene line
+        public string RewardItem;    // optional: item the spouse makes and gives back a few days later (null = none)
+        public int RewardQty = 1;    // quantity of the reward item
+        public string RewardLine;    // spoken line when the spouse hands over the reward
     }
 
     public static partial class ExtendedContent
@@ -23,7 +26,7 @@ namespace MarriageOverhaul
                 new SpouseRequest { Id = "penny_library", Note = "Sweetheart,^Would you spend a little time with me at home, away from the fields? Just us, somewhere quiet. I miss simply being near you.^- Penny", Items = null, Thank = "Just having you here with me, no rush, no fields... this is all I ever wanted. Thank you for the time." } },
             ["Maru"] = new List<SpouseRequest> {
                 new SpouseRequest { Id = "maru_gem", Note = "Hi!^I'm running an experiment and I need a good gemstone for it. Could you bring me one when you get the chance? For science. And, okay, a little for the excuse to see you.^- Maru", Categories = new[] { -2 }, Thank = "A gem! Perfect specimen. My experiment AND my heart rate just improved. Thank you, you wonderful variable." },
-                new SpouseRequest { Id = "maru_quartz", Note = "Hey,^I could really use some refined quartz for a project I'm building. Would you bring me some? I promise to explain the whole thing in exhausting, loving detail.^- Maru", Items = new[] { "Refined Quartz" }, Thank = "Refined quartz! Exactly what I needed. The prototype lives. So does my enormous crush on you. Thank you!" },
+                new SpouseRequest { Id = "maru_quartz", Note = "Hey,^I could really use some refined quartz for a project I'm building. Would you bring me some? I promise to explain the whole thing in exhausting, loving detail.^- Maru", Items = new[] { "Refined Quartz" }, Thank = "Refined quartz! Exactly what I needed. The prototype lives. So does my enormous crush on you. Thank you!", RewardItem = "Quality Sprinkler", RewardLine = "It's finished! Remember that refined quartz you brought me? It's humming away inside this little beauty now — a sprinkler I tuned myself. It's yours. Go let it do your watering for you. The data says you work too hard." },
                 new SpouseRequest { Id = "maru_clinic", Note = "Hi you,^Would you come spend some time with me at home today? I've been heads-down in work and I miss your face. That's a documented condition, by the way.^- Maru", Items = null, Thank = "You came! My focus is shot now, in the best way. Thank you for the company. You're my favorite distraction." } },
             ["Sam"] = new List<SpouseRequest> {
                 new SpouseRequest { Id = "sam_pizza", Note = "Yo!^I am CRAVING pizza so bad it's unreal. Bring me a pizza and you're officially my favorite person forever. (You already are. But still.)^- Sam", Items = new[] { "Pizza" }, Thank = "PIZZA! You absolute legend. Best spouse in the valley, no contest. C'mere, I'm sharing. ...A little." },
@@ -59,7 +62,7 @@ namespace MarriageOverhaul
                 new SpouseRequest { Id = "alex_gift", Note = "Hey,^Bring me a little somethin', anything from you, today? Dunno why, just been missin' you. Don't make it weird. ...Okay it's a little weird. Do it anyway.^- Alex", Items = null, Thank = "You brought me somethin'. ...Man. That got me. Thanks, babe. Means more than I can say without gettin' mushy." } },
             ["Sebastian"] = new List<SpouseRequest> {
                 new SpouseRequest { Id = "seb_tear", Note = "Hey,^Bring me a frozen tear if you find one in the caves? They're kind of perfect — cold and quiet and they catch the light. Reminds me of good things. Like you.^- Sebastian", Items = new[] { "Frozen Tear" }, Thank = "A frozen tear. ...You actually found one. That's — yeah. Thanks. I'll keep it. Right where I'll see it." },
-                new SpouseRequest { Id = "seb_part", Note = "Hey,^I need a component for a build I'm working on. Bring me a refined quartz? Don't ask what it does. ...Okay you can ask. I'll explain everything. Loudly.^- Sebastian", Items = new[] { "Refined Quartz" }, Thank = "Perfect part. The build's gonna work now. ...And I get to ramble at you about it. Win-win. Thanks." },
+                new SpouseRequest { Id = "seb_part", Note = "Hey,^I need a component for a build I'm working on. Bring me a refined quartz? Don't ask what it does. ...Okay you can ask. I'll explain everything. Loudly.^- Sebastian", Items = new[] { "Refined Quartz" }, Thank = "Perfect part. The build's gonna work now. ...And I get to ramble at you about it. Win-win. Thanks.", RewardItem = "Mini-Jukebox", RewardLine = "Hey. That build I was working on? Done. ...I made you one too. It's a jukebox. Now you can play our music wherever you want. Don't make a thing of it. ...Okay, maybe make a little thing of it." },
                 new SpouseRequest { Id = "seb_late", Note = "Hey,^Stay up late with me tonight? Just us and the quiet and maybe a game. I do my best talking when the rest of the world's asleep. Come find me.^- Sebastian", Items = null, Thank = "You stayed up with me. The quiet hours are the only ones I really like. ...They're better with you. Thanks." } },
             ["Shane"] = new List<SpouseRequest> {
                 new SpouseRequest { Id = "shane_popper", Note = "Hey,^Bring me some pepper poppers, would ya? It's stupid, but it's my comfort food. And one made by you would hit different. Don't make it a thing.^- Shane", Items = new[] { "Pepper Poppers" }, Thank = "Pepper poppers. From you. ...Okay that actually got me. Thanks. Means more than it should. C'mere." },
@@ -85,8 +88,11 @@ namespace MarriageOverhaul
                     Id = r.Id,
                     Items = r.Items,
                     Categories = r.Categories,
+                    RewardItem = r.RewardItem,
+                    RewardQty = r.RewardQty,
                     Note = I18n.Get($"request.{r.Id}.note", r.Note),
-                    Thank = I18n.Get($"request.{r.Id}.thank", r.Thank)
+                    Thank = I18n.Get($"request.{r.Id}.thank", r.Thank),
+                    RewardLine = r.RewardLine == null ? null : I18n.Get($"request.{r.Id}.reward", r.RewardLine)
                 });
             }
             return outList;
@@ -97,15 +103,17 @@ namespace MarriageOverhaul
         {
             foreach (var kv in Requests)
                 foreach (SpouseRequest r in kv.Value)
-                {
-                    map[$"request.{r.Id}.note"] = r.Note;
-                    map[$"request.{r.Id}.thank"] = r.Thank;
-                }
+                    AddRequestDefaults(map, r);
             foreach (SpouseRequest r in GenericRequests)
-            {
-                map[$"request.{r.Id}.note"] = r.Note;
-                map[$"request.{r.Id}.thank"] = r.Thank;
-            }
+                AddRequestDefaults(map, r);
+        }
+
+        private static void AddRequestDefaults(IDictionary<string, string> map, SpouseRequest r)
+        {
+            map[$"request.{r.Id}.note"] = r.Note;
+            map[$"request.{r.Id}.thank"] = r.Thank;
+            if (r.RewardLine != null)
+                map[$"request.{r.Id}.reward"] = r.RewardLine;
         }
     }
 }
