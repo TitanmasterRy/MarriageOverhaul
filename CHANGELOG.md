@@ -9,7 +9,7 @@ All notable changes to Marriage Overhaul are documented here.
   - **Maru** (refined quartz → a project) gives a **Quality Sprinkler**.
   - **Sebastian** (refined quartz → a build) gives a **Mini-Jukebox**.
   - **Elliott** (a pomegranate → inspiration to write) gives a **book** he had bound for you (Friendship 101).
-  - **Emily** (cloth → a weaving) gives an **Aquamarine** she charged with your shared energy.
+  - **Emily** (cloth → a weaving) gives a **shirt** she sewed and hand-dyed for you.
   - (Other requests — food cravings, flowers, time together — are unchanged.)
 
 ### Notes
