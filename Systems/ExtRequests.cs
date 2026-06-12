@@ -131,7 +131,12 @@ namespace MarriageOverhaul
             if (string.IsNullOrEmpty(this.Data.PendingRewardItem) || this.AbsoluteDay < this.Data.PendingRewardDay)
                 return;
 
-            Item gift = this.CreateItem(this.Data.PendingRewardItem, this.Data.PendingRewardQty > 0 ? this.Data.PendingRewardQty : 1);
+            int qty = this.Data.PendingRewardQty > 0 ? this.Data.PendingRewardQty : 1;
+            string id = this.Data.PendingRewardItem;
+            // A qualified id like "(O)Book_Friendship" is created directly; plain names go through fuzzy search.
+            Item gift = id.StartsWith("(")
+                ? ItemRegistry.Create(id, qty, 0, true)
+                : this.CreateItem(id, qty);
             if (gift != null)
                 this.GiveItemToPlayerOrFridge(gift);
             if (!string.IsNullOrWhiteSpace(this.Data.PendingRewardLine))

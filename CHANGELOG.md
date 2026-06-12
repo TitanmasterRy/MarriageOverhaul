@@ -5,7 +5,12 @@ All notable changes to Marriage Overhaul are documented here.
 ## 1.6.2
 
 ### Added
-- **Project requests now pay off with a handmade gift.** When a spouse asks for materials for something they're building, they now finish it and give you the result a few days later, with a line explaining it. Maru's refined-quartz "project" yields a Quality Sprinkler; Sebastian's "build" yields a Mini-Jukebox. (Other requests are unchanged.)
+- **Creative/project requests now pay off with a handmade gift.** When a spouse asks for materials for something they're making, they finish it and give you the result a few days later, with a line explaining it:
+  - **Maru** (refined quartz → a project) gives a **Quality Sprinkler**.
+  - **Sebastian** (refined quartz → a build) gives a **Mini-Jukebox**.
+  - **Elliott** (a pomegranate → inspiration to write) gives a **book** he had bound for you (Friendship 101).
+  - **Emily** (cloth → a weaving) gives an **Aquamarine** she charged with your shared energy.
+  - (Other requests — food cravings, flowers, time together — are unchanged.)
 
 ### Notes
 - Verified every requested item is real and obtainable (Refined Quartz, Pizza, Amethyst, Sunflower, Gold Bar, Cloth, Salad, Pomegranate, Coffee, Frozen Tear, Pepper Poppers, plus the book/cooking/gem/flower/forage categories).
