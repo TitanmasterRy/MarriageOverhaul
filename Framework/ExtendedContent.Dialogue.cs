@@ -66,8 +66,9 @@ namespace MarriageOverhaul
         public static string GetMilestone(string name, int year)
         {
             if (IsVanilla(name) && Milestones.TryGetValue(name, out var byYear) && byYear.TryGetValue(year, out var line))
-                return line;
-            return GenericMilestone.TryGetValue(year, out var g) ? g : GenericMilestone[1];
+                return I18n.Get($"milestone.{name}.{year}", line);
+            int gy = GenericMilestone.ContainsKey(year) ? year : 1;
+            return I18n.Get($"milestone.generic.{gy}", GenericMilestone[gy]);
         }
 
         // ── F4: Sickness ──────────────────────────────────────────
@@ -94,7 +95,17 @@ namespace MarriageOverhaul
             Tired = "Still feeling a little worn out from being sick. I'll be slow today. Thank you for looking after me."
         };
         public static SickInfo GetSick(string name)
-            => IsVanilla(name) && Sick.ContainsKey(name) ? Sick[name] : GenericSick;
+        {
+            bool has = IsVanilla(name) && Sick.ContainsKey(name);
+            string p = $"sick.{(has ? name : "generic")}";
+            SickInfo s = has ? Sick[name] : GenericSick;
+            return new SickInfo
+            {
+                Sick = I18n.Get($"{p}.sick", s.Sick),
+                Grateful = I18n.Get($"{p}.grateful", s.Grateful),
+                Tired = I18n.Get($"{p}.tired", s.Tired)
+            };
+        }
 
         // ── F10: Bad days ─────────────────────────────────────────
         public class BadDayInfo { public List<string> Openers; public string Recovered; public string Flat; }
@@ -120,7 +131,20 @@ namespace MarriageOverhaul
             Flat = "Still feeling a bit flat today. It's not you — some days are just like this. It'll pass."
         };
         public static BadDayInfo GetBadDay(string name)
-            => IsVanilla(name) && BadDays.ContainsKey(name) ? BadDays[name] : GenericBadDay;
+        {
+            bool has = IsVanilla(name) && BadDays.ContainsKey(name);
+            string p = $"badday.{(has ? name : "generic")}";
+            BadDayInfo b = has ? BadDays[name] : GenericBadDay;
+            var openers = new List<string>(b.Openers.Count);
+            for (int i = 0; i < b.Openers.Count; i++)
+                openers.Add(I18n.Get($"{p}.opener.{i}", b.Openers[i]));
+            return new BadDayInfo
+            {
+                Openers = openers,
+                Recovered = I18n.Get($"{p}.recovered", b.Recovered),
+                Flat = I18n.Get($"{p}.flat", b.Flat)
+            };
+        }
 
         // ── F6: Achievement pride (template, {0} = achievement) ───
         private static readonly Dictionary<string, string> Achievements = new Dictionary<string, string>
@@ -140,7 +164,11 @@ namespace MarriageOverhaul
         };
         private const string GenericAchievement = "I heard that you {0}. That's truly amazing. I'm so incredibly proud of you, you know that?";
         public static string GetAchievementLine(string name, string achievement)
-            => string.Format(IsVanilla(name) && Achievements.ContainsKey(name) ? Achievements[name] : GenericAchievement, achievement);
+        {
+            bool has = IsVanilla(name) && Achievements.ContainsKey(name);
+            string tmpl = I18n.Get($"achievement.{(has ? name : "generic")}", has ? Achievements[name] : GenericAchievement);
+            return string.Format(tmpl, achievement);
+        }
 
         // ── F11: Birthday ─────────────────────────────────────────
         public class BirthdayInfo { public string GiftItem; public string Line; public string PointedAddon; }
@@ -166,6 +194,17 @@ namespace MarriageOverhaul
             PointedAddon = "I'll gently mention our anniversary passed without a gift this year. I'm not upset... but I did notice. Just so you know."
         };
         public static BirthdayInfo GetBirthday(string name)
-            => IsVanilla(name) && Birthdays.ContainsKey(name) ? Birthdays[name] : GenericBirthday;
+        {
+            bool has = IsVanilla(name) && Birthdays.ContainsKey(name);
+            string p = $"birthday.{(has ? name : "generic")}";
+            BirthdayInfo b = has ? Birthdays[name] : GenericBirthday;
+            // GiftItem is an item name (identifier) — never translated.
+            return new BirthdayInfo
+            {
+                GiftItem = b.GiftItem,
+                Line = I18n.Get($"{p}.line", b.Line),
+                PointedAddon = I18n.Get($"{p}.addon", b.PointedAddon)
+            };
+        }
     }
 }

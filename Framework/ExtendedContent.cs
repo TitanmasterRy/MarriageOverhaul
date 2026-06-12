@@ -45,7 +45,11 @@ namespace MarriageOverhaul
             "Something about this time of year makes me fall for you all over again.",
             "Perfect weather, perfect company. I'm exactly where I want to be."
         };
-        public static string FavoriteSeasonLine(Random rng) => Pick(FavoriteSeasonLines, rng);
+        public static string FavoriteSeasonLine(Random rng)
+        {
+            int i = rng.Next(FavoriteSeasonLines.Count);
+            return I18n.Get($"season.favorite.{i}", FavoriteSeasonLines[i]);
+        }
 
         private static readonly List<string> LeastSeasonLines = new List<string>
         {
@@ -53,7 +57,11 @@ namespace MarriageOverhaul
             "I'm not at my best this time of year. Be patient with me?",
             "I get kind of low this season. Just having you around helps more than you know."
         };
-        public static string LeastSeasonLine(Random rng) => Pick(LeastSeasonLines, rng);
+        public static string LeastSeasonLine(Random rng)
+        {
+            int i = rng.Next(LeastSeasonLines.Count);
+            return I18n.Get($"season.least.{i}", LeastSeasonLines[i]);
+        }
 
         // ── F13: Honeymoon phase ──────────────────────────────────
         private static readonly List<string> HoneymoonLines = new List<string>
@@ -65,7 +73,11 @@ namespace MarriageOverhaul
             "I married you. ME. I get to say that now. Best decision of my life.",
             "Every little thing feels like a honeymoon right now. I never want it to end."
         };
-        public static string HoneymoonLine(Random rng) => Pick(HoneymoonLines, rng);
+        public static string HoneymoonLine(Random rng)
+        {
+            int i = rng.Next(HoneymoonLines.Count);
+            return I18n.Get($"honeymoon.{i}", HoneymoonLines[i]);
+        }
 
         // ── F2: Chore description lines (by chore key) ────────────
         private static readonly Dictionary<string, List<string>> ChoreLinesLow = new Dictionary<string, List<string>>
@@ -88,7 +100,13 @@ namespace MarriageOverhaul
         public static string ChoreLine(string key, bool highQuality, Random rng)
         {
             var map = highQuality ? ChoreLinesHigh : ChoreLinesLow;
-            return map.TryGetValue(key, out var list) ? Pick(list, rng) : "I helped out around the farm a little this morning.";
+            string q = highQuality ? "high" : "low";
+            if (map.TryGetValue(key, out var list))
+            {
+                int i = rng.Next(list.Count);
+                return I18n.Get($"chore.{q}.{key}.{i}", list[i]);
+            }
+            return I18n.Get("chore.fallback", "I helped out around the farm a little this morning.");
         }
 
         // ── F7: Children ──────────────────────────────────────────
@@ -111,16 +129,32 @@ namespace MarriageOverhaul
             "Would you sit with the kids for a while today? It would mean the world to {child}.",
             "The little one misses you when you're in the fields all day. Make some time today?"
         };
-        public static string ChildWarmLine(string child, Random rng) => Pick(ChildWarm, rng).Replace("{child}", child);
-        public static string ChildConcernLine(string child, Random rng) => Pick(ChildConcern, rng).Replace("{child}", child);
-        public static string ChildAskLine(string child, Random rng) => Pick(ChildAsk, rng).Replace("{child}", child);
+        public static string ChildWarmLine(string child, Random rng)
+        {
+            int i = rng.Next(ChildWarm.Count);
+            return I18n.Get($"child.warm.{i}", ChildWarm[i]).Replace("{child}", child);
+        }
+        public static string ChildConcernLine(string child, Random rng)
+        {
+            int i = rng.Next(ChildConcern.Count);
+            return I18n.Get($"child.concern.{i}", ChildConcern[i]).Replace("{child}", child);
+        }
+        public static string ChildAskLine(string child, Random rng)
+        {
+            int i = rng.Next(ChildAsk.Count);
+            return I18n.Get($"child.ask.{i}", ChildAsk[i]).Replace("{child}", child);
+        }
 
         private static readonly List<string> ChildEngage = new List<string>
         {
             "Look at them light up. Thank you for this — it matters more than you know.",
             "That's exactly the kind of parent I hoped you'd be. The kids are lucky. So am I."
         };
-        public static string ChildEngageLine(Random rng) => Pick(ChildEngage, rng);
+        public static string ChildEngageLine(Random rng)
+        {
+            int i = rng.Next(ChildEngage.Count);
+            return I18n.Get($"child.engage.{i}", ChildEngage[i]);
+        }
 
         // ── F12: Town gossip ──────────────────────────────────────
         private static readonly Dictionary<string, List<string>> GossipPositive = new Dictionary<string, List<string>>
@@ -144,7 +178,10 @@ namespace MarriageOverhaul
         public static string GossipLine(string villager, bool positive, Random rng)
         {
             var map = positive ? GossipPositive : GossipConcerned;
-            return map.TryGetValue(villager, out var list) ? Pick(list, rng) : null;
+            if (!map.TryGetValue(villager, out var list))
+                return null;
+            int i = rng.Next(list.Count);
+            return I18n.Get($"gossip.{(positive ? "positive" : "concerned")}.{villager}.{i}", list[i]);
         }
         public static readonly string[] GossipVillagers = { "Robin", "Pierre", "Willy", "Emily", "Marnie", "Gus" };
 
@@ -166,6 +203,10 @@ namespace MarriageOverhaul
         };
         private const string GenericVisitor = "I noticed {visitor} spending a lot of time on our farm yesterday. ...No reason. Just noticed, is all.";
         public static string VisitorComment(string name, string visitor)
-            => (IsVanilla(name) && VisitorComments.ContainsKey(name) ? VisitorComments[name] : GenericVisitor).Replace("{visitor}", visitor);
+        {
+            bool has = IsVanilla(name) && VisitorComments.ContainsKey(name);
+            string eng = has ? VisitorComments[name] : GenericVisitor;
+            return I18n.Get($"visitor.{(has ? name : "generic")}", eng).Replace("{visitor}", visitor);
+        }
     }
 }

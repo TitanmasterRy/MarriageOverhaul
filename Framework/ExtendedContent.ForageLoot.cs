@@ -114,6 +114,17 @@ namespace MarriageOverhaul
         };
 
         public static ForageTable GetForageTable(string name)
-            => IsVanilla(name) && ForageTables.ContainsKey(name) ? ForageTables[name] : GenericForage;
+        {
+            bool has = IsVanilla(name) && ForageTables.ContainsKey(name);
+            ForageTable t = has ? ForageTables[name] : GenericForage;
+            // Item lists are identifiers (resolved by name) — only the reaction line is translated.
+            return new ForageTable
+            {
+                Common = t.Common,
+                Uncommon = t.Uncommon,
+                Rare = t.Rare,
+                JackpotReaction = I18n.Get($"forage.jackpot.{(has ? name : "generic")}", t.JackpotReaction)
+            };
+        }
     }
 }

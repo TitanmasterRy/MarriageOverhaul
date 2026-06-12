@@ -152,6 +152,23 @@ namespace MarriageOverhaul
             "Whatever today throws at us, we've handled worse together. That's the best feeling in the world."
         };
         public static List<string> GetJokes(string name)
-            => IsVanilla(name) && Jokes.ContainsKey(name) ? Jokes[name] : GenericJokes;
+        {
+            bool has = IsVanilla(name) && Jokes.ContainsKey(name);
+            string who = has ? name : "generic";
+            List<string> src = has ? Jokes[name] : GenericJokes;
+            var outList = new List<string>(src.Count);
+            for (int i = 0; i < src.Count; i++)
+                outList.Add(I18n.Get($"joke.{who}.{i}", src[i]));
+            return outList;
+        }
+
+        internal static void CollectJokeDefaults(IDictionary<string, string> map)
+        {
+            foreach (var kv in Jokes)
+                for (int i = 0; i < kv.Value.Count; i++)
+                    map[$"joke.{kv.Key}.{i}"] = kv.Value[i];
+            for (int i = 0; i < GenericJokes.Count; i++)
+                map[$"joke.generic.{i}"] = GenericJokes[i];
+        }
     }
 }

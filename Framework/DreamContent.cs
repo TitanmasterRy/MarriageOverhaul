@@ -128,6 +128,23 @@ namespace MarriageOverhaul
             "Last night I dreamed I lost you in a crowd, and the relief of finding you again followed me right into morning. I'm so glad you're real."
         };
         public static List<string> GetDreams(string name)
-            => IsVanilla(name) && Dreams.ContainsKey(name) ? Dreams[name] : Generic;
+        {
+            bool has = IsVanilla(name) && Dreams.ContainsKey(name);
+            string who = has ? name : "generic";
+            List<string> src = has ? Dreams[name] : Generic;
+            var outList = new List<string>(src.Count);
+            for (int i = 0; i < src.Count; i++)
+                outList.Add(I18n.Get($"dream.{who}.{i}", src[i]));
+            return outList;
+        }
+
+        internal static void CollectDefaults(IDictionary<string, string> map)
+        {
+            foreach (var kv in Dreams)
+                for (int i = 0; i < kv.Value.Count; i++)
+                    map[$"dream.{kv.Key}.{i}"] = kv.Value[i];
+            for (int i = 0; i < Generic.Count; i++)
+                map[$"dream.generic.{i}"] = Generic[i];
+        }
     }
 }

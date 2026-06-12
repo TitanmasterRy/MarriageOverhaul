@@ -75,6 +75,37 @@ namespace MarriageOverhaul
             new SpouseRequest { Id = "gen_time", Note = "My love,^Would you spend a little time with me today? I just miss being near you. That's all.^- Your spouse", Items = null, Thank = "Just having you near is all I ever really want. Thank you for the time, my love." }
         };
         public static List<SpouseRequest> GetRequests(string name)
-            => IsVanilla(name) && Requests.ContainsKey(name) ? Requests[name] : GenericRequests;
+        {
+            List<SpouseRequest> src = IsVanilla(name) && Requests.ContainsKey(name) ? Requests[name] : GenericRequests;
+            var outList = new List<SpouseRequest>(src.Count);
+            foreach (SpouseRequest r in src)
+            {
+                outList.Add(new SpouseRequest
+                {
+                    Id = r.Id,
+                    Items = r.Items,
+                    Categories = r.Categories,
+                    Note = I18n.Get($"request.{r.Id}.note", r.Note),
+                    Thank = I18n.Get($"request.{r.Id}.thank", r.Thank)
+                });
+            }
+            return outList;
+        }
+
+        /// <summary>Add every request note/thank key + English to the i18n default map (keyed by stable request Id).</summary>
+        internal static void CollectRequestDefaults(IDictionary<string, string> map)
+        {
+            foreach (var kv in Requests)
+                foreach (SpouseRequest r in kv.Value)
+                {
+                    map[$"request.{r.Id}.note"] = r.Note;
+                    map[$"request.{r.Id}.thank"] = r.Thank;
+                }
+            foreach (SpouseRequest r in GenericRequests)
+            {
+                map[$"request.{r.Id}.note"] = r.Note;
+                map[$"request.{r.Id}.thank"] = r.Thank;
+            }
+        }
     }
 }

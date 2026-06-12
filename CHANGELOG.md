@@ -2,6 +2,11 @@
 
 All notable changes to Marriage Overhaul are documented here.
 
+## 1.6.0
+
+### Added
+- **Translation support (i18n).** All ~1,400 dialogue lines are now translatable through SMAPI's standard translation system. A complete `i18n/default.json` ships with the mod; translators just copy it to `i18n/<locale>.json` (e.g. `es.json`) and translate the values — no code editing. Untranslated lines automatically fall back to English, and item names/identifiers are intentionally left untranslated so gifts still resolve. No gameplay changes.
+
 ## 1.5.3
 
 ### Fixed

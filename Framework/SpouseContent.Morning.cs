@@ -329,20 +329,37 @@ namespace MarriageOverhaul
 
         public static string GetMorningLine(string name, MorningTier tier, System.Random rng, string avoid)
         {
-            List<string> pool = (IsVanilla(name) && MorningLines.ContainsKey(name) && MorningLines[name].ContainsKey(tier))
-                ? MorningLines[name][tier]
-                : GenericMorning[tier];
+            bool has = IsVanilla(name) && MorningLines.ContainsKey(name) && MorningLines[name].ContainsKey(tier);
+            List<string> pool = has ? MorningLines[name][tier] : GenericMorning[tier];
+            string prefix = $"morning.{(has ? name : "generic")}.{tier}";
 
             if (pool == null || pool.Count == 0)
-                return GenericMorning[tier][0];
+                return I18n.Get($"morning.generic.{tier}.0", GenericMorning[tier][0]);
             if (pool.Count == 1)
-                return pool[0];
+                return I18n.Get($"{prefix}.0", pool[0]);
 
-            string pick = pool[rng.Next(pool.Count)];
+            int idx = rng.Next(pool.Count);
+            string pick = I18n.Get($"{prefix}.{idx}", pool[idx]);
             int guard = 0;
             while (pick == avoid && guard++ < 6)  // avoid repeating yesterday's line
-                pick = pool[rng.Next(pool.Count)];
+            {
+                idx = rng.Next(pool.Count);
+                pick = I18n.Get($"{prefix}.{idx}", pool[idx]);
+            }
             return pick;
+        }
+
+        /// <summary>Add every morning-line key + English to the i18n default map.</summary>
+        internal static void CollectMorningDefaults(System.Collections.Generic.IDictionary<string, string> map)
+        {
+            foreach (var byName in MorningLines)
+                foreach (var byTier in byName.Value)
+                    for (int i = 0; i < byTier.Value.Count; i++)
+                        map[$"morning.{byName.Key}.{byTier.Key}.{i}"] = byTier.Value[i];
+
+            foreach (var byTier in GenericMorning)
+                for (int i = 0; i < byTier.Value.Count; i++)
+                    map[$"morning.generic.{byTier.Key}.{i}"] = byTier.Value[i];
         }
     }
 }

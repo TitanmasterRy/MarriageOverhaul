@@ -56,6 +56,7 @@
       <DeployFiles Include="$(TargetDir)$(AssemblyName).dll" />
       <DeployFiles Include="$(TargetDir)$(AssemblyName).pdb" Condition="Exists('$(TargetDir)$(AssemblyName).pdb')" />
       <DeployFiles Include="$(ProjectDir)manifest.json" />
+      <I18nFiles Include="$(ProjectDir)i18n\*.json" />
     </ItemGroup>
     <Copy SourceFiles="@(DeployFiles)" DestinationFolder="$(DeployPath)" SkipUnchangedFiles="false" />
     <Copy SourceFiles="@(I18nFiles)" DestinationFolder="$(DeployPath)\i18n" Condition="Exists('$(ProjectDir)i18n')" />

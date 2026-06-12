@@ -444,7 +444,27 @@ namespace MarriageOverhaul
         };
 
         public static List<ArgumentScenario> GetArguments(string name)
-            => IsVanilla(name) && Arguments.ContainsKey(name) ? Arguments[name] : GenericArguments;
+        {
+            bool has = IsVanilla(name) && Arguments.ContainsKey(name);
+            string p = $"argument.{(has ? name : "generic")}";
+            List<ArgumentScenario> src = has ? Arguments[name] : GenericArguments;
+            var outList = new List<ArgumentScenario>(src.Count);
+            for (int i = 0; i < src.Count; i++)
+            {
+                ArgumentScenario s = src[i];
+                outList.Add(new ArgumentScenario
+                {
+                    Intro = I18n.Get($"{p}.{i}.intro", s.Intro),
+                    GoodChoice = I18n.Get($"{p}.{i}.goodchoice", s.GoodChoice),
+                    GoodReply = I18n.Get($"{p}.{i}.goodreply", s.GoodReply),
+                    NeutralChoice = I18n.Get($"{p}.{i}.neutralchoice", s.NeutralChoice),
+                    NeutralReply = I18n.Get($"{p}.{i}.neutralreply", s.NeutralReply),
+                    BadChoice = I18n.Get($"{p}.{i}.badchoice", s.BadChoice),
+                    BadReply = I18n.Get($"{p}.{i}.badreply", s.BadReply)
+                });
+            }
+            return outList;
+        }
 
         // ─────────────────────────────────────────────────────────────
         //  JEALOUSY
@@ -469,7 +489,7 @@ namespace MarriageOverhaul
             "I heard you gave a gift to someone else today. I'm trying not to read into it, but it stung a little.";
 
         public static string GetJealousy(string name)
-            => IsVanilla(name) && Jealousy.ContainsKey(name) ? Jealousy[name] : GenericJealousy;
+            => LocDict("jealousy", name, Jealousy, GenericJealousy);
 
         // ─────────────────────────────────────────────────────────────
         //  FAREWELL (auto-divorce scene)
@@ -494,7 +514,7 @@ namespace MarriageOverhaul
             "I've thought about this for a long time, and I can't keep living like this. I'm leaving. Goodbye.";
 
         public static string GetFarewell(string name)
-            => IsVanilla(name) && Farewell.ContainsKey(name) ? Farewell[name] : GenericFarewell;
+            => LocDict("farewell", name, Farewell, GenericFarewell);
 
         // ─────────────────────────────────────────────────────────────
         //  MOOD (greeting fragments)
@@ -568,18 +588,23 @@ namespace MarriageOverhaul
         };
 
         public static string GetRandomGeneralLine(System.Random rng)
-            => GeneralPool[rng.Next(GeneralPool.Count)];
+        {
+            int i = rng.Next(GeneralPool.Count);
+            return I18n.Get($"general.{i}", GeneralPool[i]);
+        }
 
         public static string GetHappyMood(string name)
-            => IsVanilla(name) && HappyMood.ContainsKey(name) ? HappyMood[name] : GenericHappy;
+            => LocDict("mood.happy", name, HappyMood, GenericHappy);
 
         public static string GetGrumpyMood(string name)
-            => IsVanilla(name) && GrumpyMood.ContainsKey(name) ? GrumpyMood[name] : GenericGrumpy;
+            => LocDict("mood.grumpy", name, GrumpyMood, GenericGrumpy);
 
         // ─────────────────────────────────────────────────────────────
         //  FEEDING (morning dialogue hints)
         // ─────────────────────────────────────────────────────────────
-        public static string GetCookingLine(string name) => name switch
+        public static string GetCookingLine(string name)
+            => I18n.Get($"feeding.cooking.{(IsVanilla(name) ? name : "generic")}", CookingEnglish(name));
+        private static string CookingEnglish(string name) => name switch
         {
             "Abigail" => "I'm cooking tonight! Don't worry, it's not as scary as my mom's stuff. Probably.",
             "Penny" => "I'll have a nice dinner ready for you tonight. I love taking care of you.",
@@ -596,7 +621,9 @@ namespace MarriageOverhaul
             _ => "I'll take care of dinner tonight, so don't worry about the cooking."
         };
 
-        public static string GetProvideLine(string name) => name switch
+        public static string GetProvideLine(string name)
+            => I18n.Get($"feeding.provide.{(IsVanilla(name) ? name : "generic")}", ProvideEnglish(name));
+        private static string ProvideEnglish(string name) => name switch
         {
             "Abigail" => "I'm starving already. Think you could leave something tasty in the fridge for dinner?",
             "Penny" => "I was hoping you might leave a little something nice in the fridge for tonight's dinner.",
@@ -613,7 +640,9 @@ namespace MarriageOverhaul
             _ => "Would you mind leaving something nice in the fridge for dinner tonight?"
         };
 
-        public static string GetHungryLine(string name) => name switch
+        public static string GetHungryLine(string name)
+            => I18n.Get($"feeding.hungry.{(IsVanilla(name) ? name : "generic")}", HungryEnglish(name));
+        private static string HungryEnglish(string name) => name switch
         {
             "Abigail" => "There was NOTHING in the fridge last night. I went to bed hungry. Not cool.",
             "Penny" => "The fridge was empty last night... I didn't want to say anything, but I went hungry.",
@@ -705,7 +734,17 @@ namespace MarriageOverhaul
         };
 
         public static AnniversaryInfo GetAnniversary(string name)
-            => IsVanilla(name) && Anniversaries.ContainsKey(name) ? Anniversaries[name] : GenericAnniversary;
+        {
+            bool has = IsVanilla(name) && Anniversaries.ContainsKey(name);
+            string p = $"anniversary.{(has ? name : "generic")}";
+            AnniversaryInfo a = has ? Anniversaries[name] : GenericAnniversary;
+            return new AnniversaryInfo
+            {
+                Reminder = I18n.Get($"{p}.reminder", a.Reminder),
+                Sweet = I18n.Get($"{p}.sweet", a.Sweet),
+                Disappointed = I18n.Get($"{p}.disappointed", a.Disappointed)
+            };
+        }
 
         // ─────────────────────────────────────────────────────────────
         //  MAKEUP GIFTS
@@ -771,7 +810,19 @@ namespace MarriageOverhaul
         };
 
         public static MakeupInfo GetMakeup(string name)
-            => IsVanilla(name) && Makeup.ContainsKey(name) ? Makeup[name] : GenericMakeup;
+        {
+            bool has = IsVanilla(name) && Makeup.ContainsKey(name);
+            string p = $"makeup.{(has ? name : "generic")}";
+            MakeupInfo m = has ? Makeup[name] : GenericMakeup;
+            // Category is a logic identifier ("sweet"/"nature"/"homemade") — never translated.
+            return new MakeupInfo
+            {
+                Category = m.Category,
+                Hint = I18n.Get($"{p}.hint", m.Hint),
+                Reconcile = I18n.Get($"{p}.reconcile", m.Reconcile),
+                Resigned = I18n.Get($"{p}.resigned", m.Resigned)
+            };
+        }
 
     }
 }

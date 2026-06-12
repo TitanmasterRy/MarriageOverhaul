@@ -41,9 +41,11 @@ namespace MarriageOverhaul
 
         public static string GetSkillMilestone(string name, string skill, int level)
         {
+            int tier = level >= 10 ? 10 : 5;
             var map = level >= 10 ? SkillMilestone10 : SkillMilestone5;
             string generic = level >= 10 ? GenericSkillMilestone10 : GenericSkillMilestone5;
-            string template = IsVanilla(name) && map.ContainsKey(name) ? map[name] : generic;
+            bool has = IsVanilla(name) && map.ContainsKey(name);
+            string template = I18n.Get($"skillmilestone.{tier}.{(has ? name : "generic")}", has ? map[name] : generic);
             return string.Format(template, skill, level);
         }
     }

@@ -127,6 +127,23 @@ namespace MarriageOverhaul
             "My love,^No reason for this letter except that I love you and wanted you to hold it in your hands. So: I love you.^- Your spouse"
         };
         public static List<string> GetLetters(string name)
-            => IsVanilla(name) && Letters.ContainsKey(name) ? Letters[name] : Generic;
+        {
+            bool has = IsVanilla(name) && Letters.ContainsKey(name);
+            string who = has ? name : "generic";
+            List<string> src = has ? Letters[name] : Generic;
+            var outList = new List<string>(src.Count);
+            for (int i = 0; i < src.Count; i++)
+                outList.Add(I18n.Get($"letter.{who}.{i}", src[i]));
+            return outList;
+        }
+
+        internal static void CollectDefaults(IDictionary<string, string> map)
+        {
+            foreach (var kv in Letters)
+                for (int i = 0; i < kv.Value.Count; i++)
+                    map[$"letter.{kv.Key}.{i}"] = kv.Value[i];
+            for (int i = 0; i < Generic.Count; i++)
+                map[$"letter.generic.{i}"] = Generic[i];
+        }
     }
 }

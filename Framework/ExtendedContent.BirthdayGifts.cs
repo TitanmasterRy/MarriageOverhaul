@@ -31,6 +31,10 @@ namespace MarriageOverhaul
         private const string GenericHelpfulBirthdayLine = "Happy birthday, my love! I thought you might find {0} more useful today, so that's what I left for you. I hope it helps make your day a little easier.";
 
         public static string GetHelpfulBirthdayLine(string name, string itemName)
-            => string.Format(IsVanilla(name) && HelpfulBirthdayLines.ContainsKey(name) ? HelpfulBirthdayLines[name] : GenericHelpfulBirthdayLine, itemName);
+        {
+            bool has = IsVanilla(name) && HelpfulBirthdayLines.ContainsKey(name);
+            string tmpl = I18n.Get($"birthdaygift.{(has ? name : "generic")}", has ? HelpfulBirthdayLines[name] : GenericHelpfulBirthdayLine);
+            return string.Format(tmpl, itemName);
+        }
     }
 }

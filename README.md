@@ -79,6 +79,15 @@ Every system can be toggled and tuned. Edit `config.json` (created after the fir
 
 Set `EnableDebugCommands` to `true` (and restart) to register a suite of `mo_*` console commands for testing — for example `mo_status`, `mo_argue`, `mo_makeup`, `mo_hungry`, `mo_jealousy`, `mo_warn`, `mo_anniversary`, `mo_mood <mood>`, `mo_hearts <n>`, and `mo_cheat`. These are intended for testing and development and are off by default.
 
+## Translations
+
+All dialogue is translatable through SMAPI's translation system. The English source lives in
+[`i18n/default.json`](i18n/default.json). To add a language, copy that file to `i18n/<locale>.json`
+(e.g. `i18n/es.json` for Spanish — see SMAPI's locale codes) and translate the values, leaving the
+keys unchanged. Any line you don't translate falls back to English automatically. A few values are
+deliberately left as-is because they're identifiers, not dialogue (item names like `Pumpkin Pie`,
+and makeup gift categories) — translating those would break item resolution. Contributions welcome.
+
 ## Changelog
 
 See [CHANGELOG.md](CHANGELOG.md) for the full version history.

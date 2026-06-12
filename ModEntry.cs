@@ -28,6 +28,7 @@ namespace MarriageOverhaul
             Instance = this;
             this.Config = helper.ReadConfig<ModConfig>();
             this.Data = new ModData();
+            I18n.Init(helper.Translation);
 
             helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
             helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
