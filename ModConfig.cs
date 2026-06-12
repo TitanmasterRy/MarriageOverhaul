@@ -68,6 +68,8 @@ namespace MarriageOverhaul
         public bool EnableHoneymoonPhase { get; set; } = true;
         public int HoneymoonDuration { get; set; } = 30;
         public bool EnableSpouseRequests { get; set; } = true;
+        /// <summary>Show the spouse's request as a real tracked quest in the journal (in addition to the letter). Turn off for letter-only requests.</summary>
+        public bool EnableSpouseRequestQuest { get; set; } = true;
         public bool EnableSharedDreams { get; set; } = true;
         public bool EnableVisitorJealousy { get; set; } = true;
         public bool EnableProductivityScaling { get; set; } = true;

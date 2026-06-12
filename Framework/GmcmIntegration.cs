@@ -270,6 +270,11 @@ namespace MarriageOverhaul
                 () => "The spouse occasionally mails a request; fulfill it within 3 days for a reward.");
 
             api.AddBoolOption(manifest,
+                () => this.Config.EnableSpouseRequestQuest, v => this.Config.EnableSpouseRequestQuest = v,
+                () => "Spouse Requests as Journal Quest",
+                () => "Show each spouse request as a real tracked quest in the journal, not just a letter. Turn off for letter-only requests.");
+
+            api.AddBoolOption(manifest,
                 () => this.Config.EnableSharedDreams, v => this.Config.EnableSharedDreams = v,
                 () => "Enable Shared Dreams",
                 () => "Now and then you wake to a journal entry describing a dream the spouse had about you.");

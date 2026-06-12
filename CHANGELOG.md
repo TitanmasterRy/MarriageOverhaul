@@ -2,6 +2,11 @@
 
 All notable changes to Marriage Overhaul are documented here.
 
+## 1.6.1
+
+### Added
+- **Spouse requests are now real journal quests.** When your spouse mails a request, it now also appears as a tracked quest in your quest log — with a title, the request note, and a clear objective ("Take X to <spouse>", "Bring <spouse> a gemstone", etc.) — instead of being just a letter. Fulfilling it shows the usual "Quest Complete!" feedback. The quest is rebuilt each morning from the mod's own data and removed before saving, so it never bloats or corrupts your save. New toggle **Spouse Requests as Journal Quest** (on by default) in config/GMCM; turn it off for letter-only requests. Quest text is fully translatable.
+
 ## 1.6.0
 
 ### Added

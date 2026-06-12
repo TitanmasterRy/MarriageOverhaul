@@ -17,6 +17,19 @@ namespace MarriageOverhaul
             ExtendedContent.CollectDefaults(map);
             LetterContent.CollectDefaults(map);
             DreamContent.CollectDefaults(map);
+
+            // Spouse-request journal quest UI (kept in sync with ExtRequests.cs fallbacks).
+            map["quest.title"] = "{0}'s Request";
+            map["quest.objective.item"] = "Take {0} to {1}.";
+            map["quest.objective.category"] = "Bring {0} {1}.";
+            map["quest.objective.time"] = "Spend some quality time with {0}.";
+            map["quest.category.cooking"] = "a home-cooked dish";
+            map["quest.category.gem"] = "a gemstone";
+            map["quest.category.flower"] = "a flower";
+            map["quest.category.forage"] = "a foraged item";
+            map["quest.category.book"] = "a book";
+            map["quest.category.other"] = "something they'd like";
+
             return map;
         }
     }

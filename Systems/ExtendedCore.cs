@@ -20,6 +20,7 @@ namespace MarriageOverhaul
             this.Children_OnDayStarted(spouse);
             this.InsideJokes_OnDayStarted(spouse);
             this.Visitor_OnDayStarted(spouse);
+            this.Requests_OnDayStarted(spouse);
             this.Seasonal_OnDayStarted(spouse);
             this.Gossip_OnDayStarted(spouse);
             this.Dreams_OnDayStarted(spouse);
