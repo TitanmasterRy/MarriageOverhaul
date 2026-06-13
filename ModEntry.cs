@@ -27,6 +27,11 @@ namespace MarriageOverhaul
         // mod (or vanilla marriage dialogue) clears them when the player first talks. See HarmonyPatches.
         private readonly List<string> pendingSpouseLines = new List<string>();
 
+        // Dialogue boxes waiting to be shown once the player actually has control. Forcing a dialogue open
+        // during the morning transition desyncs multiplayer (other players get stuck on a black screen),
+        // so immediate narration / spouse scenes are queued here and flushed when it's safe.
+        private readonly Queue<System.Action> pendingDisplays = new Queue<System.Action>();
+
         public override void Entry(IModHelper helper)
         {
             Instance = this;
@@ -40,6 +45,7 @@ namespace MarriageOverhaul
             helper.Events.GameLoop.DayStarted += this.OnDayStarted;
             helper.Events.GameLoop.DayEnding += this.OnDayEnding;
             helper.Events.GameLoop.TimeChanged += this.OnTimeChanged;
+            helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
             helper.Events.Content.AssetRequested += this.OnAssetRequested;
             helper.Events.Multiplayer.ModMessageReceived += this.OnModMessageReceived;
 
@@ -79,11 +85,7 @@ namespace MarriageOverhaul
             this.argumentTriggeredToday = false;
             this.forceGrumpyToday = false;
             this.pendingSpouseLines.Clear();
-
-            // Farmhands wait for the host to send their saved data before acting (avoids placeholder-data
-            // glitches on the join day, e.g. re-firing one-time milestones). Resolves next day.
-            if (!this.dataReady)
-                return;
+            this.pendingDisplays.Clear();
 
             NPC spouse = this.GetSpouse();
             if (spouse == null)
@@ -146,15 +148,24 @@ namespace MarriageOverhaul
 
         private void OnTimeChanged(object sender, TimeChangedEventArgs e)
         {
-            if (!this.dataReady)
-                return;
-
             NPC spouse = this.GetSpouse();
             if (spouse == null)
                 return;
 
             this.Argument_OnTimeChanged(spouse, e.NewTime);
             this.Extended_OnTimeChanged(spouse, e.NewTime);
+        }
+
+        /// <summary>Flush one queued dialogue box once the player has control (never during transitions, which would desync multiplayer).</summary>
+        private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
+        {
+            if (this.pendingDisplays.Count == 0)
+                return;
+            if (!Context.IsPlayerFree || Game1.activeClickableMenu != null)
+                return;
+            System.Action show = this.pendingDisplays.Dequeue();
+            try { show(); }
+            catch (Exception ex) { this.Monitor.Log($"Deferred display failed: {ex.Message}", LogLevel.Trace); }
         }
 
         private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
@@ -228,10 +239,15 @@ namespace MarriageOverhaul
                 return;
             try
             {
-                npc.CurrentDialogue.Push(new Dialogue(npc, null, text));
-                // Remember spouse greetings so they can be restored if marriage dialogue clears them on talk.
-                if (npc.Name == this.SpouseName)
+                // With dialogue-mod compatibility on, defer the spouse's greeting instead of pushing it to
+                // the dialogue stack now — a marriage-dialogue mod (e.g. Haley Ever After) would overwrite it
+                // before it's seen. The checkAction patch shows it on the first talk so it always appears.
+                if (this.Config != null && this.Config.EnableDialogueCompat && npc.Name == this.SpouseName)
+                {
                     this.pendingSpouseLines.Add(text);
+                    return;
+                }
+                npc.CurrentDialogue.Push(new Dialogue(npc, null, text));
             }
             catch (Exception ex)
             {
@@ -239,11 +255,12 @@ namespace MarriageOverhaul
             }
         }
 
-        /// <summary>Return and clear the greeting lines pushed this morning (consumed once when re-shown).</summary>
+        /// <summary>Whether the spouse has deferred greeting lines waiting to be shown.</summary>
+        public bool HasPendingSpouseLines() => this.pendingSpouseLines.Count > 0;
+
+        /// <summary>Return and clear the deferred spouse greeting lines.</summary>
         public List<string> TakePendingSpouseLines()
         {
-            if (this.pendingSpouseLines.Count == 0)
-                return null;
             var copy = new List<string>(this.pendingSpouseLines);
             this.pendingSpouseLines.Clear();
             return copy;
@@ -268,19 +285,37 @@ namespace MarriageOverhaul
             }
         }
 
-        /// <summary>Show the spouse speaking a single line now, with a matching facial expression.</summary>
+        /// <summary>Show the spouse speaking a single line, with a matching facial expression. Deferred until the player has control (multiplayer-safe).</summary>
         public void ShowSpouseSpeech(NPC npc, string text, string emotion)
         {
             if (npc == null || string.IsNullOrWhiteSpace(text))
                 return;
-            try
+            string line = EmotionPrefix(emotion) + text;
+            this.QueueOrShow(() =>
             {
-                npc.CurrentDialogue.Push(new Dialogue(npc, null, EmotionPrefix(emotion) + text));
-                Game1.drawDialogue(npc);
+                try
+                {
+                    npc.CurrentDialogue.Push(new Dialogue(npc, null, line));
+                    Game1.drawDialogue(npc);
+                }
+                catch
+                {
+                    try { Game1.drawObjectDialogue(text); } catch { }
+                }
+            });
+        }
+
+        /// <summary>Show a dialogue now if the player has control, otherwise queue it until they do (avoids forcing dialogue during the morning transition, which desyncs multiplayer).</summary>
+        private void QueueOrShow(System.Action show)
+        {
+            if (Context.IsPlayerFree && Game1.activeClickableMenu == null)
+            {
+                try { show(); }
+                catch (Exception ex) { this.Monitor.Log($"Display failed: {ex.Message}", LogLevel.Trace); }
             }
-            catch
+            else
             {
-                this.ShowNarration(text);
+                this.pendingDisplays.Enqueue(show);
             }
         }
 
@@ -299,14 +334,7 @@ namespace MarriageOverhaul
         {
             if (string.IsNullOrWhiteSpace(text))
                 return;
-            try
-            {
-                Game1.drawObjectDialogue(text);
-            }
-            catch (Exception ex)
-            {
-                this.Monitor.Log($"Could not show narration: {ex.Message}", LogLevel.Trace);
-            }
+            this.QueueOrShow(() => Game1.drawObjectDialogue(text));
         }
 
         /// <summary>Whether the spouse is at home in the farmhouse with the player present.</summary>

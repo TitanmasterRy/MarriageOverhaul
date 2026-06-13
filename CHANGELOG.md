@@ -2,6 +2,17 @@
 
 All notable changes to Marriage Overhaul are documented here.
 
+## 1.6.2
+
+### Fixed
+- **Multiplayer: farmhands now get their morning dialogue.** A farmhand's daily routine was gated behind a data-sync flag that isn't ready yet when the day starts, so farmhands silently got nothing. Removed that gate (host save-data is still protected from being overwritten).
+- **Multiplayer: fixed the black-screen freeze.** When a player got a dream journal entry (or a skill-milestone / birthday scene), the mod forced a dialogue box open during the morning transition, which stalled the new-day sync and left everyone else stuck on a black screen. These now wait until the player actually has control before showing, so they can't desync the morning.
+- The mod no longer acts during the engagement period or other events/festivals — it stays out of the way of festival and event dialogue.
+- Compatibility with marriage-dialogue expansion mods (e.g. Haley Ever After): this mod's greeting is held aside and shown on your first talk so a dialogue mod can't wipe it. New **Dialogue Mod Compatibility** toggle (on by default).
+
+### Notes
+- For farmhands to get *saved* progress, the host must also have Marriage Overhaul installed; otherwise the mod still works per session but won't persist between days.
+
 ## 1.6.1
 
 ### Fixed

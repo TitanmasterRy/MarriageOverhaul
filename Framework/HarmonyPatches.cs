@@ -42,47 +42,12 @@ namespace MarriageOverhaul
             if (billboardDraw != null)
                 harmony.Patch(billboardDraw, postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(Billboard_Draw_Postfix)));
 
-            // Keep the vanilla spouse kiss/hug available even when the mod has queued dialogue.
+            // Spouse kiss/hug + dialogue-mod compatibility (both handled in the checkAction prefix).
             var checkAction = AccessTools.Method(typeof(NPC), nameof(NPC.checkAction));
             if (checkAction != null)
                 harmony.Patch(checkAction,
                     prefix: new HarmonyMethod(typeof(HarmonyPatches), nameof(CheckAction_Prefix)),
                     postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(CheckAction_Postfix)));
-
-            // Keep our spouse greetings alive when a marriage-dialogue mod replaces the dialogue on talk.
-            var checkNewDialogue = AccessTools.Method(typeof(NPC), nameof(NPC.checkForNewCurrentDialogue));
-            if (checkNewDialogue != null)
-                harmony.Patch(checkNewDialogue, postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(CheckForNewDialogue_Postfix)));
-        }
-
-        /// <summary>
-        /// When the player talks, the game's checkForNewCurrentDialogue clears the spouse's dialogue stack
-        /// and pushes the day's marriage dialogue (returns true). Marriage-dialogue expansion mods supply a
-        /// line every day, which wipes the greeting this mod queued. Here we re-push our queued greeting on
-        /// top (once per day) so it still shows — our line first, then the marriage-dialogue mod's line.
-        /// </summary>
-        private static void CheckForNewDialogue_Postfix(NPC __instance, bool __result)
-        {
-            try
-            {
-                if (!__result) // false = nothing was substituted, so our queued greeting is still intact
-                    return;
-                ModEntry mod = ModEntry.Instance;
-                if (mod?.Config == null || !mod.Config.EnableDialogueCompat)
-                    return;
-                if (__instance == null || string.IsNullOrEmpty(mod.SpouseName) || __instance.Name != mod.SpouseName)
-                    return;
-
-                List<string> lines = mod.TakePendingSpouseLines();
-                if (lines == null)
-                    return;
-                foreach (string line in lines)
-                    __instance.CurrentDialogue.Push(new Dialogue(__instance, null, line));
-            }
-            catch (Exception ex)
-            {
-                Monitor?.Log($"checkForNewCurrentDialogue postfix error: {ex.Message}", LogLevel.Trace);
-            }
         }
 
         /// <summary>Dialogue set aside during a kiss interaction so it can be restored afterward.</summary>
@@ -92,67 +57,92 @@ namespace MarriageOverhaul
             public MarriageDialogueReference[] Marriage;
         }
 
+        /// <summary>Whether a genuine vanilla kiss would fire this interaction (10+ hearts, slept in bed, empty-handed, beside the spouse, before 10pm, not yet kissed).</summary>
+        private static bool IsKissEligible(NPC npc, Farmer who, ModEntry mod)
+        {
+            if (!mod.Config.AllowSpouseKiss)
+                return false;
+            if (npc.hasBeenKissedToday.Value)
+                return false;
+            if (who.ActiveObject != null)                               // holding an item — gifting/talking instead
+                return false;
+            if (npc.Sprite?.CurrentAnimation != null)                   // mid-animation — vanilla skips the kiss
+                return false;
+            if (!npc.sleptInBed.Value)
+                return false;
+            if (who.getFriendshipHeartLevelForNPC(npc.Name) <= 9)       // below 10 hearts vanilla won't kiss
+                return false;
+            if (Game1.timeOfDay >= 2200)
+                return false;
+            // The kiss only fires when the spouse faces left/right, i.e. the player is beside them.
+            if ((int)who.Tile.Y != (int)npc.Tile.Y || Math.Abs((int)who.Tile.X - (int)npc.Tile.X) != 1)
+                return false;
+            return true;
+        }
+
         /// <summary>
-        /// Vanilla only kisses the spouse when BOTH their dialogue stack and their daily marriage
-        /// dialogue are empty, but this mod queues morning dialogue. When the player is positioned for a
-        /// real kiss (10+ hearts, slept in bed, empty-handed, beside the spouse, before 10pm, not yet
-        /// kissed today) we briefly set that dialogue aside so the genuine vanilla kiss runs — which keeps
-        /// kiss-based mods working — then restore it so it's still readable on the next interaction.
+        /// Handles two things when the player interacts with their spouse:
+        /// 1. The kiss/hug: vanilla only kisses when the dialogue is clear, so if a kiss is due we set the
+        ///    queued dialogue aside (restored in the postfix) so the real vanilla kiss runs.
+        /// 2. Dialogue-mod compatibility: marriage-dialogue mods (e.g. Haley Ever After) fill the spouse's
+        ///    dialogue and the game draws it before our queued greeting can show. So when no kiss is due we
+        ///    show this mod's deferred greeting ourselves and skip the original, so it always appears.
+        /// Returns false to skip the original method (greeting shown), true to let it run.
         /// </summary>
-        private static void CheckAction_Prefix(NPC __instance, Farmer who, ref KissState __state)
+        private static bool CheckAction_Prefix(NPC __instance, Farmer who, ref KissState __state, ref bool __result)
         {
             __state = null;
             try
             {
                 ModEntry mod = ModEntry.Instance;
-                if (mod?.Config == null || !mod.Config.AllowSpouseKiss)
-                    return;
-                if (who == null || !who.IsLocalPlayer || __instance == null)
-                    return;
-                if (__instance.Name != who.spouse)                          // not the player's spouse
-                    return;
-                if (__instance.hasBeenKissedToday.Value)                    // already kissed — let dialogue show
-                    return;
-                if (who.ActiveObject != null)                               // holding an item — let gifting/talking happen
-                    return;
-                if (__instance.Sprite?.CurrentAnimation != null)            // mid-animation — vanilla skips the kiss
-                    return;
-                if (!__instance.sleptInBed.Value)                           // vanilla requires this for a kiss
-                    return;
-                if (who.getFriendshipHeartLevelForNPC(__instance.Name) <= 9) // below 10 hearts vanilla won't kiss anyway
-                    return;
-                if (Game1.timeOfDay >= 2200)
-                    return;
+                if (mod?.Config == null || who == null || !who.IsLocalPlayer || __instance == null)
+                    return true;
+                if (__instance.Name != who.spouse)
+                    return true;
+                if (Game1.eventUp)   // festivals / events use their own dialogue — stay out of the way
+                    return true;
 
-                // The kiss only fires when the spouse faces left/right, i.e. the player is beside them.
-                if ((int)who.Tile.Y != (int)__instance.Tile.Y || Math.Abs((int)who.Tile.X - (int)__instance.Tile.X) != 1)
-                    return;
-
-                bool hasCurrent = __instance.CurrentDialogue.Count > 0;
-                bool hasMarriage = __instance.currentMarriageDialogue.Count > 0;
-                if (!hasCurrent && !hasMarriage)
-                    return; // nothing blocking — vanilla already handles the kiss
-
-                // If the spouse is wandering, stop them so vanilla's own "not moving" kiss check passes
-                // (normally the game halts them when you talk, but the queued dialogue pre-empts that).
-                // Halt() clears the movement flags that isMoving() reads.
-                if (__instance.isMoving())
-                    __instance.Halt();
-
-                // Set both dialogue sources aside so vanilla's kiss branch runs this interaction.
-                __state = new KissState
+                // 1. Kiss path — if a kiss is due, clear blocking dialogue so vanilla's kiss runs, then let original run.
+                if (IsKissEligible(__instance, who, mod))
                 {
-                    Current = __instance.CurrentDialogue.ToArray(),                 // top-first
-                    Marriage = hasMarriage ? __instance.currentMarriageDialogue.ToArray() : null
-                };
-                __instance.CurrentDialogue.Clear();
-                if (hasMarriage)
-                    __instance.currentMarriageDialogue.Clear();
+                    if (__instance.isMoving())
+                        __instance.Halt(); // clears the movement flags vanilla's "not moving" kiss check reads
+
+                    bool hasCurrent = __instance.CurrentDialogue.Count > 0;
+                    bool hasMarriage = __instance.currentMarriageDialogue.Count > 0;
+                    if (hasCurrent || hasMarriage)
+                    {
+                        __state = new KissState
+                        {
+                            Current = __instance.CurrentDialogue.ToArray(),
+                            Marriage = hasMarriage ? __instance.currentMarriageDialogue.ToArray() : null
+                        };
+                        __instance.CurrentDialogue.Clear();
+                        if (hasMarriage)
+                            __instance.currentMarriageDialogue.Clear();
+                    }
+                    return true; // let original run → vanilla kiss
+                }
+
+                // 2. Dialogue compat — no kiss this interaction, so show our deferred greeting (it survives
+                //    marriage-dialogue mods because we draw it directly instead of leaving it on the stack).
+                if (mod.Config.EnableDialogueCompat && who.ActiveObject == null && mod.HasPendingSpouseLines())
+                {
+                    List<string> lines = mod.TakePendingSpouseLines();
+                    foreach (string line in lines)
+                        __instance.CurrentDialogue.Push(new Dialogue(__instance, null, line));
+                    Game1.drawDialogue(__instance);
+                    __result = true;
+                    return false; // we handled this interaction; the marriage line shows on the next talk
+                }
+
+                return true;
             }
             catch (Exception ex)
             {
                 __state = null;
                 Monitor?.Log($"checkAction prefix error: {ex.Message}", LogLevel.Trace);
+                return true;
             }
         }
 
