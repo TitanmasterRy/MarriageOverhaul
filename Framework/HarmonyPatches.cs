@@ -48,6 +48,41 @@ namespace MarriageOverhaul
                 harmony.Patch(checkAction,
                     prefix: new HarmonyMethod(typeof(HarmonyPatches), nameof(CheckAction_Prefix)),
                     postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(CheckAction_Postfix)));
+
+            // Keep our spouse greetings alive when a marriage-dialogue mod replaces the dialogue on talk.
+            var checkNewDialogue = AccessTools.Method(typeof(NPC), nameof(NPC.checkForNewCurrentDialogue));
+            if (checkNewDialogue != null)
+                harmony.Patch(checkNewDialogue, postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(CheckForNewDialogue_Postfix)));
+        }
+
+        /// <summary>
+        /// When the player talks, the game's checkForNewCurrentDialogue clears the spouse's dialogue stack
+        /// and pushes the day's marriage dialogue (returns true). Marriage-dialogue expansion mods supply a
+        /// line every day, which wipes the greeting this mod queued. Here we re-push our queued greeting on
+        /// top (once per day) so it still shows — our line first, then the marriage-dialogue mod's line.
+        /// </summary>
+        private static void CheckForNewDialogue_Postfix(NPC __instance, bool __result)
+        {
+            try
+            {
+                if (!__result) // false = nothing was substituted, so our queued greeting is still intact
+                    return;
+                ModEntry mod = ModEntry.Instance;
+                if (mod?.Config == null || !mod.Config.EnableDialogueCompat)
+                    return;
+                if (__instance == null || string.IsNullOrEmpty(mod.SpouseName) || __instance.Name != mod.SpouseName)
+                    return;
+
+                List<string> lines = mod.TakePendingSpouseLines();
+                if (lines == null)
+                    return;
+                foreach (string line in lines)
+                    __instance.CurrentDialogue.Push(new Dialogue(__instance, null, line));
+            }
+            catch (Exception ex)
+            {
+                Monitor?.Log($"checkForNewCurrentDialogue postfix error: {ex.Message}", LogLevel.Trace);
+            }
         }
 
         /// <summary>Dialogue set aside during a kiss interaction so it can be restored afterward.</summary>

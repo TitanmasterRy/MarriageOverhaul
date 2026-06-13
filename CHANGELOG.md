@@ -7,6 +7,7 @@ All notable changes to Marriage Overhaul are documented here.
 ### Fixed
 - The mod's morning dialogue (notably the skill-milestone scene) could fire during the wedding ceremony and break it. The mod now only acts once you're actually married — while engaged (including the wedding morning, before the ceremony), it stays quiet. As a bonus, the mod no longer runs its marriage mechanics during the engagement days.
 - Skill milestones no longer fire retroactively for levels you'd already reached before marrying (or before installing the mod). The first time it sees each skill it records your current level as the baseline, so only milestones you cross *during* the marriage trigger a scene and gift.
+- Compatibility with marriage-dialogue expansion mods (e.g. Haley Ever After). Those mods supply a marriage line every day, and the game clears the spouse's dialogue when you talk — which was wiping this mod's morning greeting before it could show. The mod now re-shows its greeting on top of theirs, so both appear (ours first, then the dialogue mod's). New toggle **Dialogue Mod Compatibility** (on by default) in config/GMCM.
 
 ## 1.6.0
 

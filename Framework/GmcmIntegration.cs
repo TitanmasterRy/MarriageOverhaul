@@ -62,6 +62,11 @@ namespace MarriageOverhaul
                 () => "Keep the normal kiss/hug available even when the mod has queued morning dialogue. Walk up empty-handed to kiss; talk again to read their dialogue. Keeps kiss-based mods working. Turn off to revert to dialogue-only mornings.");
 
             api.AddBoolOption(manifest,
+                () => this.Config.EnableDialogueCompat, v => this.Config.EnableDialogueCompat = v,
+                () => "Dialogue Mod Compatibility",
+                () => "Keep this mod's spouse greetings working alongside marriage-dialogue expansion mods (e.g. Haley Ever After). Without it, those mods replace this mod's morning dialogue. Our line shows first, then theirs.");
+
+            api.AddBoolOption(manifest,
                 () => this.Config.EnableAnniversary, v => this.Config.EnableAnniversary = v,
                 () => "Enable Anniversary",
                 () => "Yearly anniversary reminder, with a bonus for gifting and a penalty for forgetting.");

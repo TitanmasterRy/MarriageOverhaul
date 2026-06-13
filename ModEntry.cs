@@ -23,6 +23,10 @@ namespace MarriageOverhaul
         private bool argumentTriggeredToday;
         private bool forceGrumpyToday;
 
+        // The spouse greeting lines pushed this morning, so they can be re-shown if a marriage-dialogue
+        // mod (or vanilla marriage dialogue) clears them when the player first talks. See HarmonyPatches.
+        private readonly List<string> pendingSpouseLines = new List<string>();
+
         public override void Entry(IModHelper helper)
         {
             Instance = this;
@@ -74,6 +78,7 @@ namespace MarriageOverhaul
         {
             this.argumentTriggeredToday = false;
             this.forceGrumpyToday = false;
+            this.pendingSpouseLines.Clear();
 
             // Farmhands wait for the host to send their saved data before acting (avoids placeholder-data
             // glitches on the join day, e.g. re-firing one-time milestones). Resolves next day.
@@ -224,11 +229,24 @@ namespace MarriageOverhaul
             try
             {
                 npc.CurrentDialogue.Push(new Dialogue(npc, null, text));
+                // Remember spouse greetings so they can be restored if marriage dialogue clears them on talk.
+                if (npc.Name == this.SpouseName)
+                    this.pendingSpouseLines.Add(text);
             }
             catch (Exception ex)
             {
                 this.Monitor.Log($"Could not push dialogue for {npc.Name}: {ex.Message}", LogLevel.Trace);
             }
+        }
+
+        /// <summary>Return and clear the greeting lines pushed this morning (consumed once when re-shown).</summary>
+        public List<string> TakePendingSpouseLines()
+        {
+            if (this.pendingSpouseLines.Count == 0)
+                return null;
+            var copy = new List<string>(this.pendingSpouseLines);
+            this.pendingSpouseLines.Clear();
+            return copy;
         }
 
         /// <summary>Push a line with a matching facial expression (angry / sad / happy / love / neutral).</summary>

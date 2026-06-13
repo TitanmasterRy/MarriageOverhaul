@@ -14,6 +14,8 @@ namespace MarriageOverhaul
         public bool EnableMoodSystem { get; set; } = true;
         /// <summary>Keep the vanilla kiss/hug available even when the mod has queued spouse dialogue (preserves compatibility with kiss-based mods).</summary>
         public bool AllowSpouseKiss { get; set; } = true;
+        /// <summary>Keep the mod's spouse dialogue working alongside marriage-dialogue expansion mods (e.g. Haley Ever After), which otherwise replace it.</summary>
+        public bool EnableDialogueCompat { get; set; } = true;
         public bool EnableAnniversary { get; set; } = true;
 
         // ── Friendship-tiered morning dialogue ──────────────────────
