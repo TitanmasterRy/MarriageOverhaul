@@ -5,18 +5,20 @@ namespace MarriageOverhaul
     {
         // Systems
         public bool EnableFeeding { get; set; } = true;
-        /// <summary>Also search mini-fridges and the cellar fridge when feeding the spouse (helps with modded houses that put the fridge on a different level or have no main-level kitchen).</summary>
-        public bool FeedingSearchExtraStorage { get; set; } = false;
         public bool EnableArguments { get; set; } = true;
         public bool EnableDivorceWarning { get; set; } = true;
         public bool EnableAutoDivorce { get; set; } = true;
         public bool EnableJealousy { get; set; } = true;
         public bool EnableMoodSystem { get; set; } = true;
+        public bool EnableAnniversary { get; set; } = true;
+
+        // ── Compatibility ───────────────────────────────────────────
         /// <summary>Keep the vanilla kiss/hug available even when the mod has queued spouse dialogue (preserves compatibility with kiss-based mods).</summary>
         public bool AllowSpouseKiss { get; set; } = true;
         /// <summary>Keep the mod's spouse dialogue working alongside marriage-dialogue expansion mods (e.g. Haley Ever After), which otherwise replace it.</summary>
         public bool EnableDialogueCompat { get; set; } = true;
-        public bool EnableAnniversary { get; set; } = true;
+        /// <summary>Also search mini-fridges and the cellar fridge when feeding the spouse (helps with modded houses that put the fridge on a different level or have no main-level kitchen).</summary>
+        public bool FeedingSearchExtraStorage { get; set; } = false;
 
         // ── Friendship-tiered morning dialogue ──────────────────────
         /// <summary>The spouse's morning greeting tone scales with your current friendship hearts (cold when low, loving when high). The mood system adds day-to-day variance on top.</summary>
