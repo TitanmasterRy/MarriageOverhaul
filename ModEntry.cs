@@ -180,6 +180,11 @@ namespace MarriageOverhaul
                 Farmer player = Game1.player;
                 if (player == null || string.IsNullOrEmpty(player.spouse))
                     return null;
+                // Only act once actually married. While engaged (including the wedding morning, before the
+                // ceremony runs) player.spouse is already set, so without this the mod's morning dialogue
+                // would fire during the wedding event and break it.
+                if (!player.isMarriedOrRoommates())
+                    return null;
                 return player.getSpouse();
             }
             catch

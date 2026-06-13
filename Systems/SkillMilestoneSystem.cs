@@ -35,7 +35,10 @@ namespace MarriageOverhaul
             foreach (string skill in MilestoneSkillNames)
             {
                 int current = this.GetSkillLevel(skill);
-                int previous = this.Data.SkillLevelSnapshot.TryGetValue(skill, out int p) ? p : 0;
+                // First time we see a skill, baseline it to the current level so milestones you reached
+                // BEFORE the marriage (or before installing) don't all fire retroactively. Only crossings
+                // that happen during the marriage count.
+                int previous = this.Data.SkillLevelSnapshot.TryGetValue(skill, out int p) ? p : current;
 
                 foreach (int milestone in MilestoneLevels)
                 {
