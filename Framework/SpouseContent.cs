@@ -720,7 +720,7 @@ namespace MarriageOverhaul
                 Disappointed = "You forgot our anniversary. Figures. I let myself get my hopes up for once. ...Whatever. I'm heading downstairs."
             },
             ["Shane"] = new AnniversaryInfo {
-                Reminder = "Hey,^So, uh, it's our anniversary today. A year with you. Honestly never thought I'd get this. Don't forget, okay?^- Shane",
+                Reminder = "Hey,^So, uh, it's our anniversary today. A year with you. Honestly, never thought I'd get this. Don't forget, okay?^- Shane",
                 Sweet = "You remembered our anniversary. ...A year ago I was a mess. Now I've got you. Thank you. For everything.",
                 Disappointed = "You forgot our anniversary. ...Yeah. Of course. Why'd I think today would be different. I'm gonna go be alone."
             }

@@ -146,7 +146,7 @@ namespace MarriageOverhaul
                     "Morning. Let's just get through the day, okay?" },
                 [MorningTier.Low] = new List<string> {
                     "Morning. I've got a project I want to tinker with today.",
-                    "Oh, hello. Did you sleep enough? Statistically you don't.",
+                    "Oh, hello. Did you sleep enough? Statistically, you don't.",
                     "Morning. I'll be at the workbench if you need me.",
                     "Hey. Coffee's optimal temperature right now. Just so you know." },
                 [MorningTier.High] = new List<string> {
