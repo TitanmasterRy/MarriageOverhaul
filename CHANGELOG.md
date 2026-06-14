@@ -2,6 +2,11 @@
 
 All notable changes to Marriage Overhaul are documented here.
 
+## 1.6.3
+
+### Fixed
+- Fixed a crash (NullReferenceException in `NPC.checkAction`) that could occur when interacting with your spouse mid-transition — e.g. pressing the action button next to them while warping through a door. The kiss check now bails if the spouse is in a transitional state (no sprite, or not in your current location). As an extra safety net, the mod's interaction patch now catches and logs any error instead of letting it crash/freeze the game.
+
 ## 1.6.2
 
 ### Fixed

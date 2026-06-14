@@ -47,7 +47,8 @@ namespace MarriageOverhaul
             if (checkAction != null)
                 harmony.Patch(checkAction,
                     prefix: new HarmonyMethod(typeof(HarmonyPatches), nameof(CheckAction_Prefix)),
-                    postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(CheckAction_Postfix)));
+                    postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(CheckAction_Postfix)),
+                    finalizer: new HarmonyMethod(typeof(HarmonyPatches), nameof(CheckAction_Finalizer)));
         }
 
         /// <summary>Dialogue set aside during a kiss interaction so it can be restored afterward.</summary>
@@ -66,7 +67,9 @@ namespace MarriageOverhaul
                 return false;
             if (who.ActiveObject != null)                               // holding an item — gifting/talking instead
                 return false;
-            if (npc.Sprite?.CurrentAnimation != null)                   // mid-animation — vanilla skips the kiss
+            if (npc.Sprite == null || npc.Sprite.CurrentAnimation != null) // no sprite (transitional) or mid-animation — vanilla's kiss would null-ref
+                return false;
+            if (npc.currentLocation == null || npc.currentLocation != who.currentLocation) // spouse not in the player's location (e.g. warping)
                 return false;
             if (!npc.sleptInBed.Value)
                 return false;
@@ -150,23 +153,38 @@ namespace MarriageOverhaul
         {
             if (__state == null)
                 return;
-            try
+            try { RestoreKissDialogue(__instance, __state); }
+            catch (Exception ex) { Monitor?.Log($"checkAction postfix error: {ex.Message}", LogLevel.Trace); }
+        }
+
+        /// <summary>
+        /// Safety net: if the original NPC.checkAction (or an inner patch) throws, swallow it so the game
+        /// doesn't crash on an NPC interaction, and restore any dialogue the kiss path set aside (the
+        /// postfix doesn't run when the original throws).
+        /// </summary>
+        private static Exception CheckAction_Finalizer(NPC __instance, KissState __state, Exception __exception)
+        {
+            if (__exception == null)
+                return null;
+            try { RestoreKissDialogue(__instance, __state); } catch { }
+            Monitor?.Log($"Suppressed an error in NPC.checkAction to avoid a crash: {__exception.Message}", LogLevel.Warn);
+            return null; // swallow the exception
+        }
+
+        /// <summary>Restore dialogue the kiss path set aside, if it hasn't already been repopulated.</summary>
+        private static void RestoreKissDialogue(NPC npc, KissState state)
+        {
+            if (state == null || npc == null)
+                return;
+            if (state.Current != null && npc.CurrentDialogue.Count == 0)
             {
-                // Restore the dialogue (the kiss consumed this interaction; the lines stay for the next talk).
-                if (__state.Current != null && __instance.CurrentDialogue.Count == 0)
-                {
-                    for (int i = __state.Current.Length - 1; i >= 0; i--)
-                        __instance.CurrentDialogue.Push(__state.Current[i]);
-                }
-                if (__state.Marriage != null && __instance.currentMarriageDialogue.Count == 0)
-                {
-                    foreach (MarriageDialogueReference r in __state.Marriage)
-                        __instance.currentMarriageDialogue.Add(r);
-                }
+                for (int i = state.Current.Length - 1; i >= 0; i--)
+                    npc.CurrentDialogue.Push(state.Current[i]);
             }
-            catch (Exception ex)
+            if (state.Marriage != null && npc.currentMarriageDialogue.Count == 0)
             {
-                Monitor?.Log($"checkAction postfix error: {ex.Message}", LogLevel.Trace);
+                foreach (MarriageDialogueReference r in state.Marriage)
+                    npc.currentMarriageDialogue.Add(r);
             }
         }
 
