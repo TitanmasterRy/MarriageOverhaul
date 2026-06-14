@@ -127,8 +127,11 @@ namespace MarriageOverhaul
                 this.PushDialogue(spouse, ExtendedContent.ChildWarmLine(child, this.Rng), "happy");
 
             // Weekly request to spend time with the kids (one per week).
+            // The forced question dialogue fires at day-start, which can freeze other players in
+            // multiplayer, so it's skipped when Multiplayer Compatibility Mode is on.
             if (this.Data.LastChildRequestWeek != this.WeekIndex
                 && hearts >= 8
+                && !this.Config.MultiplayerCompatibilityMode
                 && Game1.activeClickableMenu == null && !Game1.eventUp
                 && this.Rng.NextDouble() < 0.5)
             {
