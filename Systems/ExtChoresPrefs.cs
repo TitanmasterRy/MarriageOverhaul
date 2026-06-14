@@ -44,7 +44,13 @@ namespace MarriageOverhaul
                 : (hearts >= 12 && mood >= 1);
 
             this.Data.LastChoreDay = this.AbsoluteDay;
-            string key = ChoreKeys[this.Rng.Next(ChoreKeys.Length)];
+
+            // Only offer chores that make sense: the "collect" chore (clearing the coop/barn) requires
+            // owning a coop/barn with animals, so its dialogue can't fire when you have none.
+            var candidates = new List<string>(ChoreKeys);
+            if (!this.HasFarmAnimals())
+                candidates.Remove("collect");
+            string key = candidates[this.Rng.Next(candidates.Count)];
 
             // A chore may return an override line (e.g. the forage jackpot reaction); otherwise use the normal chore line.
             string overrideLine = this.PerformChore(key, highQuality);
@@ -88,6 +94,26 @@ namespace MarriageOverhaul
                     if (++n >= max) break;
                 }
             }
+        }
+
+        /// <summary>Whether the player owns a coop/barn that actually has animals in it (checked at day-start, before they're let out).</summary>
+        private bool HasFarmAnimals()
+        {
+            try
+            {
+                var farm = Game1.getFarm();
+                if (farm == null) return false;
+                foreach (var b in farm.buildings)
+                {
+                    if (b.GetIndoors() is AnimalHouse ah)
+                    {
+                        foreach (var _ in ah.animals.Values)
+                            return true;
+                    }
+                }
+            }
+            catch { }
+            return false;
         }
 
         private void Chore_Collect(int max)
