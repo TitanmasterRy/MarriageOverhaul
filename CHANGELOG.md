@@ -4,6 +4,9 @@ All notable changes to Marriage Overhaul are documented here.
 
 ## 1.6.3
 
+### Added
+- **Multiplayer Compatibility Mode** (config / GMCM, in the Compatibility section). Turn it on in multiplayer to disable features known to cause problems for other players — currently Shared Dreams, which could freeze everyone else's screen when a player got a dream. Leave it off in single-player.
+
 ### Fixed
 - Fixed a crash (NullReferenceException in `NPC.checkAction`) that could occur when interacting with your spouse mid-transition — e.g. pressing the action button next to them while warping through a door. The kiss check now bails if the spouse is in a transitional state (no sprite, or not in your current location). As an extra safety net, the mod's interaction patch now catches and logs any error instead of letting it crash/freeze the game.
 

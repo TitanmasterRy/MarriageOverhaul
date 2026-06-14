@@ -13,6 +13,8 @@ namespace MarriageOverhaul
         public bool EnableAnniversary { get; set; } = true;
 
         // ── Compatibility ───────────────────────────────────────────
+        /// <summary>Turn off features known to cause problems in multiplayer (currently: Shared Dreams, which can freeze other players' screens). Recommended ON for multiplayer, OFF for single-player.</summary>
+        public bool MultiplayerCompatibilityMode { get; set; } = false;
         /// <summary>Keep the vanilla kiss/hug available even when the mod has queued spouse dialogue (preserves compatibility with kiss-based mods).</summary>
         public bool AllowSpouseKiss { get; set; } = true;
         /// <summary>Keep the mod's spouse dialogue working alongside marriage-dialogue expansion mods (e.g. Haley Ever After), which otherwise replace it.</summary>

@@ -117,6 +117,8 @@ namespace MarriageOverhaul
         {
             if (!this.Config.EnableSharedDreams)
                 return;
+            if (this.Config.MultiplayerCompatibilityMode)
+                return; // Shared Dreams can freeze other players' screens in multiplayer.
             if (this.AbsoluteDay - this.Data.LastDreamDay < 5)
                 return;
             if (this.Rng.NextDouble() >= 0.35) // roughly every 5-7 days

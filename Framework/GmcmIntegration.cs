@@ -80,6 +80,11 @@ namespace MarriageOverhaul
             api.AddSectionTitle(manifest, () => "Compatibility");
 
             api.AddBoolOption(manifest,
+                () => this.Config.MultiplayerCompatibilityMode, v => this.Config.MultiplayerCompatibilityMode = v,
+                () => "Multiplayer Compatibility Mode",
+                () => "Turns off features known to cause problems in multiplayer (currently: Shared Dreams, which can freeze other players' screens). Recommended ON for multiplayer games, OFF for single-player.");
+
+            api.AddBoolOption(manifest,
                 () => this.Config.AllowSpouseKiss, v => this.Config.AllowSpouseKiss = v,
                 () => "Allow Spouse Kiss/Hug",
                 () => "Keep the normal kiss/hug available even when the mod has queued morning dialogue. Walk up empty-handed to kiss; talk again to read their dialogue. Keeps kiss-based mods working. Turn off to revert to dialogue-only mornings.");
