@@ -45,11 +45,17 @@ namespace MarriageOverhaul
 
             this.Data.LastChoreDay = this.AbsoluteDay;
 
-            // Only offer chores that make sense: the "collect" chore (clearing the coop/barn) requires
-            // owning a coop/barn with animals, so its dialogue can't fire when you have none.
+            // Only offer chores that make sense for the current farm, so the dialogue never describes
+            // something that couldn't have happened. (Cook and gold always apply, so they're never removed.)
             var candidates = new List<string>(ChoreKeys);
             if (!this.HasFarmAnimals())
-                candidates.Remove("collect");
+                candidates.Remove("collect");                       // no coop/barn animals to clear out
+            if (!this.HasUnwateredCrops())
+                candidates.Remove("water");                         // no unwatered crops to water
+            if (!this.Config.EnableForageLoot && !this.HasFarmForage())
+                candidates.Remove("forage");                        // farm-pickup mode with nothing to forage
+            if (candidates.Count == 0)
+                return;
             string key = candidates[this.Rng.Next(candidates.Count)];
 
             // A chore may return an override line (e.g. the forage jackpot reaction); otherwise use the normal chore line.
@@ -110,6 +116,40 @@ namespace MarriageOverhaul
                         foreach (var _ in ah.animals.Values)
                             return true;
                     }
+                }
+            }
+            catch { }
+            return false;
+        }
+
+        /// <summary>Whether the farm has any unwatered crop (so the "watered the crops" chore makes sense).</summary>
+        private bool HasUnwateredCrops()
+        {
+            try
+            {
+                var farm = Game1.getFarm();
+                if (farm == null) return false;
+                foreach (var pair in farm.terrainFeatures.Pairs)
+                {
+                    if (pair.Value is HoeDirt hd && hd.crop != null && hd.state.Value == 0)
+                        return true;
+                }
+            }
+            catch { }
+            return false;
+        }
+
+        /// <summary>Whether the farm has any spawned forage on the ground (for the farm-pickup forage chore).</summary>
+        private bool HasFarmForage()
+        {
+            try
+            {
+                var farm = Game1.getFarm();
+                if (farm == null) return false;
+                foreach (var pair in farm.objects.Pairs)
+                {
+                    if (pair.Value is SObject o && o.IsSpawnedObject)
+                        return true;
                 }
             }
             catch { }
