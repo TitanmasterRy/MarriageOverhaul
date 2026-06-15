@@ -148,9 +148,9 @@ namespace MarriageOverhaul
             }
             this.Data.Mood = mood;
             if (mood == "Happy")
-                this.PushDialogue(spouse, SpouseContent.GetHappyMood(spouse.Name), "happy");
+                this.PushDialogue(spouse, SpouseContent.GetHappyMood(spouse.Name, Game1.random), "happy");
             else if (mood == "Grumpy")
-                this.PushDialogue(spouse, SpouseContent.GetGrumpyMood(spouse.Name), "angry");
+                this.PushDialogue(spouse, SpouseContent.GetGrumpyMood(spouse.Name, Game1.random), "angry");
             this.Monitor.Log($"Mood set to {mood}. Talk to your spouse to hear it.", LogLevel.Info);
         }
 

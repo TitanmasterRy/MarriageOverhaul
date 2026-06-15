@@ -27,10 +27,10 @@ namespace MarriageOverhaul
             switch (mood)
             {
                 case "Happy":
-                    this.PushDialogue(spouse, SpouseContent.GetHappyMood(spouse.Name), "happy");
+                    this.PushDialogue(spouse, SpouseContent.GetHappyMood(spouse.Name, Game1.random), "happy");
                     break;
                 case "Grumpy":
-                    this.PushDialogue(spouse, SpouseContent.GetGrumpyMood(spouse.Name), "angry");
+                    this.PushDialogue(spouse, SpouseContent.GetGrumpyMood(spouse.Name, Game1.random), "angry");
                     break;
                 default: // Neutral — share an everyday line from the general pool.
                     this.PushDialogue(spouse, SpouseContent.GetRandomGeneralLine(Game1.random));

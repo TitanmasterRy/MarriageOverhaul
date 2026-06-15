@@ -13,11 +13,32 @@ namespace MarriageOverhaul
             return I18n.Get($"{category}.{(has ? name : "generic")}", has ? dict[name] : generic);
         }
 
+        /// <summary>Translate a per-spouse line drawn at random from a name-keyed pool, with a generic fallback pool.</summary>
+        private static string LocPool(string category, string name, Dictionary<string, List<string>> dict, List<string> generic, System.Random rng)
+        {
+            bool has = IsVanilla(name) && dict.ContainsKey(name);
+            List<string> pool = has ? dict[name] : generic;
+            string key = has ? name : "generic";
+            if (pool == null || pool.Count == 0)
+                return I18n.Get($"{category}.generic.0", generic.Count > 0 ? generic[0] : "");
+            int i = rng.Next(pool.Count);
+            return I18n.Get($"{category}.{key}.{i}", pool[i]);
+        }
+
         private static void CollectDict(IDictionary<string, string> map, string category, Dictionary<string, string> dict, string generic)
         {
             foreach (var kv in dict)
                 map[$"{category}.{kv.Key}"] = kv.Value;
             map[$"{category}.generic"] = generic;
+        }
+
+        private static void CollectPool(IDictionary<string, string> map, string category, Dictionary<string, List<string>> dict, List<string> generic)
+        {
+            foreach (var kv in dict)
+                for (int i = 0; i < kv.Value.Count; i++)
+                    map[$"{category}.{kv.Key}.{i}"] = kv.Value[i];
+            for (int i = 0; i < generic.Count; i++)
+                map[$"{category}.generic.{i}"] = generic[i];
         }
 
         // ── Default-translation collection (used to generate i18n/default.json) ──
@@ -32,8 +53,8 @@ namespace MarriageOverhaul
             // Simple per-spouse line dictionaries.
             CollectDict(map, "jealousy", Jealousy, GenericJealousy);
             CollectDict(map, "farewell", Farewell, GenericFarewell);
-            CollectDict(map, "mood.happy", HappyMood, GenericHappy);
-            CollectDict(map, "mood.grumpy", GrumpyMood, GenericGrumpy);
+            CollectPool(map, "mood.happy", HappyMood, GenericHappy);
+            CollectPool(map, "mood.grumpy", GrumpyMood, GenericGrumpy);
 
             // General everyday pool (index-keyed).
             for (int i = 0; i < GeneralPool.Count; i++)

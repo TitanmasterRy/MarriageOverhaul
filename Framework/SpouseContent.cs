@@ -519,42 +519,144 @@ namespace MarriageOverhaul
         // ─────────────────────────────────────────────────────────────
         //  MOOD (greeting fragments)
         // ─────────────────────────────────────────────────────────────
-        private static readonly Dictionary<string, string> HappyMood = new Dictionary<string, string>
+        private static readonly Dictionary<string, List<string>> HappyMood = new Dictionary<string, List<string>>
         {
-            ["Abigail"] = "Hey, you! I had the best dream about us raiding a dungeon together. Today's gonna be great, I can feel it!",
-            ["Penny"] = "Good morning, sweetheart. Waking up next to you makes everything feel right. I'm so lucky.",
-            ["Haley"] = "Morning, gorgeous. You know what? Life's actually pretty perfect right now. Don't tell anyone I said that.",
-            ["Emily"] = "Mmm, your aura is glowing this morning, and so is mine. The whole house feels warm. I love it.",
-            ["Leah"] = "Morning, you. I woke up inspired — might sculpt something just thinking about us. Sappy, I know.",
-            ["Maru"] = "Good morning! I ran the numbers and you're statistically the best part of my day. Every day. Don't question the data.",
-            ["Alex"] = "Hey, babe! I'm feelin' on top of the world today. Havin' you around does that, y'know?",
-            ["Elliott"] = "Ah, good morning, my muse. I woke with poetry in my heart and your name on my lips.",
-            ["Harvey"] = "Good morning, dear! I, ah, slept wonderfully. There's something about waking up beside you. It's the best medicine.",
-            ["Sam"] = "Yo, morning! I'm so stoked today. Honestly? Marrying you was the coolest thing I ever did.",
-            ["Sebastian"] = "Morning. ...I'm actually in a good mood, which is rare, so enjoy it. It's because of you, obviously.",
-            ["Shane"] = "Hey. You know, I woke up and actually felt... good. Hopeful, even. That's all you. Thanks."
+            ["Abigail"] = new List<string> {
+                "Hey, you! I had the best dream about us raiding a dungeon together. Today's gonna be great, I can feel it!",
+                "Morning! I'm in a stupidly good mood and I'm blaming you for it. In a good way.",
+                "Hey! Today feels like an adventure waiting to happen. Let's go cause some trouble.",
+                "Ugh, why are you so cute in the morning? It's distracting. Anyway, good morning!" },
+            ["Penny"] = new List<string> {
+                "Good morning, sweetheart. Waking up next to you makes everything feel right. I'm so lucky.",
+                "Good morning! I woke up smiling and I couldn't tell you why. Then I saw you.",
+                "Morning, dear. My heart just feels so full today. Thank you for that.",
+                "Good morning. Everything feels gentle and right this morning. I hope your day is too." },
+            ["Haley"] = new List<string> {
+                "Morning, gorgeous. You know what? Life's actually pretty perfect right now. Don't tell anyone I said that.",
+                "Morning! I'm having a great day already and it's barely started. Lucky you, getting to share it.",
+                "Hey, gorgeous. I feel amazing today, which means YOU get to bask in it. You're welcome.",
+                "Good morning! Ugh, I'm in such a good mood I might even be nice to people. Don't get used to it." },
+            ["Emily"] = new List<string> {
+                "Mmm, your aura is glowing this morning, and so is mine. The whole house feels warm. I love it.",
+                "Good morning! The energy in here is just radiant today. I feel it shimmering all around us.",
+                "Morning, love! My spirit's practically dancing. The colors are so vivid I could cry happy tears.",
+                "Mmm, what a beautiful morning. The whole universe feels like it's smiling on us." },
+            ["Leah"] = new List<string> {
+                "Morning, you. I woke up inspired — might sculpt something just thinking about us. Sappy, I know.",
+                "Morning! I'm buzzing with ideas today. Good mood, good light, good company. Perfect.",
+                "Hey, you. I feel so light this morning. Like I could create anything. You do that to me.",
+                "Good morning! The whole world looks paintable today. Especially you, half-asleep like that." },
+            ["Maru"] = new List<string> {
+                "Good morning! I ran the numbers and you're statistically the best part of my day. Every day. Don't question the data.",
+                "Morning! All my readings say today's going to be great. Subjective ones, too. Mostly about you.",
+                "Good morning! I woke up energized and ready to invent something brilliant. You're a great catalyst.",
+                "Hey! My mood's running at peak efficiency today. Correlation with you is, frankly, undeniable." },
+            ["Alex"] = new List<string> {
+                "Hey, babe! I'm feelin' on top of the world today. Havin' you around does that, y'know?",
+                "Morning, babe! I'm so pumped today, I could lift the whole barn. You give me that energy.",
+                "Hey! Feelin' unstoppable this morning. Best part? Gettin' to share it with you.",
+                "Good mornin', gorgeous! Today's gonna be a winner, I can feel it in my bones." },
+            ["Elliott"] = new List<string> {
+                "Ah, good morning, my muse. I woke with poetry in my heart and your name on my lips.",
+                "Good morning! My spirits soar like gulls over the tide today. The words simply pour out.",
+                "Ah, what a glorious morning. Inspiration courses through me — and you, my dear, are its source.",
+                "Morning, my love! The day gleams with promise, and my pen can scarcely keep pace with my joy." },
+            ["Harvey"] = new List<string> {
+                "Good morning, dear! I, ah, slept wonderfully. There's something about waking up beside you. It's the best medicine.",
+                "Good morning! I, ah, feel positively wonderful today. Quite the rare diagnosis for me.",
+                "Morning, dear! My heart's light as a feather. I'd prescribe a day like this to everyone.",
+                "Good morning! I woke up humming, if you can believe it. You bring that out in me." },
+            ["Sam"] = new List<string> {
+                "Yo, morning! I'm so stoked today. Honestly? Marrying you was the coolest thing I ever did.",
+                "Morning! I'm in SUCH a good mood, I already wrote half a song before coffee. It's a bop.",
+                "Yo! Today feels awesome and we haven't even done anything yet. That's the good stuff.",
+                "Hey, hey! Feelin' great today. You've got a lot to do with that, just sayin'." },
+            ["Sebastian"] = new List<string> {
+                "Morning. ...I'm actually in a good mood, which is rare, so enjoy it. It's because of you, obviously.",
+                "Morning. Weirdly good mood today. Don't make a thing of it. ...Okay, maybe make a small thing of it.",
+                "Hey. I actually feel good today. Light, even. That's, uh, a you thing. Obviously.",
+                "Morning. I caught myself smiling earlier. Out of nowhere. Then I remembered it was 'cause of you." },
+            ["Shane"] = new List<string> {
+                "Hey. You know, I woke up and actually felt... good. Hopeful, even. That's all you. Thanks.",
+                "Hey. Today feels... lighter, somehow. Good lighter. Hadn't felt that in a while. It's you.",
+                "Morning. Woke up in an actual good mood. Weird, right? The good kind of weird. Thanks to you.",
+                "Hey, you. Feelin' alright today. Better than alright, honestly. You did that." }
         };
 
-        private static readonly Dictionary<string, string> GrumpyMood = new Dictionary<string, string>
+        private static readonly Dictionary<string, List<string>> GrumpyMood = new Dictionary<string, List<string>>
         {
-            ["Abigail"] = "Oh. Morning. I'm not really in the mood to talk right now, okay?",
-            ["Penny"] = "...Good morning. Sorry, I just didn't sleep well. I'd rather not get into it.",
-            ["Haley"] = "Hmph. Morning. Don't even look at me right now, I'm in a mood.",
-            ["Emily"] = "Morning. My aura's all tangled today. I need some space to sort myself out.",
-            ["Leah"] = "Morning. ...Yeah, I'm a little off today. Just leave me to my work for now.",
-            ["Maru"] = "Oh, you're up. Morning. I've got a lot on my mind, so... we'll talk later.",
-            ["Alex"] = "Yeah, morning. Not really feelin' it today, so don't take it personal.",
-            ["Elliott"] = "Good morning. Forgive my brevity — the words won't come and neither will my warmth, today.",
-            ["Harvey"] = "Oh. Good morning. I'm, ah, not quite myself today. Best give me a little room.",
-            ["Sam"] = "Hey. ...Yeah, I'm kinda in a funk this morning. Don't worry about it.",
-            ["Sebastian"] = "Morning. I'd rather not talk right now, if that's okay. Just one of those days.",
-            ["Shane"] = "...Morning. I'm not in a great place today. Don't push it, alright?"
+            ["Abigail"] = new List<string> {
+                "Oh. Morning. I'm not really in the mood to talk right now, okay?",
+                "Ugh. Morning. Everything's annoying today and I don't know why. Just... bear with me.",
+                "Hey. I'm in a mood. Not your fault. Probably. Just give me a little room.",
+                "Morning. I feel all restless and prickly today. Don't take it personally." },
+            ["Penny"] = new List<string> {
+                "...Good morning. Sorry, I just didn't sleep well. I'd rather not get into it.",
+                "Good morning. I'm feeling a little fragile today. Please be patient with me.",
+                "Morning. My head's full of worries this morning. I'll try not to let it show.",
+                "...Morning. I'm a bit out of sorts. It's nothing you did. I just need a quiet day." },
+            ["Haley"] = new List<string> {
+                "Hmph. Morning. Don't even look at me right now, I'm in a mood.",
+                "Ugh. Today is already the worst and it just started. Don't test me.",
+                "Morning. I'm cranky and my hair won't cooperate. Approach with caution.",
+                "Hmph. I'm in a mood and I refuse to apologize for it. Morning, though." },
+            ["Emily"] = new List<string> {
+                "Morning. My aura's all tangled today. I need some space to sort myself out.",
+                "Morning. The energy's all jagged and grey today. I need to sit quietly with it.",
+                "Oh. Morning. My spirit feels heavy. I'll work through it, but go gently, okay?",
+                "Morning. The colors are all muddled this morning. I just need a little space." },
+            ["Leah"] = new List<string> {
+                "Morning. ...Yeah, I'm a little off today. Just leave me to my work for now.",
+                "Morning. Feeling blocked and cranky. Best to let me grumble at the clay alone.",
+                "Hey. I'm in a mood today. It'll pass. Just give me some room 'til it does.",
+                "Morning. ...Not my best day. Don't mind me. I'll come around." },
+            ["Maru"] = new List<string> {
+                "Oh, you're up. Morning. I've got a lot on my mind, so... we'll talk later.",
+                "Morning. My focus is fried and my patience is thin. Bear with me, okay?",
+                "Oh. Morning. Brain's running too many processes today. I need to defrag. Alone.",
+                "Morning. I'm irritable and I can't quantify why. Just... give me a little space." },
+            ["Alex"] = new List<string> {
+                "Yeah, morning. Not really feelin' it today, so don't take it personal.",
+                "Morning. I'm in a funk today. It's not you, I just woke up off. Gimme some room.",
+                "Hey. Not feelin' great today. I'll shake it off, just... go easy on me.",
+                "Yeah, mornin'. Kind of a rough head today. Don't mind me bein' quiet." },
+            ["Elliott"] = new List<string> {
+                "Good morning. Forgive my brevity — the words won't come and neither will my warmth, today.",
+                "Good morning. A grey humor has me in its grip today. Forgive my poor company.",
+                "Morning. The muse has fled and taken my cheer with her. I'll be poor conversation.",
+                "Ah. Morning. My spirits are at low tide. Bear with me 'til they turn." },
+            ["Harvey"] = new List<string> {
+                "Oh. Good morning. I'm, ah, not quite myself today. Best give me a little room.",
+                "Good morning. I, ah, woke up rather out of sorts. Best give me a bit of space.",
+                "Morning. My nerves are a touch frayed today. It'll settle. Bear with me, won't you?",
+                "Oh. Morning. I'm feeling a little low today. Nothing serious — just need some quiet." },
+            ["Sam"] = new List<string> {
+                "Hey. ...Yeah, I'm kinda in a funk this morning. Don't worry about it.",
+                "Morning. The music in my head went quiet today. Kinda bummed. Don't mind me.",
+                "Hey. I'm in a weird funk this morning. Not your fault. Just gimme a bit.",
+                "Mornin'. Feelin' off today, can't shake it. I'll be alright. Probably." },
+            ["Sebastian"] = new List<string> {
+                "Morning. I'd rather not talk right now, if that's okay. Just one of those days.",
+                "Morning. Pulling inward today. It's not you. Just one of those grey ones.",
+                "Hey. Not in a talking place this morning. I'll be down in the basement.",
+                "Morning. Everything feels far away today. Give me some space and I'll come back around." },
+            ["Shane"] = new List<string> {
+                "...Morning. I'm not in a great place today. Don't push it, alright?",
+                "Morning. The dark kind of rolled back in today. Don't push it, okay? I'm tryin'.",
+                "Hey. ...Rough one today. Nothin' happened, it just hit. Just let me be for now.",
+                "...Morning. Feelin' low. It's not you. Just gotta get through it. Bear with me." }
         };
 
-        private const string GenericHappy =
-            "Good morning, my love! I woke up in such a wonderful mood. It's so good to see your face.";
-        private const string GenericGrumpy =
-            "Oh. Morning. I'm not really feeling up to talking right now. Sorry.";
+        private static readonly List<string> GenericHappy = new List<string> {
+            "Good morning, my love! I woke up in such a wonderful mood. It's so good to see your face.",
+            "Good morning! I'm in such high spirits today. Everything just feels right with you here.",
+            "Morning, sweetheart! My heart's so light this morning. You have everything to do with that.",
+            "Good morning, my love! Today feels full of promise — and it starts with seeing you." };
+        private static readonly List<string> GenericGrumpy = new List<string> {
+            "Oh. Morning. I'm not really feeling up to talking right now. Sorry.",
+            "Morning. I'm a bit out of sorts today. It's nothing you did. Just bear with me.",
+            "Oh. Morning. Not feeling my best today. I'd rather keep to myself for a while.",
+            "...Morning. I woke up in a mood. It'll pass. Just go a little easy on me, okay?" };
 
         // ─────────────────────────────────────────────────────────────
         //  GENERAL POOL (everyday married flavor, used on neutral days)
@@ -584,7 +686,23 @@ namespace MarriageOverhaul
             "There's nowhere I'd rather wake up than right here, next to you.",
             "If you find anything pretty out there today, think of me, yeah?",
             "I'm proud of you. Of us. Of whatever it is we're building here.",
-            "Stay safe today. And hurry home. I get bored of missing you."
+            "Stay safe today. And hurry home. I get bored of missing you.",
+            "Morning. The coffee's fresh and the day's wide open. Not bad, right?",
+            "I fed the cat already. Don't worry, I told it you love it more.",
+            "Sleep well? You were mumbling about crops again. It was kind of adorable.",
+            "I'll be here when you get back. Same as always. I kind of love that about us.",
+            "Don't forget to eat something out there. You always forget, and I always notice.",
+            "The sun's barely up and you're already raring to go. I admire that. From bed, mostly.",
+            "I dreamed we were old and grey and still doing exactly this. Wouldn't change a thing.",
+            "Take a jacket. ...I know, I know. But humor me.",
+            "Funny how a quiet morning with you beats anything fancy I ever wanted before.",
+            "I left a little note in your bag. Don't read it 'til lunch. ...Okay, read it whenever.",
+            "You make this old farmhouse feel like the best place in the valley.",
+            "Whatever's been weighing on you lately — we'll figure it out. Together. Always together.",
+            "I caught myself talking about you to the chickens this morning. They're very supportive.",
+            "Go on, work your magic out there. I'll keep the home fires going.",
+            "I love that the first face I see each day is yours. Even the bedhead. Especially the bedhead.",
+            "Come back to me in one piece, alright? That's the only rule I've got."
         };
 
         public static string GetRandomGeneralLine(System.Random rng)
@@ -593,11 +711,11 @@ namespace MarriageOverhaul
             return I18n.Get($"general.{i}", GeneralPool[i]);
         }
 
-        public static string GetHappyMood(string name)
-            => LocDict("mood.happy", name, HappyMood, GenericHappy);
+        public static string GetHappyMood(string name, System.Random rng)
+            => LocPool("mood.happy", name, HappyMood, GenericHappy, rng);
 
-        public static string GetGrumpyMood(string name)
-            => LocDict("mood.grumpy", name, GrumpyMood, GenericGrumpy);
+        public static string GetGrumpyMood(string name, System.Random rng)
+            => LocPool("mood.grumpy", name, GrumpyMood, GenericGrumpy, rng);
 
         // ─────────────────────────────────────────────────────────────
         //  FEEDING (morning dialogue hints)
