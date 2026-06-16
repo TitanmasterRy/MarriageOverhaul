@@ -35,6 +35,10 @@
       <HintPath>$(GamePath)\MonoGame.Framework.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>$(GamePath)\smapi-internal\Newtonsoft.Json.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
     <Reference Include="xTile">
       <HintPath>$(GamePath)\xTile.dll</HintPath>
       <Private>false</Private>

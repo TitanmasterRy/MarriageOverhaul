@@ -76,6 +76,19 @@ namespace MarriageOverhaul
                 () => "Enable Cheating (Ultimate Punishment)",
                 () => "If you badly neglect your spouse, they may have an affair with another single candidate and leave you. Harsh - disable to turn it off entirely.");
 
+            // ── Custom NPC Framework ─────────────────────────────────
+            api.AddSectionTitle(manifest, () => "Custom NPC Framework");
+
+            api.AddBoolOption(manifest,
+                () => this.Config.EnableCustomNpcFramework, v => this.Config.EnableCustomNpcFramework = v,
+                () => "Enable Custom NPC Framework",
+                () => "Let installed content packs give personalized dialogue and behavior to their own custom NPCs (modded spouses). When off, those NPCs use the generic fallback dialogue as before. Doesn't affect vanilla spouses.");
+
+            api.AddBoolOption(manifest,
+                () => this.Config.AllowVanillaOverride, v => this.Config.AllowVanillaOverride = v,
+                () => "Allow Vanilla Override",
+                () => "Allow content packs to replace the built-in personalized content for the twelve vanilla spouses. Off by default, so packs can only add content for custom NPCs and never change vanilla characters.");
+
             // ── Compatibility ────────────────────────────────────────
             api.AddSectionTitle(manifest, () => "Compatibility");
 

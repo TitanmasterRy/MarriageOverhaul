@@ -34,9 +34,16 @@ namespace MarriageOverhaul
             ["Shane"]     = new SeasonPref { Favorite = 0, Least = 3 }
         };
 
-        /// <summary>The spouse's seasonal preferences, or null for modded spouses (no modifier).</summary>
+        /// <summary>The spouse's seasonal preferences. Vanilla spouses use the built-in table; a registered
+        /// custom NPC may supply its own via its behavior block; otherwise null (no modifier).</summary>
         public static SeasonPref GetSeasonPref(string name)
-            => IsVanilla(name) && Seasons.ContainsKey(name) ? Seasons[name] : null;
+        {
+            if (IsVanilla(name) && Seasons.ContainsKey(name) && !CustomNpcRegistry.AllowVanillaOverride)
+                return Seasons[name];
+            if (CustomNpcRegistry.TryGetSeasonPref(name, out var custom))
+                return custom;
+            return IsVanilla(name) && Seasons.ContainsKey(name) ? Seasons[name] : null;
+        }
 
         private static readonly List<string> FavoriteSeasonLines = new List<string>
         {

@@ -68,7 +68,14 @@ namespace MarriageOverhaul
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
             this.SetupGmcm();
+
+            // Custom NPC Framework: discover content packs and register their NPCs (always loaded so the
+            // registry is ready; the master config toggle gates whether the content is actually served).
+            CustomNpcContentPackLoader.LoadAll(this.Helper, this.Monitor);
         }
+
+        /// <summary>Public API for advanced C# mods to register custom-NPC content programmatically. See <see cref="ICustomNpcApi"/>.</summary>
+        public override object GetApi() => new CustomNpcApi(this.Monitor);
 
         private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {

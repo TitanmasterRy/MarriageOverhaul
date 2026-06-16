@@ -537,6 +537,10 @@ namespace MarriageOverhaul
 
         public static string GetMorningLine(string name, MorningTier tier, System.Random rng, string avoid)
         {
+            // Custom-NPC tier: serve registered pack content (verbatim, no i18n) when present for this tier.
+            if (CustomNpcRegistry.TryGetMorning(name, tier, out var customPool))
+                return PickAvoiding(customPool, rng, avoid);
+
             bool has = IsVanilla(name) && MorningLines.ContainsKey(name) && MorningLines[name].ContainsKey(tier);
             List<string> pool = has ? MorningLines[name][tier] : GenericMorning[tier];
             string prefix = $"morning.{(has ? name : "generic")}.{tier}";
@@ -554,6 +558,20 @@ namespace MarriageOverhaul
                 idx = rng.Next(pool.Count);
                 pick = I18n.Get($"{prefix}.{idx}", pool[idx]);
             }
+            return pick;
+        }
+
+        /// <summary>Pick a line at random from a verbatim (non-i18n) pool, avoiding yesterday's line where possible.</summary>
+        internal static string PickAvoiding(List<string> pool, System.Random rng, string avoid)
+        {
+            if (pool == null || pool.Count == 0)
+                return "";
+            if (pool.Count == 1)
+                return pool[0];
+            string pick = pool[rng.Next(pool.Count)];
+            int guard = 0;
+            while (pick == avoid && guard++ < 6)
+                pick = pool[rng.Next(pool.Count)];
             return pick;
         }
 

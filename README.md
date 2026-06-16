@@ -39,6 +39,55 @@ A further seventeen optional systems deepen married life, each individually togg
 
 All systems fall back gracefully to natural, generic behavior for **modded spouses** (such as those from Stardew Valley Expanded) that don't have personalized content defined. Nothing is hardcoded in a way that breaks when NPC mods are installed.
 
+## Custom NPC Framework
+
+Out of the box, modded spouses use the generic fallback dialogue. The **Custom NPC Framework** lets **other modders** give their own custom NPCs the same personalized treatment the vanilla spouses get — through a **plain JSON content pack, no C# or compiling required**.
+
+Content resolves in three tiers: **vanilla built-in → your registered custom content → generic fallback.** Everything is modular: provide only the sections you want, and anything you leave out falls back to the generic pool (per system, and per friendship tier for morning greetings). Vanilla spouses are never affected unless the player opts in.
+
+### Quick start for pack authors
+
+1. Make a folder in `Stardew Valley/Mods/` with a `manifest.json` and a `content.json`.
+2. In the manifest, point `ContentPackFor` at this mod:
+
+   ```json
+   {
+     "Name": "[MO] My Custom NPC",
+     "Author": "Your Name Here",
+     "Version": "1.0.0",
+     "UniqueID": "YourName.MOMyCustomNpc",
+     "ContentPackFor": { "UniqueID": "TitanmasterRy.MarriageOverhaul" }
+   }
+   ```
+
+3. In `content.json`, map your NPC's **internal name** to the sections you want to personalize:
+
+   ```json
+   {
+     "Format": "1.0",
+     "NPCs": {
+       "MyCustomNpc": {
+         "Behavior":    { "LovesRain": true, "FavoriteSeason": "fall", "LeastSeason": "summer" },
+         "Morning":     { "VeryLow": ["..."], "Low": ["..."], "High": ["..."], "VeryHigh": ["..."] },
+         "Mood":        { "Happy": ["..."], "Neutral": ["..."], "Grumpy": ["..."] },
+         "Arguments":   [ { "Intro": "...", "GoodChoice": "...", "GoodReply": "...", "NeutralChoice": "...", "NeutralReply": "...", "BadChoice": "...", "BadReply": "..." } ],
+         "Anniversary": { "Reminder": "...", "Sweet": "...", "Disappointed": "..." },
+         "Jealousy":    { "Lines": ["..."], "Rivals": ["Npc1", "Npc2"] },
+         "Makeup":      { "Category": "nature", "Hint": "...", "Reconcile": "...", "Resigned": "..." }
+       }
+     }
+   }
+   ```
+
+That's it — SMAPI discovers the pack automatically and the NPC gets personalized dialogue in-game.
+
+**Covered systems:** friendship-tiered morning greetings, mood greetings (Happy/Neutral/Grumpy), argument dialogue trees, anniversary lines, jealousy lines + a rival list, makeup-gift hints, and a behavior block (rain mood, favorite/least season). New optional sections can be added in future versions without breaking existing packs.
+
+> **Translations:** pack text is shown verbatim — the framework does **not** run it through Marriage Overhaul's i18n. Pack authors supply their own strings and handle their own translations (e.g. one pack per language).
+
+📖 **Full author guide:** [docs/Custom-NPC-Framework.md](docs/Custom-NPC-Framework.md) — every field documented, fallback rules, and the optional C# API.
+📦 **Copy-and-edit example:** a complete pack for a fictional NPC lives in [`examples/[MO] Aria Example`](examples/).
+
 ## Requirements
 
 - Stardew Valley 1.6+
@@ -53,7 +102,7 @@ All systems fall back gracefully to natural, generic behavior for **modded spous
 
 ## Configuration
 
-Every system can be toggled and tuned. Edit `config.json` (created after the first run) or use Generic Mod Config Menu, where the options are organized under **Systems**, **Thresholds**, and **Jealousy** headers with tooltips.
+Every system can be toggled and tuned. Edit `config.json` (created after the first run) or use Generic Mod Config Menu, where the options are organized under **Systems**, **Custom NPC Framework**, **Thresholds**, and **Jealousy** headers with tooltips.
 
 | Option | Default | Description |
 | --- | --- | --- |
@@ -66,6 +115,8 @@ Every system can be toggled and tuned. Edit `config.json` (created after the fir
 | `EnableAnniversary` | `true` | Yearly anniversary reminders, bonuses, and penalties. |
 | `EnableMakeupGifts` | `true` | Makeup-gift state after a bad argument. |
 | `EnableCheating` | `true` | The "ultimate punishment" — a neglected spouse can have an affair and leave you. |
+| `EnableCustomNpcFramework` | `true` | Let content packs provide personalized dialogue/behavior for their own custom NPCs (see [Custom NPC Framework](#custom-npc-framework)). |
+| `AllowVanillaOverride` | `false` | Allow content packs to override the built-in content for the twelve vanilla spouses. |
 | `ArgumentThresholdHearts` | `10` | Friendship (in hearts) below which arguments can trigger. |
 | `DivorceWarningThresholdHearts` | `8` | Friendship (in hearts) below which the warning letter is sent. |
 | `ConsecutiveDaysBeforeAutoDivorce` | `7` | Days below the warning threshold (after the letter) before divorce. |

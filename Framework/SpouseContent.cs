@@ -445,6 +445,10 @@ namespace MarriageOverhaul
 
         public static List<ArgumentScenario> GetArguments(string name)
         {
+            // Custom-NPC tier: serve registered argument scenarios (verbatim, no i18n) when present.
+            if (CustomNpcRegistry.TryGetArguments(name, out var customArgs))
+                return customArgs;
+
             bool has = IsVanilla(name) && Arguments.ContainsKey(name);
             string p = $"argument.{(has ? name : "generic")}";
             List<ArgumentScenario> src = has ? Arguments[name] : GenericArguments;
@@ -488,8 +492,12 @@ namespace MarriageOverhaul
         private const string GenericJealousy =
             "I heard you gave a gift to someone else today. I'm trying not to read into it, but it stung a little.";
 
-        public static string GetJealousy(string name)
-            => LocDict("jealousy", name, Jealousy, GenericJealousy);
+        public static string GetJealousy(string name, System.Random rng)
+        {
+            if (CustomNpcRegistry.TryGetJealousy(name, out var customLines))
+                return PickAvoiding(customLines, rng, null);
+            return LocDict("jealousy", name, Jealousy, GenericJealousy);
+        }
 
         // ─────────────────────────────────────────────────────────────
         //  FAREWELL (auto-divorce scene)
@@ -705,17 +713,28 @@ namespace MarriageOverhaul
             "Come back to me in one piece, alright? That's the only rule I've got."
         };
 
-        public static string GetRandomGeneralLine(System.Random rng)
+        /// <summary>Neutral-day everyday line. A registered custom NPC's Neutral mood pool takes priority over the shared general pool.</summary>
+        public static string GetRandomGeneralLine(string name, System.Random rng)
         {
+            if (CustomNpcRegistry.TryGetMoodPool(name, "neutral", out var customPool))
+                return PickAvoiding(customPool, rng, null);
             int i = rng.Next(GeneralPool.Count);
             return I18n.Get($"general.{i}", GeneralPool[i]);
         }
 
         public static string GetHappyMood(string name, System.Random rng)
-            => LocPool("mood.happy", name, HappyMood, GenericHappy, rng);
+        {
+            if (CustomNpcRegistry.TryGetMoodPool(name, "happy", out var customPool))
+                return PickAvoiding(customPool, rng, null);
+            return LocPool("mood.happy", name, HappyMood, GenericHappy, rng);
+        }
 
         public static string GetGrumpyMood(string name, System.Random rng)
-            => LocPool("mood.grumpy", name, GrumpyMood, GenericGrumpy, rng);
+        {
+            if (CustomNpcRegistry.TryGetMoodPool(name, "grumpy", out var customPool))
+                return PickAvoiding(customPool, rng, null);
+            return LocPool("mood.grumpy", name, GrumpyMood, GenericGrumpy, rng);
+        }
 
         // ─────────────────────────────────────────────────────────────
         //  FEEDING (morning dialogue hints)
@@ -853,6 +872,10 @@ namespace MarriageOverhaul
 
         public static AnniversaryInfo GetAnniversary(string name)
         {
+            // Custom-NPC tier: serve registered anniversary lines (verbatim, no i18n) when present.
+            if (CustomNpcRegistry.TryGetAnniversary(name, out var customAnniv))
+                return customAnniv;
+
             bool has = IsVanilla(name) && Anniversaries.ContainsKey(name);
             string p = $"anniversary.{(has ? name : "generic")}";
             AnniversaryInfo a = has ? Anniversaries[name] : GenericAnniversary;
@@ -929,6 +952,10 @@ namespace MarriageOverhaul
 
         public static MakeupInfo GetMakeup(string name)
         {
+            // Custom-NPC tier: serve registered makeup content (verbatim, no i18n) when present.
+            if (CustomNpcRegistry.TryGetMakeup(name, out var customMakeup))
+                return customMakeup;
+
             bool has = IsVanilla(name) && Makeup.ContainsKey(name);
             string p = $"makeup.{(has ? name : "generic")}";
             MakeupInfo m = has ? Makeup[name] : GenericMakeup;

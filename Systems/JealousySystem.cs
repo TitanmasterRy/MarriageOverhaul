@@ -42,12 +42,22 @@ namespace MarriageOverhaul
             }
         }
 
-        /// <summary>Whether the recipient is of a gender the spouse would be jealous of (config-driven).</summary>
+        /// <summary>Whether the recipient is someone the spouse would be jealous of. A registered custom NPC
+        /// may declare an explicit rival list (only those count); otherwise the default same-gender rule applies.</summary>
         private bool IsJealousyTarget(NPC spouse, NPC recipient)
         {
             try
             {
-                // Default behavior: jealous of NPCs of the opposite gender to the player
+                // Custom NPCs may name specific rivals — when they do, jealousy is limited to that list.
+                if (CustomNpcRegistry.TryGetRivals(spouse.Name, out var rivals))
+                {
+                    foreach (string r in rivals)
+                        if (string.Equals(r, recipient.Name, System.StringComparison.OrdinalIgnoreCase))
+                            return true;
+                    return false;
+                }
+
+                // Default behavior: jealous of NPCs of the same gender as the spouse
                 // (i.e. the same "type" the spouse represents as a romantic interest).
                 return recipient.Gender == spouse.Gender;
             }
@@ -65,7 +75,7 @@ namespace MarriageOverhaul
 
             this.Data.PendingJealousy = false;
             this.ChangeSpouseFriendship(-15);
-            this.PushDialogue(spouse, SpouseContent.GetJealousy(spouse.Name), "angry");
+            this.PushDialogue(spouse, SpouseContent.GetJealousy(spouse.Name, Game1.random), "angry");
             this.forceGrumpyToday = true;
         }
     }

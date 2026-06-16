@@ -1,0 +1,94 @@
+{
+  "Format": "1.0",
+
+  "//": "Map of NPC internal name -> personalized content. 'Aria' here is the NPC's internal Name (not display name). Every section below is OPTIONAL; delete any you don't want and that system falls back to Marriage Overhaul's generic pool. All text is shown verbatim (no translation) - ship one pack per language if you need localization.",
+
+  "NPCs": {
+    "Aria": {
+
+      "Behavior": {
+        "LovesRain": true,
+        "FavoriteSeason": "fall",
+        "LeastSeason": "summer",
+        "EnabledSystems": [ "Morning", "Mood", "Arguments", "Anniversary", "Jealousy", "Makeup" ]
+      },
+
+      "Morning": {
+        "VeryLow": [
+          "Oh. You're awake. I don't really have anything to say to you.",
+          "Morning. ...Just give me some space today, alright?"
+        ],
+        "Low": [
+          "Morning. I'll be tending the garden if you need me.",
+          "Oh, hello. There's tea in the pot. Help yourself."
+        ],
+        "High": [
+          "Good morning! The garden's blooming and so is my mood. Funny how you do that.",
+          "There you are. I picked the first ripe tomato just for you. Don't tell the others."
+        ],
+        "VeryHigh": [
+          "Morning, my love. I lay here listening to the rain and thinking how lucky I am to wake beside you.",
+          "Come here before you go. A whole day is easier to face after a kiss from you."
+        ]
+      },
+
+      "Mood": {
+        "Happy": [
+          "Good morning! I'm in such a wonderful mood today. The rain, the garden, you - it's perfect.",
+          "Morning! I woke up smiling. That's becoming a habit around you."
+        ],
+        "Neutral": [
+          "Morning. I'll be out in the beds most of the day. Come find me if you get a chance.",
+          "I dreamed about the harvest again. Occupational hazard, I suppose."
+        ],
+        "Grumpy": [
+          "Morning. The aphids are back and so is my bad mood. Don't mind me.",
+          "...Not my best day. Be patient with me, would you?"
+        ]
+      },
+
+      "Arguments": [
+        {
+          "Intro": "You trampled the seedling bed again. I know it's just plants to you, but I've been nursing those for weeks.",
+          "GoodChoice": "You're right, I'll watch my step. Show me where's safe to walk.",
+          "GoodReply": "...Thank you. That's all I wanted. Here, I'll mark the paths for you.",
+          "NeutralChoice": "It was an accident, Aria.",
+          "NeutralReply": "I know. Accidents still cost me a season's work, though.",
+          "BadChoice": "They're just plants. Relax.",
+          "BadReply": "'Just plants.' That's my whole heart out there. Forget it."
+        },
+        {
+          "Intro": "You've been gone from dawn to dusk every day. I didn't marry you to garden alone.",
+          "GoodChoice": "I'll make time for us. Tomorrow, just you and me.",
+          "GoodReply": "I'd like that. More than you know. Don't forget, okay?",
+          "NeutralChoice": "I'm working hard for our future.",
+          "NeutralReply": "Our future. I just want a little of the present, too.",
+          "BadChoice": "Maybe find a hobby to fill the time.",
+          "BadReply": "A hobby. Right. Never mind that I wanted it to be you."
+        }
+      ],
+
+      "Anniversary": {
+        "Reminder": "My dearest,^Do you know what today is? A whole year since we wed. Meet me in the garden - I have something for you.^- Aria",
+        "Sweet": "You remembered our anniversary! Of course you did. Best year of my life, and the first of many. I love you.",
+        "Disappointed": "You forgot our anniversary. ...I waited in the garden all morning. It's fine. I'll be fine."
+      },
+
+      "Jealousy": {
+        "Lines": [
+          "So you were giving gifts to someone else today. Should I be worried, or just a little hurt?",
+          "I heard you brought them a present. I trust you... I just wish it had been me."
+        ],
+        "Rivals": [ "Elliott", "Leah" ]
+      },
+
+      "Makeup": {
+        "Category": "nature",
+        "Hint": "If you really want to make it right, bring me something from the wild. Something that grew.",
+        "Reconcile": "Something straight from the earth. That's exactly you. ...Okay. We're good. Come here.",
+        "Resigned": "The apology never came. That's alright. I've made my peace with it on my own."
+      }
+
+    }
+  }
+}

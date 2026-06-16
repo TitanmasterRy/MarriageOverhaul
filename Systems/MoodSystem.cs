@@ -33,14 +33,19 @@ namespace MarriageOverhaul
                     this.PushDialogue(spouse, SpouseContent.GetGrumpyMood(spouse.Name, Game1.random), "angry");
                     break;
                 default: // Neutral — share an everyday line from the general pool.
-                    this.PushDialogue(spouse, SpouseContent.GetRandomGeneralLine(Game1.random));
+                    this.PushDialogue(spouse, SpouseContent.GetRandomGeneralLine(spouse.Name, Game1.random));
                     break;
             }
         }
 
-        // Spouses who are cheered rather than dampened by rainy weather.
+        // Spouses who are cheered rather than dampened by rainy weather. Vanilla: Sebastian & Abigail.
+        // A registered custom NPC may opt in via its behavior block (LovesRain).
         private static bool SpouseLovesRain(string name)
-            => name == "Sebastian" || name == "Abigail";
+        {
+            if (name == "Sebastian" || name == "Abigail")
+                return true;
+            return CustomNpcRegistry.TryGetLovesRain(name, out bool loves) && loves;
+        }
 
         private bool IsRainingNow()
         {

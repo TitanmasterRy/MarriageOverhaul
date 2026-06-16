@@ -12,6 +12,12 @@ namespace MarriageOverhaul
         public bool EnableMoodSystem { get; set; } = true;
         public bool EnableAnniversary { get; set; } = true;
 
+        // ── Custom NPC Framework ────────────────────────────────────
+        /// <summary>Master toggle for the Custom NPC Framework: lets content packs provide personalized dialogue/behavior for their own custom NPCs. When off, custom NPCs use the generic fallback as before.</summary>
+        public bool EnableCustomNpcFramework { get; set; } = true;
+        /// <summary>Allow content packs to override the built-in personalized content for the twelve vanilla spouses. Off by default so vanilla behavior is never changed by a pack.</summary>
+        public bool AllowVanillaOverride { get; set; } = false;
+
         // ── Compatibility ───────────────────────────────────────────
         /// <summary>Turn off features known to cause problems in multiplayer (currently: Shared Dreams, which can freeze other players' screens). Recommended ON for multiplayer, OFF for single-player.</summary>
         public bool MultiplayerCompatibilityMode { get; set; } = false;
