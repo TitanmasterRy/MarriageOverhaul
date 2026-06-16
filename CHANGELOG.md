@@ -2,6 +2,30 @@
 
 All notable changes to Marriage Overhaul are documented here.
 
+## 1.7.0
+
+### Added — Custom NPC Framework
+- **Content packs can now personalize custom (modded) NPCs.** Other modders can give their own custom spouses the same kind of personalized content the vanilla spouses get, using a **plain JSON content pack — no C# or compiling required.** A pack just declares `"ContentPackFor": { "UniqueID": "TitanmasterRy.MarriageOverhaul" }` in its manifest and ships a `content.json`.
+- **Three-tier content resolution:** vanilla built-in content → registered custom content → generic fallback. The framework hooks in as a new middle tier inside the existing content getters, so **vanilla and generic-fallback behavior are unchanged** — a custom NPC with no pack behaves exactly as before.
+- **Fully modular.** Every section is optional and falls back to the generic pool independently (per system, and per friendship tier for morning greetings). Authors can personalize just one system and leave the rest generic. Covered systems: friendship-tiered **morning greetings**, **mood greetings** (Happy / Neutral / Grumpy), **argument** dialogue trees, **anniversary** lines, **jealousy** lines + an optional rival-NPC list, **makeup-gift** hints, and a **behavior** block (rain mood preference, favorite/least season, per-NPC system allow-list).
+- **Robust loading.** Packs are discovered automatically at launch; malformed files or incomplete sections are skipped with a clear SMAPI warning instead of crashing, and a summary of which NPCs were registered from which pack is logged. New optional sections can be added in future versions without breaking existing packs.
+- **Optional C# API** via `GetApi()` (`ICustomNpcApi`) for advanced mods that prefer to register content programmatically, reusing the same registry and validation.
+- **Author guide + example pack.** A full guide lives in [`docs/Custom-NPC-Framework.md`](docs/Custom-NPC-Framework.md), a complete copy-and-edit example pack in [`examples/[MO] Aria Example`](examples/), and a quick-start section in the README.
+
+> Pack text is shown verbatim and is **not** run through Marriage Overhaul's i18n — pack authors supply their own dialogue and handle their own translations (e.g. one pack per language).
+
+### Added — More everyday dialogue variety
+- **Doubled the friendship-tiered morning greetings**, from 4 to **8 lines per tier** for all 12 vanilla spouses plus the generic/modded-spouse fallback (208 new lines). The greeting you see every morning now repeats far less often (and still avoids repeating yesterday's line).
+- **Mood greetings are now randomized pools.** The Happy and Grumpy morning lines went from a single fixed line per spouse to a **pool of 4** each (original line kept), and the neutral-day **general pool grew from 24 to 40 lines**.
+- All new lines are fully translatable; `i18n/default.json` was regenerated from source with every existing line preserved.
+
+### Config
+- Added **`EnableCustomNpcFramework`** (default `true`) and **`AllowVanillaOverride`** (default `false`), both exposed through GMCM under a new **Custom NPC Framework** section with tooltips. `AllowVanillaOverride` lets packs replace built-in vanilla-spouse content; off by default so vanilla characters are never changed by a pack.
+
+### Translations
+- **Chinese (`zh`) translation now available** — thanks to **10100306** for the translation.
+- **The config / GMCM menu is now translatable.** Every option label, tooltip, and section title now goes through the translation system (`config.*` keys in `i18n/default.json`), so the in-game settings menu can be localized like the rest of the mod. Previously these were hard-coded in English.
+
 ## 1.6.3
 
 ### Added
