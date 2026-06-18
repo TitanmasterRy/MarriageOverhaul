@@ -1,0 +1,369 @@
+{
+  "Format": "1.0",
+
+  "//": "Personalized Marriage Overhaul content for Stardew Valley Expanded's four marriage candidates. Content is shown verbatim (English). Behavior, makeup categories, and forage loot are themed to each character's SVE traits. Gift tastes are left to SVE itself - this pack only flavors dialogue and behavior.",
+
+  "NPCs": {
+
+    "Sophia": {
+      "Behavior": { "LovesRain": true, "FavoriteSeason": "fall", "LeastSeason": "summer" },
+      "Morning": {
+        "VeryLow": [
+          "Oh... good morning. I, um... I'll just be at the vineyard. Sorry.",
+          "Morning. I didn't sleep much. I'd rather not talk, if that's okay.",
+          "...Hi. I'm not really feeling up to company today.",
+          "Good morning. I'll stay out of your way, I promise."
+        ],
+        "Low": [
+          "Good morning. The vines need tending, so I'll be out most of the day.",
+          "Oh, morning. There's tea if you'd like some. I made too much again.",
+          "Morning. I stayed up watching my shows. I'm a little sleepy.",
+          "Good morning. I'll be checking the casks today."
+        ],
+        "High": [
+          "Good morning! The grapes are coming in so nicely. I can't wait to show you.",
+          "Morning! I, um, drew a little something last night. Maybe I'll show you later. If that's okay.",
+          "There you are! The vineyard always feels cheerier when you visit. ...So do I, honestly.",
+          "Good morning! I saved you a sweet roll. I know I shouldn't spoil you, but... I wanted to."
+        ],
+        "VeryHigh": [
+          "Good morning, my love. Waking up beside you still feels like a dream I get to keep. ...Is that too much? I don't care, it's true.",
+          "Morning! I had the sweetest dream — we were at a convention, in costume, holding hands. I woke up smiling like a goof.",
+          "There you are. You make this big quiet vineyard feel like a home. My home. Our home. Thank you.",
+          "Come here before you go — one hug for luck? ...Okay, maybe two. I missed you even while you slept."
+        ]
+      },
+      "Mood": {
+        "Happy": [
+          "Good morning! I'm in such a good mood — the vines are thriving and you're here. Everything feels right.",
+          "Morning! I finished a whole sketchbook page before sunrise. I'm buzzing! ...In a quiet way.",
+          "Hi! Today feels gentle and bright, like the start of a good story. I'm glad you're in it."
+        ],
+        "Neutral": [
+          "Morning. I'll be pruning the vines if you need me. It's peaceful work.",
+          "I had ramen for breakfast. Don't judge me. ...Okay, judge me a little, it's fair.",
+          "The casks are doing their slow magic downstairs. I love that this place keeps making something beautiful."
+        ],
+        "Grumpy": [
+          "Morning. I'm... a bit out of sorts today. It's not you. I just feel small sometimes.",
+          "Sorry. I didn't sleep, and my head's all static. Be patient with me?",
+          "...Hi. One of those quiet, heavy days. I'll be okay. I always am."
+        ]
+      },
+      "Arguments": [
+        {
+          "Intro": "You walked right past the vineyard again without stopping. I know it's silly, but... I wait for you, a little, every day.",
+          "GoodChoice": "I'm sorry. I'll always make time to stop by.",
+          "GoodReply": "...Really? Okay. That — that means a lot. I'll have tea ready.",
+          "NeutralChoice": "I've just been busy with the farm.",
+          "NeutralReply": "I know. Busy is okay. Forgetting me isn't, quite.",
+          "BadChoice": "It's just a vineyard, Sophia.",
+          "BadReply": "It's my whole world. ...And I thought you were part of it. Never mind."
+        },
+        {
+          "Intro": "You laughed when I showed you my cosplay. I worked on it for weeks. I felt so stupid.",
+          "GoodChoice": "It's amazing — show me how you made it.",
+          "GoodReply": "You... want to know? Okay! Okay. Sit down, I'll tell you everything.",
+          "NeutralChoice": "I wasn't laughing at you.",
+          "NeutralReply": "It felt like it. But... okay. I believe you.",
+          "BadChoice": "Aren't you a little old for costumes?",
+          "BadReply": "...Oh. I see. I'll just keep that part of me to myself, then."
+        }
+      ],
+      "Anniversary": {
+        "Reminder": "Um, hi,^I know you're busy, but... today's our anniversary. I'll be at the vineyard, hoping you remember. No pressure! ...Okay, a little pressure.^- Sophia",
+        "Sweet": "You remembered! Oh, I was so nervous you'd forget. This is the happiest day. Thank you for choosing me, again and again.",
+        "Disappointed": "You forgot our anniversary. ...It's okay. I'm used to quiet days. I just hoped this one would be different."
+      },
+      "Jealousy": {
+        "Lines": [
+          "I saw you give someone a gift today. I'm not angry, just... I get scared I'm not enough. Sorry.",
+          "You gave them a present? Oh. ...I'll be okay. I just wish it had been me."
+        ]
+      },
+      "Makeup": {
+        "Category": "sweet",
+        "Hint": "If you want to make it up to me... something sweet would help. I have the biggest sweet tooth, you know that.",
+        "Reconcile": "Something sweet, just for me? ...Okay. You always know. We're okay. Come here.",
+        "Resigned": "The apology never came. That's alright. I'm not very good at staying upset anyway."
+      },
+      "Loot": {
+        "Common": [ "Grape", "Spring Onion", "Salmonberry", "Sweet Pea" ],
+        "Uncommon": [ "Fairy Rose", "Blackberry", "Crocus" ],
+        "Rare": [ "Starfruit", "Ancient Fruit" ],
+        "JackpotReaction": "Um — I found this between the vines and I actually squeaked. It glows like something out of my comics! I'm too scared to keep it. Here, it should be yours."
+      }
+    },
+
+    "Claire": {
+      "Behavior": { "LovesRain": true, "FavoriteSeason": "fall", "LeastSeason": "summer" },
+      "Morning": {
+        "VeryLow": [
+          "Oh. Morning. I have an early shift, so... I should go.",
+          "Morning. I didn't sleep well. I'd rather keep to myself today.",
+          "...Hi. Sorry. I'm not really in a talking mood.",
+          "Good morning. I'll be out of your hair soon. Don't mind me."
+        ],
+        "Low": [
+          "Good morning. I've got a shift at Joja. Wish me luck — I'll need it.",
+          "Morning. There's coffee. I, um, may have made it a little strong.",
+          "Oh, morning. I was up late with a book. Couldn't put it down.",
+          "Good morning. I'll be home after work. Same as always."
+        ],
+        "High": [
+          "Good morning! I dreamed about opening a little cafe again. With you there, it almost feels possible.",
+          "Morning! I saved you the last cinnamon roll. Don't tell anyone I play favorites.",
+          "There you are. You make even a Joja shift feel survivable. That's a real gift, you know.",
+          "Good morning. Want to dance later? Just in the kitchen. Nobody has to see but us."
+        ],
+        "VeryHigh": [
+          "Good morning, my love. I used to dream of a bigger life. Turns out it was just a quieter one, with you. It's perfect.",
+          "Morning! I wrote you into the story I'm scribbling. You're the part where everything finally goes right.",
+          "There you are. Waking up next to you is better than any film I've ever loved. And I love a lot of them.",
+          "Come here before you go. One kiss to carry through the day. ...Okay, that one's for me, not you."
+        ]
+      },
+      "Mood": {
+        "Happy": [
+          "Good morning! I'm in a wonderful mood — I finished a whole novel and the coffee's perfect. Little joys, you know?",
+          "Morning! I caught myself humming on the way down. That's a you thing, I think.",
+          "Hi! Today feels full of possibility. Like the first page of something good."
+        ],
+        "Neutral": [
+          "Morning. I'll be at the counter all day. At least I get to people-watch.",
+          "I rewatched my favorite film last night. Cried at the end. Again. Worth it.",
+          "There's day-old pastry if you want it. ...I rescued it from the bin. Don't judge."
+        ],
+        "Grumpy": [
+          "Morning. Long shift ahead and I'm already tired of it. Sorry, I'll cheer up.",
+          "...Hi. Feeling a little invisible today. It passes. It always passes.",
+          "Sorry, I'm out of sorts. Retail does that. Be gentle with me?"
+        ]
+      },
+      "Arguments": [
+        {
+          "Intro": "You said you'd visit me on my break and you didn't show. I stood by the window the whole time. It's embarrassing.",
+          "GoodChoice": "I'm so sorry. I'll be there next time, front of the line.",
+          "GoodReply": "...You mean it? Okay. That actually fixes a lot. Thank you.",
+          "NeutralChoice": "Something came up at the farm.",
+          "NeutralReply": "It always does. I get it. I just... hoped.",
+          "BadChoice": "It's just a break, Claire.",
+          "BadReply": "It's the part of my day I look forward to. But okay. Forget I said anything."
+        },
+        {
+          "Intro": "You teased me about my big dreams again. I know the cafe is silly, but it's mine. It keeps me going.",
+          "GoodChoice": "It's not silly. Let's make it real, together.",
+          "GoodReply": "...Together? I — okay. Now I might actually cry. Happy crying.",
+          "NeutralChoice": "I didn't mean anything by it.",
+          "NeutralReply": "I know. Just... be careful with that one. It's fragile.",
+          "BadChoice": "You'll never leave Joja, be realistic.",
+          "BadReply": "...Right. Realistic. Thanks for that. I'll get back to my register."
+        }
+      ],
+      "Anniversary": {
+        "Reminder": "Hi,^I don't want to make a fuss, but... today's our anniversary. I'll be hoping you remember all through my shift.^- Claire",
+        "Sweet": "You remembered! Oh, I'm so relieved. You make me feel like I matter. That's the best gift there is. Thank you.",
+        "Disappointed": "You forgot our anniversary. ...It's fine. I'm good at pretending things don't sting. Lots of practice."
+      },
+      "Jealousy": {
+        "Lines": [
+          "I saw you give someone a gift. I trust you, I do. I just... worry I'm easy to overlook.",
+          "You got them a present? Oh. ...No, it's fine. I'm being silly. Forget it."
+        ]
+      },
+      "Makeup": {
+        "Category": "sweet",
+        "Hint": "If you want to make it right... bring me something sweet. A pastry, a treat. It always mends me.",
+        "Reconcile": "Something sweet? For me? ...Okay. You remembered what I like. We're good now. Thank you.",
+        "Resigned": "The apology never came. That's alright. I'm used to letting little hurts go quiet."
+      },
+      "Loot": {
+        "Common": [ "Coffee Bean", "Wild Horseradish", "Daffodil", "Salmonberry" ],
+        "Uncommon": [ "Sunflower", "Blackberry", "Hazelnut" ],
+        "Rare": [ "Coffee", "Poppy" ],
+        "JackpotReaction": "I found this on the bus stop bench, of all places. It shimmers like a film reel catching the light. I can't keep something this special — here, it's yours."
+      }
+    },
+
+    "Olivia": {
+      "Behavior": { "LovesRain": false, "FavoriteSeason": "summer", "LeastSeason": "winter" },
+      "Morning": {
+        "VeryLow": [
+          "Oh. You're up. I haven't the energy for pleasantries this morning, darling.",
+          "Morning. I slept poorly and I look it, so let's not linger.",
+          "...Good morning. I'd rather be left with my coffee and my thoughts.",
+          "Mm. Morning. Do forgive me, I'm simply not myself today."
+        ],
+        "Low": [
+          "Good morning, darling. I'll be entertaining myself today — a little wine, a little music.",
+          "Morning. There's a fresh pot on. The good cups, naturally.",
+          "Oh, you're awake. I was just deciding which dress suits my mood. Indecision, mostly.",
+          "Good morning. I may pay Victor a visit. He pretends to mind. He doesn't."
+        ],
+        "High": [
+          "Good morning, darling! What a lovely day to be alive and fabulous. Join me?",
+          "Morning! I poured us each a glass for later. Don't look at me like that — it's practically breakfast somewhere.",
+          "There you are, my dear. You bring a sparkle to this house that even I can't buy.",
+          "Good morning. I was just thinking how dreadfully lucky I am to wake to your face."
+        ],
+        "VeryHigh": [
+          "Good morning, my love. I have wined and dined across half the world, and nothing — nothing — compares to waking beside you.",
+          "Morning, darling! I dreamed we danced in a city that glittered. But I'd trade every city for this quiet, with you.",
+          "There you are, my heart. Come, let me look at you. ...Yes. Still the finest thing I've ever laid eyes on.",
+          "A kiss before you go, darling. Humor an old romantic. ...I'm not old. But I am hopelessly yours."
+        ]
+      },
+      "Mood": {
+        "Happy": [
+          "Good morning, darling! I'm in a marvelous mood. The light is flattering, the wine is breathing, and you are here. Bliss.",
+          "Morning! I feel positively radiant today. Do bask in it while it lasts, my dear.",
+          "Oh, what a glorious morning! Everything tastes better when one is this happy. And you, my love, are why."
+        ],
+        "Neutral": [
+          "Morning, darling. I'll be lounging with a good vintage and better gossip, should you wish to join.",
+          "I tried a new cake recipe last night. A triumph, if I do say so. Which I do.",
+          "The house is so peaceful in the morning. I do love a little luxury and a lot of quiet."
+        ],
+        "Grumpy": [
+          "Morning. I'm in a mood, darling, and not a charming one. Tread lightly.",
+          "...Good morning. My nerves are frayed and my patience thinner. Forgive me.",
+          "Mm. Victor and I quarreled again. Mothers and sons. Don't mind my temper today."
+        ]
+      },
+      "Arguments": [
+        {
+          "Intro": "You've been gone every evening, darling. I did not leave a glittering city life to dine alone in the countryside.",
+          "GoodChoice": "You're right. Tonight is yours — wine, candles, all of it.",
+          "GoodReply": "Now THAT is the spouse I married. I'll wear the good dress. Don't be late.",
+          "NeutralChoice": "I've been working, Olivia.",
+          "NeutralReply": "Work, work. Even diamonds need polishing, darling. Don't forget me.",
+          "BadChoice": "Maybe drink a little less and notice more.",
+          "BadReply": "...Oh. That was beneath you. And it cut deeper than you know."
+        },
+        {
+          "Intro": "You took Victor's side again. I am his mother. I only ever want what's best for him.",
+          "GoodChoice": "You love him fiercely. Let's help him together.",
+          "GoodReply": "...Together. Yes. I do get carried away. Thank you for steadying me.",
+          "NeutralChoice": "He's a grown man, Olivia.",
+          "NeutralReply": "He'll always be my boy. But... perhaps I do hold too tight.",
+          "BadChoice": "You're smothering him, honestly.",
+          "BadReply": "Smothering. What a word to throw at a mother. I think I'll retire early tonight."
+        }
+      ],
+      "Anniversary": {
+        "Reminder": "My darling,^Surely you know what today is. Our anniversary! I expect to be swept off my feet — I've set the bar, do clear it.^- Olivia",
+        "Sweet": "You remembered, you wonderful creature! Of course you did. Come here — tonight we celebrate in style. You've earned a kiss and a toast.",
+        "Disappointed": "You forgot our anniversary. ...I dressed for nothing. Do you know how rare it is for me to feel foolish? I don't care for it."
+      },
+      "Jealousy": {
+        "Lines": [
+          "I hear you've been giving gifts about town, darling. I am not the jealous sort. ...I am, a little. Don't test it.",
+          "A present, for someone else? How generous. I do hope they appreciate what I'd never share lightly — you."
+        ]
+      },
+      "Makeup": {
+        "Category": "sweet",
+        "Hint": "If you wish to be forgiven, darling — something sweet. A cake, a confection. I am wonderfully easy to bribe.",
+        "Reconcile": "Something sweet, for me? ...Oh, you do know the way to my heart. All is forgiven. Come, sit with me.",
+        "Resigned": "The apology never arrived. No matter. I am far too fabulous to hold a grudge. ...Mostly."
+      },
+      "Loot": {
+        "Common": [ "Grape", "Holly", "Snow Yam", "Spring Onion" ],
+        "Uncommon": [ "Truffle", "Pomegranate", "Crocus" ],
+        "Rare": [ "Wine", "Starfruit" ],
+        "JackpotReaction": "Darling, look at this! I've owned jewels that didn't sparkle like this. It changes color as I turn it — utterly divine. I simply must give it to you; it deserves someone precious."
+      }
+    },
+
+    "Victor": {
+      "Behavior": { "LovesRain": true, "FavoriteSeason": "winter", "LeastSeason": "spring" },
+      "Morning": {
+        "VeryLow": [
+          "Morning. I've reading to do, so I'd prefer not to be disturbed.",
+          "Oh. You're awake. I'm not in a sociable frame of mind. Apologies.",
+          "...Morning. I didn't rest well. Let's keep this brief.",
+          "Good morning. I'll be in with my books. Best leave me to it."
+        ],
+        "Low": [
+          "Good morning. I'm midway through a rather dense text. Don't mind me.",
+          "Morning. There's coffee. I calibrated it properly, unlike some people.",
+          "Oh, morning. The lads and I were up late gaming. I regret nothing. Mostly.",
+          "Good morning. I've blueprints to sketch today. An engineer's work is never done."
+        ],
+        "High": [
+          "Good morning! I read a passage last night that made me think of you. I've, ah, marked the page.",
+          "Morning! I beat Sam at a game and I intend to be insufferable about it all day. Join me?",
+          "There you are. You make this house far more interesting than any book. And I own a great many books.",
+          "Good morning. I was sketching a little invention for the kitchen. To make your mornings easier. ...Don't make it weird."
+        ],
+        "VeryHigh": [
+          "Good morning, my love. My mother crossed oceans for adventure. I found mine right here, in you. I wouldn't trade it for any horizon.",
+          "Morning! I stayed up designing a future on paper — and every blueprint had you in it. Sentimental, I know. I've accepted it.",
+          "There you are. I'm a man of careful words, so hear this one clearly: I adore you. Completely. Unscientifically.",
+          "Come here before you go. A kiss measurably improves my focus. I've tested it. Repeatedly. Indulge me."
+        ]
+      },
+      "Mood": {
+        "Happy": [
+          "Good morning! I'm in excellent spirits — a good book, good coffee, and you. The optimal trifecta.",
+          "Morning! I solved a problem that's vexed me for weeks, right as I woke. Today is going to be brilliant.",
+          "Hello! I feel sharp and rather cheerful, which is rare for me before noon. You may take some credit."
+        ],
+        "Neutral": [
+          "Morning. I'll be reading, and possibly arguing with Sebastian online. The usual.",
+          "I made ramen at 2 a.m. like a true scholar. No regrets. Some regrets. It was worth it.",
+          "There's a fascinating chapter on ancient cultivation I'd love to bore you with later. Fair warning."
+        ],
+        "Grumpy": [
+          "Morning. My patience is in short supply today. Best not to test the hypothesis.",
+          "...Hello. I'm out of sorts and overcaffeinated. A poor combination. Bear with me.",
+          "Mother and I quarreled. Again. I'm not fit company this morning, I'm afraid."
+        ]
+      },
+      "Arguments": [
+        {
+          "Intro": "You dismissed my work as 'just books' last night. I graduated top of my class. It's not nothing to me.",
+          "GoodChoice": "I'm sorry. Your mind is one of my favorite things about you.",
+          "GoodReply": "...Oh. That's — thank you. That's a far better argument than mine. I concede, gladly.",
+          "NeutralChoice": "I didn't mean it like that.",
+          "NeutralReply": "Perhaps not. But words have precision. Do mind yours.",
+          "BadChoice": "Books won't fix a fence, Victor.",
+          "BadReply": "No. But they built the mind that could design a better one. Forget it."
+        },
+        {
+          "Intro": "You keep pushing me to travel like my mother does. I'm happiest with a book and a quiet room. Why isn't that enough for everyone?",
+          "GoodChoice": "It's enough for me. Stay exactly as you are.",
+          "GoodReply": "...You mean that. Do you know how rarely anyone says that to me? Thank you.",
+          "NeutralChoice": "I just want to share the world with you.",
+          "NeutralReply": "I know. My world is smaller, and just as full. Meet me in it?",
+          "BadChoice": "You're wasting your potential hiding inside.",
+          "BadReply": "Hiding. Right. You sound just like her. I'm going back to my room."
+        }
+      ],
+      "Anniversary": {
+        "Reminder": "My dear,^In the interest of full disclosure: today is our anniversary. I have, perhaps, overprepared. Do not disappoint the data.^- Victor",
+        "Sweet": "You remembered. I calculated a fair probability that you would, and I'm delighted to be right. Best year on record. Come here.",
+        "Disappointed": "You forgot our anniversary. ...I had it noted weeks in advance. I know sentiment isn't 'logical,' but I'm hurt all the same."
+      },
+      "Jealousy": {
+        "Lines": [
+          "I'm given to understand you've been distributing gifts about town. I'm not insecure. I've simply... noted it.",
+          "A present for someone else? I see. I won't make a scene. I'll merely brood about it intellectually."
+        ]
+      },
+      "Makeup": {
+        "Category": "homemade",
+        "Hint": "If you wish to mend this — make me something. A proper home-cooked meal. Ramen, even. Effort speaks louder than coin.",
+        "Reconcile": "You made this? For me? ...The variables have shifted entirely. Apology accepted, warmly. Sit, eat with me.",
+        "Resigned": "The apology never came. I've recalculated and chosen to let it go. Grudges are an inefficient use of one's mind."
+      },
+      "Loot": {
+        "Common": [ "Snail", "Periwinkle", "Rainbow Shell", "Quartz" ],
+        "Uncommon": [ "Nautilus Shell", "Earth Crystal", "Geode" ],
+        "Rare": [ "Ancient Seed", "Pearl" ],
+        "JackpotReaction": "Fascinating. I found this lodged in the riverbank — it refracts light in a way I genuinely cannot explain, and I can explain most things. It belongs with you; consider it a data point in our favor."
+      }
+    }
+
+  }
+}

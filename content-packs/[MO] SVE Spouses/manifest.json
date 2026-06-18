@@ -1,0 +1,11 @@
+{
+  "Name": "[MO] SVE Spouses",
+  "Author": "TitanmasterRy",
+  "Version": "1.0.0",
+  "Description": "Personalized Marriage Overhaul content for Stardew Valley Expanded's marriage candidates: Claire, Olivia, Sophia, and Victor. Requires Marriage Overhaul and Stardew Valley Expanded.",
+  "UniqueID": "TitanmasterRy.MOSVESpouses",
+  "ContentPackFor": {
+    "UniqueID": "TitanmasterRy.MarriageOverhaul",
+    "MinimumVersion": "1.8.0"
+  }
+}
