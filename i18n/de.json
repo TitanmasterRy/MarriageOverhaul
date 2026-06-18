@@ -498,6 +498,8 @@
   "config.EnableEvolvingPreferences.tooltip": "Nach einem Jahr Ehe liebt der Ehepartner neue Geschenke, die mit eurer gemeinsamen Geschichte verbunden sind.",
   "config.EnableFeeding.name": "Fütterung aktivieren",
   "config.EnableFeeding.tooltip": "Der Ehepartner erwartet an Tagen, an denen 'der Spieler versorgt', Essen im Kühlschrank und kocht an anderen Tagen selbst.",
+  "config.EnableForRoommate.name": "Mitbewohner einbeziehen (Krobus)",
+  "config.EnableForRoommate.tooltip": "Wendet die romantischen Dialoge und Systeme von Marriage Overhaul auf einen Mitbewohner (Krobus) an. Standardmäßig deaktiviert, damit ein Mitbewohner platonisch bleibt und seine normalen Dialoge behält.",
   "config.EnableForageLoot.name": "Sammelbeute Tabelle aktivieren",
   "config.EnableForageLoot.tooltip": "Wenn der Ehepartner sammeln geht, bringt er Gegenstände aus einer Beutetabelle pro Ehepartner zurück, statt Sammelbares auf dem Hof aufzuheben. Erfordert, dass Ehepartner Aufgaben aktiviert sind.",
   "config.EnableHoneymoonPhase.name": "Flitterwochen Phase aktivieren",

@@ -498,6 +498,8 @@
   "config.EnableEvolvingPreferences.tooltip": "After a year of marriage, the spouse comes to love new gifts tied to your shared history.",
   "config.EnableFeeding.name": "Enable Feeding",
   "config.EnableFeeding.tooltip": "Spouse expects food in the fridge on 'player provides' days, and cooks on others.",
+  "config.EnableForRoommate.name": "Overhaul a Roommate (Krobus)",
+  "config.EnableForRoommate.tooltip": "Apply Marriage Overhaul's romantic dialogue and systems to a roommate (Krobus). Off by default, so a roommate stays platonic with their normal vanilla dialogue.",
   "config.EnableForageLoot.name": "Enable Forage Loot Table",
   "config.EnableForageLoot.tooltip": "When the spouse forages, they bring back items from a per-spouse loot table instead of picking up forage on the farm. Requires Spouse Chores to be enabled.",
   "config.EnableHoneymoonPhase.name": "Enable Honeymoon Phase",

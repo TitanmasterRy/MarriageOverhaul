@@ -107,22 +107,53 @@ namespace MarriageOverhaul
                      || (req.Categories != null && req.Categories.Contains(gift.Category));
 
             if (match)
+                this.Requests_Fulfill(spouse, req);
+        }
+
+        /// <summary>
+        /// During the day, complete an active "spend time together" request once the player has actually
+        /// spent quality time with the spouse — i.e. talked to them today. These requests have no specific
+        /// item or category, so without this they could only be finished by handing over a gift, which
+        /// contradicts the quest's "Spend some quality time" objective.
+        /// </summary>
+        public void Requests_CheckTimeSpent(NPC spouse)
+        {
+            if (!this.Config.EnableSpouseRequests || !this.Data.RequestActive || spouse == null)
+                return;
+            if (this.AbsoluteDay < this.Data.RequestStartDay)
+                return; // the request isn't in effect until the morning after the note arrives
+
+            var req = ExtendedContent.GetRequests(spouse.Name).FirstOrDefault(r => r.Id == this.Data.RequestId);
+            if (req == null)
+                return;
+
+            // Only "attention" requests (no item / category) are fulfilled by spending time together.
+            if (req.Items != null || req.Categories != null)
+                return;
+
+            if (!this.TalkedToSpouseToday())
+                return;
+
+            this.Requests_Fulfill(spouse, req);
+        }
+
+        /// <summary>Apply the reward for a fulfilled request: quest completion feedback, friendship, the thank-you line, and any project reward.</summary>
+        private void Requests_Fulfill(NPC spouse, SpouseRequest req)
+        {
+            this.CompleteRequestQuest(); // "Quest Complete!" feedback before we clear it
+            this.ChangeSpouseFriendship(100);
+            this.ShowNarration(req.Thank);
+
+            // Project-style requests: the spouse makes something and gives it back a few days later.
+            if (!string.IsNullOrEmpty(req.RewardItem))
             {
-                this.CompleteRequestQuest(); // "Quest Complete!" feedback before we clear it
-                this.ChangeSpouseFriendship(100);
-                this.ShowNarration(req.Thank);
-
-                // Project-style requests: the spouse makes something and gives it back a few days later.
-                if (!string.IsNullOrEmpty(req.RewardItem))
-                {
-                    this.Data.PendingRewardItem = req.RewardItem;
-                    this.Data.PendingRewardQty = req.RewardQty > 0 ? req.RewardQty : 1;
-                    this.Data.PendingRewardDay = this.AbsoluteDay + 3;
-                    this.Data.PendingRewardLine = req.RewardLine ?? "";
-                }
-
-                this.ClearRequest();
+                this.Data.PendingRewardItem = req.RewardItem;
+                this.Data.PendingRewardQty = req.RewardQty > 0 ? req.RewardQty : 1;
+                this.Data.PendingRewardDay = this.AbsoluteDay + 3;
+                this.Data.PendingRewardLine = req.RewardLine ?? "";
             }
+
+            this.ClearRequest();
         }
 
         /// <summary>Hand over a project reward that's now due, with the spouse's "I made you this" line.</summary>

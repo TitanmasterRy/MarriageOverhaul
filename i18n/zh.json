@@ -498,6 +498,8 @@
   "config.EnableEvolvingPreferences.tooltip": "结婚满一年后，配偶会开始喜爱与你们共同经历相关的新礼物。",
   "config.EnableFeeding.name": "启用喂食",
   "config.EnableFeeding.tooltip": "在“由玩家提供”的日子，配偶希望冰箱里有食物；其余日子则由他们做饭。",
+  "config.EnableForRoommate.name": "对室友（克鲁布斯）启用",
+  "config.EnableForRoommate.tooltip": "将婚姻重制的浪漫对话和系统应用到室友（克鲁布斯）身上。默认关闭，因此室友会保持柏拉图式关系，使用其原版对话。",
   "config.EnableForageLoot.name": "启用觅食战利品表",
   "config.EnableForageLoot.tooltip": "配偶觅食时，会从各自的战利品表中带回物品，而非捡取农场上的可觅食物。需启用“配偶家务”。",
   "config.EnableHoneymoonPhase.name": "启用蜜月期",

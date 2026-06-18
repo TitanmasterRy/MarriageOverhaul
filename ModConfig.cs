@@ -27,6 +27,8 @@ namespace MarriageOverhaul
         public bool EnableDialogueCompat { get; set; } = true;
         /// <summary>Also search mini-fridges and the cellar fridge when feeding the spouse (helps with modded houses that put the fridge on a different level or have no main-level kitchen).</summary>
         public bool FeedingSearchExtraStorage { get; set; } = false;
+        /// <summary>Apply the marriage overhaul to a roommate (Krobus). Off by default so a roommate stays platonic with their normal dialogue.</summary>
+        public bool EnableForRoommate { get; set; } = false;
 
         // ── Friendship-tiered morning dialogue ──────────────────────
         /// <summary>The spouse's morning greeting tone scales with your current friendship hearts (cold when low, loving when high). The mood system adds day-to-day variance on top.</summary>

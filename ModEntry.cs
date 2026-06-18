@@ -161,6 +161,9 @@ namespace MarriageOverhaul
 
             this.Argument_OnTimeChanged(spouse, e.NewTime);
             this.Extended_OnTimeChanged(spouse, e.NewTime);
+
+            // Complete a "spend time together" request once the player has actually spent time with their spouse today.
+            this.Requests_CheckTimeSpent(spouse);
         }
 
         /// <summary>Flush one queued dialogue box once the player has control (never during transitions, which would desync multiplayer).</summary>
@@ -208,6 +211,10 @@ namespace MarriageOverhaul
                 // would fire during the wedding event and break it.
                 if (!player.isMarriedOrRoommates())
                     return null;
+                // Roommates (e.g. Krobus) are platonic — don't apply the romantic overhaul to them unless
+                // the player opts in. This keeps their normal vanilla dialogue and behavior intact.
+                if (!this.Config.EnableForRoommate && this.PartnerIsRoommate())
+                    return null;
                 return player.getSpouse();
             }
             catch
@@ -217,6 +224,22 @@ namespace MarriageOverhaul
         }
 
         public string SpouseName => Game1.player?.spouse;
+
+        /// <summary>Whether the player's current partner is a platonic roommate (e.g. Krobus) rather than a spouse.</summary>
+        public bool PartnerIsRoommate()
+        {
+            try
+            {
+                string name = Game1.player?.spouse;
+                if (string.IsNullOrEmpty(name))
+                    return false;
+                return Game1.player.friendshipData.TryGetValue(name, out Friendship f) && f.IsRoommate();
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
         public int GetSpousePoints()
         {
