@@ -576,6 +576,8 @@
   "config.PolyamoryCompat.tooltip": "适用于 Polyamory Sweet Love、Free Love 等多配偶模组：让你的其他配偶也获得本模组的早晨问候。默认关闭。其他关系系统（喂食、纪念日、离婚、嫉妒等）仍仅应用于你的主要配偶。",
   "config.SicknessChancePerSeason.name": "生病概率（每季）",
   "config.SicknessChancePerSeason.tooltip": "配偶在每个季节某个时候生病的概率（0.0 - 1.0）。",
+  "config.SpousesCookForYouCompat.name": "“Spouses Cook For You”兼容",
+  "config.SpousesCookForYouCompat.tooltip": "适用于“Spouses Cook For You”模组：将每一天都视为配偶做饭日，这样婚姻重制就不会要求你留下食物、不会吃掉该模组准备的饭菜，也不会施加饥饿惩罚。配偶的做饭对话仍会出现。默认关闭。",
   "config.section.compatibility": "兼容性",
   "config.section.customnpcframework": "自定义 NPC 框架",
   "config.section.debug": "调试",

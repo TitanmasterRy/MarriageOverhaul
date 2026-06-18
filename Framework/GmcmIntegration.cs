@@ -113,6 +113,11 @@ namespace MarriageOverhaul
                 () => I18n.Get("config.FeedingSearchExtraStorage.tooltip", "Also search mini-fridges and the cellar fridge when feeding the spouse and storing chore meals. Helps with modded houses that put the fridge on a different level or have no main-level kitchen."));
 
             api.AddBoolOption(manifest,
+                () => this.Config.SpousesCookForYouCompat, v => this.Config.SpousesCookForYouCompat = v,
+                () => I18n.Get("config.SpousesCookForYouCompat.name", "'Spouses Cook For You' Compatibility"),
+                () => I18n.Get("config.SpousesCookForYouCompat.tooltip", "For the 'Spouses Cook For You' mod: treat every day as a spouse cooking day, so Marriage Overhaul never expects you to leave food, never eats the meals that mod prepares, and never applies a hunger penalty. The spouse's cooking dialogue still plays. Off by default."));
+
+            api.AddBoolOption(manifest,
                 () => this.Config.EnableForRoommate, v => this.Config.EnableForRoommate = v,
                 () => I18n.Get("config.EnableForRoommate.name", "Overhaul a Roommate (Krobus)"),
                 () => I18n.Get("config.EnableForRoommate.tooltip", "Apply Marriage Overhaul's romantic dialogue and systems to a roommate (Krobus). Off by default, so a roommate stays platonic with their normal vanilla dialogue."));

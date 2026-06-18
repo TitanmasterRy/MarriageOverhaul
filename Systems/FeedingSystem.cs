@@ -44,6 +44,10 @@ namespace MarriageOverhaul
 
         private bool IsProvideDayToday()
         {
+            // "Spouses Cook For You" compat: the spouse always cooks, so there are no player-provide days.
+            // This removes every conflict point at once — no provide hint, no fridge eating, no hunger penalty.
+            if (this.Config.SpousesCookForYouCompat)
+                return false;
             if (this.Data.ProvideDays == null || this.Data.ProvideDays.Count != 7)
                 return false;
             return this.Data.ProvideDays[this.DayOfWeekIndex];

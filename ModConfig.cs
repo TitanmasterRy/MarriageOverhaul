@@ -27,6 +27,8 @@ namespace MarriageOverhaul
         public bool EnableDialogueCompat { get; set; } = true;
         /// <summary>Also search mini-fridges and the cellar fridge when feeding the spouse (helps with modded houses that put the fridge on a different level or have no main-level kitchen).</summary>
         public bool FeedingSearchExtraStorage { get; set; } = false;
+        /// <summary>Compatibility for the "Spouses Cook For You" mod: treat every day as a spouse cooking day, so the mod never expects you to provide food, never eats the meals that mod prepares, and never applies a hunger penalty. Off by default.</summary>
+        public bool SpousesCookForYouCompat { get; set; } = false;
         /// <summary>Apply the marriage overhaul to a roommate (Krobus). Off by default so a roommate stays platonic with their normal dialogue.</summary>
         public bool EnableForRoommate { get; set; } = false;
         /// <summary>Compatibility for multi-spouse mods (Polyamory Sweet Love, Free Love): also give the overhaul's morning greetings to your other spouses. Off by default. Stateful systems still apply to the primary spouse only.</summary>

@@ -7,6 +7,10 @@ NEW
   morning greetings, not just your primary spouse. The other relationship systems
   (feeding, anniversary, divorce, jealousy, etc.) still apply to the primary
   spouse only.
+- "Spouses Cook For You" compatibility (optional). A new option (off by default)
+  makes the mod treat every day as a spouse cooking day, so it never asks you to
+  leave food, never eats the meals that mod prepares, and never gives a hunger
+  penalty. The spouse's cooking dialogue still plays.
 
 FIXES
 - Roommates (Krobus) are no longer forced into a romantic relationship. The mod

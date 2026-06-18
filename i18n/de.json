@@ -576,6 +576,8 @@
   "config.PolyamoryCompat.tooltip": "Für Mehr-Ehepartner-Mods wie Polyamory Sweet Love oder Free Love: Gibt auch deinen anderen Ehepartnern die Morgenbegrüßungen des Mods. Standardmäßig aus. Die übrigen Beziehungssysteme (Füttern, Jahrestag, Scheidung, Eifersucht usw.) gelten weiterhin nur für deinen Hauptehepartner.",
   "config.SicknessChancePerSeason.name": "Krankheits Chance (pro Jahreszeit)",
   "config.SicknessChancePerSeason.tooltip": "Die Chance, dass der Ehepartner irgendwann in jeder Jahreszeit krank wird (0.0 - 1.0).",
+  "config.SpousesCookForYouCompat.name": "Kompatibilität mit „Spouses Cook For You“",
+  "config.SpousesCookForYouCompat.tooltip": "Für die Mod „Spouses Cook For You“: Behandelt jeden Tag als Kochtag des Ehepartners, sodass Marriage Overhaul nie erwartet, dass du Essen hinterlässt, die von jener Mod zubereiteten Mahlzeiten nicht aufisst und keine Hungerstrafe verhängt. Die Koch-Dialoge des Ehepartners erscheinen weiterhin. Standardmäßig aus.",
   "config.section.compatibility": "Kompatibilität",
   "config.section.customnpcframework": "Framework für eigene NPCs",
   "config.section.debug": "Debug",

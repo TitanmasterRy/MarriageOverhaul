@@ -576,6 +576,8 @@
   "config.PolyamoryCompat.tooltip": "For multi-spouse mods like Polyamory Sweet Love or Free Love: also give your other spouses the overhaul's morning greetings. Off by default. The other relationship systems (feeding, anniversary, divorce, jealousy, etc.) still apply to your primary spouse only.",
   "config.SicknessChancePerSeason.name": "Sickness Chance (per season)",
   "config.SicknessChancePerSeason.tooltip": "The chance the spouse gets sick at some point each season (0.0 - 1.0).",
+  "config.SpousesCookForYouCompat.name": "'Spouses Cook For You' Compatibility",
+  "config.SpousesCookForYouCompat.tooltip": "For the 'Spouses Cook For You' mod: treat every day as a spouse cooking day, so Marriage Overhaul never expects you to leave food, never eats the meals that mod prepares, and never applies a hunger penalty. The spouse's cooking dialogue still plays. Off by default.",
   "config.section.compatibility": "Compatibility",
   "config.section.customnpcframework": "Custom NPC Framework",
   "config.section.debug": "Debug",
