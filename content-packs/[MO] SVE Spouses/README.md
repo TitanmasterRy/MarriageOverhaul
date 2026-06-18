@@ -1,8 +1,11 @@
 # [MO] SVE Spouses
 
 A Marriage Overhaul content pack that gives **Stardew Valley Expanded's** marriage candidates —
-**Claire, Olivia, Sophia, and Victor** — the same personalized married-life content the vanilla
-spouses get, instead of the generic fallback.
+**Claire, Olivia, Sophia, Victor, and the Wizard (Magnus)** — the same personalized married-life
+content the vanilla spouses get, instead of the generic fallback.
+
+(SVE makes the Wizard romanceable; his display name becomes "Magnus" at 4+ hearts, but his internal
+name stays `Wizard`, which is what this pack keys on.)
 
 Each one has personalized **morning greetings** (friendship-tiered), **mood** greetings,
 **argument** scenarios, **anniversary** lines, **jealousy** lines, a **makeup-gift** category, a

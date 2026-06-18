@@ -363,6 +363,96 @@
         "Rare": [ "Ancient Seed", "Pearl" ],
         "JackpotReaction": "Fascinating. I found this lodged in the riverbank — it refracts light in a way I genuinely cannot explain, and I can explain most things. It belongs with you; consider it a data point in our favor."
       }
+    },
+
+    "Wizard": {
+      "Behavior": { "LovesRain": true, "FavoriteSeason": "winter", "LeastSeason": "summer" },
+      "Morning": {
+        "VeryLow": [
+          "You rise. I am occupied with matters beyond your comprehension. Leave me.",
+          "Morning. The aether is turbulent today, and so is my temper. Tread carefully.",
+          "...You again. I have no words to spare. Be gone.",
+          "I sense your presence. I would rather sense your absence this morning."
+        ],
+        "Low": [
+          "Good morning. I am deciphering an old text. Do not disturb the runes.",
+          "Morning. The void stirs. I must attend to it. Mind yourself.",
+          "You wake. I have potions distilling. Touch nothing that glows.",
+          "Morning. I shall be in my tower, communing with forces best left unnamed."
+        ],
+        "High": [
+          "Good morning. The omens are favorable today — your presence may be the cause. Curious.",
+          "Ah, you wake. I confess the tower is less cold with you in it.",
+          "Morning. I brewed something restorative. ...For you. Do not read too much into it. ...Read a little into it.",
+          "There you are. Even my arcane studies pale beside the mystery of why you chose me."
+        ],
+        "VeryHigh": [
+          "Good morning, my heart. Call me Magnus — the title 'Wizard' was always armor, and you have long since slipped beneath it.",
+          "I have lived many lonely years among my spells. You walked in and made the silence beautiful. Good morning, my love.",
+          "Morning. I have gazed into the abyss and across the stars, and found nothing half so wondrous as waking beside you.",
+          "Come, let me hold you before the day parts us. Even a sorcerer cannot conjure a feeling finer than this."
+        ]
+      },
+      "Mood": {
+        "Happy": [
+          "Good morning. The currents of magic run bright today, and my spirits with them. You have that effect.",
+          "Morning! The cosmos and I are, for once, in agreement: today shall be splendid.",
+          "Ah, a fine morning. My work flows, the aether sings, and you are here. The trifecta of a content sorcerer."
+        ],
+        "Neutral": [
+          "Morning. I shall be cataloguing reagents today. Riveting, I assure you.",
+          "The void was quiet last night. A rare mercy. I actually slept.",
+          "I have tea steeping — an old recipe. It will either soothe you or grant visions. Likely both."
+        ],
+        "Grumpy": [
+          "Morning. A failed incantation has soured my mood. Keep your distance, for both our sakes.",
+          "...The aether grates on me today. I am poor company. Forgive the gloom.",
+          "Do not mind me. Even wizards have days the magic refuses to cooperate."
+        ]
+      },
+      "Arguments": [
+        {
+          "Intro": "You treat my craft as parlor tricks. I have bent the very fabric of reality, and you ask if I can 'pull a coin from your ear.'",
+          "GoodChoice": "Your magic is wondrous. Teach me to see it as you do.",
+          "GoodReply": "...You wish to truly understand? Then sit. Few have ever cared to. Thank you.",
+          "NeutralChoice": "I didn't mean to belittle it.",
+          "NeutralReply": "Perhaps not. But power long unrespected grows weary. Mind that.",
+          "BadChoice": "It's just superstition, honestly.",
+          "BadReply": "Superstition. I shall remember that the next time the void comes knocking. Begone."
+        },
+        {
+          "Intro": "You vanish into that farm and leave me to my echoing tower. I severed many ties to be here. Do not make me regret it.",
+          "GoodChoice": "I'm sorry. Tonight the tower won't be empty — I'll be in it, with you.",
+          "GoodReply": "...Good. The silence is far easier to bear with you breaking it. Do not be late.",
+          "NeutralChoice": "I've been busy with the harvest.",
+          "NeutralReply": "The harvest. Yes. Even sorcerers lose to turnips, it seems.",
+          "BadChoice": "You chose your solitude, wizard.",
+          "BadReply": "I chose YOU over solitude. Do not confuse the two. ...Leave me."
+        }
+      ],
+      "Anniversary": {
+        "Reminder": "My dear,^The stars have completed their circuit: today marks a year of our union. Do not let it pass unmarked, lest I sulk magnificently.^- M.",
+        "Sweet": "You remembered. After so long being feared and forgotten, to be REMEMBERED by you... it undoes me entirely. Come here.",
+        "Disappointed": "You forgot our anniversary. I have outlived empires; I shall outlive this slight. ...But it wounds more than I will admit."
+      },
+      "Jealousy": {
+        "Lines": [
+          "I am told you bestowed a gift upon another. I am not a jealous man. ...I am, however, a powerful one. Mind that.",
+          "A gift, for someone else? The aether trembled at my displeasure. Do be careful with my heart."
+        ]
+      },
+      "Makeup": {
+        "Category": "nature",
+        "Hint": "If you would mend this rift — bring me something from the wild or the deep. Something raw with natural power. That, I would accept.",
+        "Reconcile": "Ah — something drawn from the earth's own magic. You understand me better than most. The rift is mended. Come closer.",
+        "Resigned": "The offering never came. So be it. I have endured longer silences than this. The matter is... released."
+      },
+      "Loot": {
+        "Common": [ "Purple Mushroom", "Solar Essence", "Void Essence", "Crystal Fruit" ],
+        "Uncommon": [ "Fire Quartz", "Frozen Tear", "Earth Crystal" ],
+        "Rare": [ "Diamond", "Ectoplasm" ],
+        "JackpotReaction": "Extraordinary. This shard hums with an energy even I cannot name — and I have named a great many. The void itself seems to covet it. Take it; such power is safer in your hands than mine."
+      }
     }
 
   }
