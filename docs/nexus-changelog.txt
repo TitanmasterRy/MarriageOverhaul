@@ -1,0 +1,29 @@
+Version 1.7.3
+
+FIXES
+- Roommates (Krobus) are no longer forced into a romantic relationship. The mod
+  was treating a roommate exactly like a spouse - romantic morning greetings,
+  jealousy, anniversaries, and so on. Roommates now stay platonic with their
+  normal dialogue. A new "Overhaul a Roommate (Krobus)" option (off by default)
+  can turn the full overhaul back on for a roommate if you want it.
+- "Spend quality time" spouse requests can now actually be completed by spending
+  time together. Requests like "spend a little time with me at home" or "take a
+  walk with me" previously could only be finished by handing over a gift. Talking
+  to your spouse on the request day now completes them (giving any gift still
+  works too).
+
+Note: a roommate trying to share the bed is controlled by your roommate / multi-
+partner mod or the base game, not by Marriage Overhaul, so it isn't affected by
+this update.
+
+
+Version 1.7.2
+
+TRANSLATIONS
+- Added a German (de) translation - huge thanks to Neko41! It covers all
+  dialogue, the new 1.7.0 content, and the config/GMCM menu.
+- Completed the Simplified Chinese (zh) translation: every line added in 1.7.0
+  is now fully translated, so Chinese no longer mixes with English.
+  Thanks to 10100306.
+
+Untranslated lines (in any language) still fall back to English automatically.
