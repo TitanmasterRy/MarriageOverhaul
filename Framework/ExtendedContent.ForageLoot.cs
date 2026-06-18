@@ -115,6 +115,10 @@ namespace MarriageOverhaul
 
         public static ForageTable GetForageTable(string name)
         {
+            // Custom-NPC tier: a registered pack can supply its own loot table (verbatim, no i18n).
+            if (CustomNpcRegistry.TryGetForageTable(name, out var custom))
+                return custom;
+
             bool has = IsVanilla(name) && ForageTables.ContainsKey(name);
             ForageTable t = has ? ForageTables[name] : GenericForage;
             // Item lists are identifiers (resolved by name) — only the reaction line is translated.

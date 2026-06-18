@@ -48,6 +48,9 @@ namespace MarriageOverhaul
         /// <summary>Makeup-gift hint, reconciliation, and resignation lines plus the wanted category.</summary>
         public CustomMakeup Makeup { get; set; }
 
+        /// <summary>Forage chore loot table (the items this NPC brings back from foraging, by rarity tier).</summary>
+        public CustomForage Loot { get; set; }
+
         /// <summary>True when a given system has usable data AND is permitted by the Behavior allow-list.</summary>
         public bool SystemEnabled(string system)
         {
@@ -138,6 +141,20 @@ namespace MarriageOverhaul
         /// jealous over gifts to these NPCs (overriding the default same-gender targeting).
         /// </summary>
         public List<string> Rivals { get; set; }
+    }
+
+    /// <summary>
+    /// Forage chore loot table. When the spouse does the forage chore, an item is rolled from these
+    /// rarity tiers (using the player's configured tier weights). Item entries may be plain names
+    /// (e.g. "Sunflower", "Truffle") or fully-qualified IDs (e.g. "(O)FlashShifter.StardewValleyExpandedCP_Butterfish").
+    /// </summary>
+    public class CustomForage
+    {
+        public List<string> Common { get; set; }
+        public List<string> Uncommon { get; set; }
+        public List<string> Rare { get; set; }
+        /// <summary>Shown in place of the normal forage line when the spouse finds a Prismatic Shard (the jackpot).</summary>
+        public string JackpotReaction { get; set; }
     }
 
     /// <summary>Makeup-gift content.</summary>

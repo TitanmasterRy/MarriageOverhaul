@@ -163,6 +163,29 @@ namespace MarriageOverhaul
             return true;
         }
 
+        public static bool TryGetForageTable(string name, out ExtendedContent.ForageTable table)
+        {
+            table = null;
+            if (!TryResolve(name, "Loot", out var c) || c.Loot == null)
+                return false;
+            CustomForage f = c.Loot;
+            string[] common = ToArray(f.Common);
+            string[] uncommon = ToArray(f.Uncommon);
+            string[] rare = ToArray(f.Rare);
+            if (common.Length == 0 && uncommon.Length == 0 && rare.Length == 0)
+                return false;
+            table = new ExtendedContent.ForageTable
+            {
+                Common = common,
+                Uncommon = uncommon,
+                Rare = rare,
+                JackpotReaction = string.IsNullOrWhiteSpace(f.JackpotReaction)
+                    ? "I found the strangest thing while I was out - it shimmers with every color at once. Here, I think you should have it."
+                    : f.JackpotReaction
+            };
+            return true;
+        }
+
         /// <summary>Explicit rival NPC list for jealousy targeting (behavior block — not gated by the allow-list).</summary>
         public static bool TryGetRivals(string name, out List<string> rivals)
         {
@@ -212,6 +235,18 @@ namespace MarriageOverhaul
         // ── Helpers ───────────────────────────────────────────────────
 
         private static bool NonEmpty<T>(List<T> list) => list != null && list.Count > 0;
+
+        /// <summary>List → array, dropping null/blank entries.</summary>
+        private static string[] ToArray(List<string> list)
+        {
+            if (list == null)
+                return System.Array.Empty<string>();
+            var outList = new List<string>();
+            foreach (string s in list)
+                if (!string.IsNullOrWhiteSpace(s))
+                    outList.Add(s.Trim());
+            return outList.ToArray();
+        }
 
         /// <summary>Parse a season name or 0–3 index. Returns null if unrecognized.</summary>
         public static int? SeasonToIndex(string season)

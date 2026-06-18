@@ -94,7 +94,7 @@ Per-NPC tuning that isn't dialogue.
 | `LovesRain` | bool | `true` = the NPC is cheered by rain (like Sebastian/Abigail). `false`/omitted = gloomier in rain (the default for everyone else). Affects daily mood. |
 | `FavoriteSeason` | string | `"spring"`, `"summer"`, `"fall"`, or `"winter"` (numbers `0`–`3` also accepted). Warmer mood + a gift bonus that season. Optional. |
 | `LeastSeason` | string | Same values. Moodier + a small extra friendship decay if neglected that season. Optional. |
-| `EnabledSystems` | string[] | Optional allow-list. If present, **only** the listed systems are served from your pack (others fall back to generic even if you provide data). If omitted, every section you provide applies. Valid names: `Morning`, `Mood`, `Arguments`, `Anniversary`, `Jealousy`, `Makeup`. |
+| `EnabledSystems` | string[] | Optional allow-list. If present, **only** the listed systems are served from your pack (others fall back to generic even if you provide data). If omitted, every section you provide applies. Valid names: `Morning`, `Mood`, `Arguments`, `Anniversary`, `Jealousy`, `Makeup`, `Loot`. |
 
 > Seasonal *trigger* uses your preference, but the seasonal *line* shown is Marriage Overhaul's
 > generic (spouse-agnostic) seasonal line. Favorite/least season is behavior tuning, not a dialogue
@@ -169,6 +169,22 @@ After a bad argument the NPC wants a category of gift to make up.
 | `Hint` | string | Dialogue hint at the category (not the specific item). |
 | `Reconcile` | string | Shown when you give the right category. |
 | `Resigned` | string | Shown if the makeup window lapses. |
+
+### `Loot` (optional) — forage chore loot table
+
+When the spouse does the **forage** chore, an item is rolled from these rarity tiers (using the player's
+configured tier weights). Without this section, the NPC uses the generic forage table.
+
+| Field | Type | Notes |
+|---|---|---|
+| `Common` | string[] | Common-tier items (most frequent). |
+| `Uncommon` | string[] | Uncommon-tier items. |
+| `Rare` | string[] | Rare-tier items. |
+| `JackpotReaction` | string | Shown in place of the normal forage line when the spouse finds a Prismatic Shard. |
+
+Item entries may be **plain names** (`"Sunflower"`, `"Truffle"`, `"Nautilus Shell"`) which resolve by
+fuzzy search, or **fully-qualified IDs** (`"(O)FlashShifter.StardewValleyExpandedCP_Butterfish"`) for
+precise modded-item references. Provide at least one tier with items for the section to apply.
 
 ---
 

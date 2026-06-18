@@ -87,6 +87,13 @@
         "Hint": "If you really want to make it right, bring me something from the wild. Something that grew.",
         "Reconcile": "Something straight from the earth. That's exactly you. ...Okay. We're good. Come here.",
         "Resigned": "The apology never came. That's alright. I've made my peace with it on my own."
+      },
+
+      "Loot": {
+        "Common": [ "Daffodil", "Dandelion", "Leek", "Common Mushroom" ],
+        "Uncommon": [ "Sweet Pea", "Crocus", "Morel" ],
+        "Rare": [ "Fairy Rose", "Sweet Gem Berry" ],
+        "JackpotReaction": "Look what I found by the river! It shimmers with every color at once. I don't dare keep it - here, it should be yours."
       }
 
     }

@@ -181,6 +181,12 @@ namespace MarriageOverhaul
                 }
             }
 
+            // Loot — keep if any rarity tier has items.
+            if (c.Loot != null && (HasLines(c.Loot.Common) || HasLines(c.Loot.Uncommon) || HasLines(c.Loot.Rare)))
+                sections.Add("Loot");
+            else
+                c.Loot = null;
+
             // Behavior — validate seasons (informational; invalid axes are ignored at access time).
             if (c.Behavior != null)
             {

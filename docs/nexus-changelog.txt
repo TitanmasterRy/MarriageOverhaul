@@ -1,3 +1,12 @@
+Version 1.8.0
+
+NEW
+- Custom NPC Framework now supports forage loot tables. Content packs can give a
+  custom/modded spouse their own forage loot (Common/Uncommon/Rare tiers + a
+  Prismatic Shard jackpot line). This is the groundwork for the optional Stardew
+  Valley Expanded spouse support pack.
+
+
 Version 1.7.3
 
 NEW

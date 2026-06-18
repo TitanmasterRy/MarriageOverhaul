@@ -30,7 +30,16 @@ namespace MarriageOverhaul
         // ── Items ─────────────────────────────────────────────────
         public Item CreateItem(string internalName, int qty = 1)
         {
-            try { return Utility.fuzzyItemSearch(internalName, qty); }
+            if (string.IsNullOrWhiteSpace(internalName))
+                return null;
+            try
+            {
+                // A fully-qualified id like "(O)FlashShifter...Butterfish" is created directly (lets content
+                // packs reference modded items precisely); plain names go through fuzzy search.
+                if (internalName.StartsWith("("))
+                    return ItemRegistry.Create(internalName, qty, 0, true);
+                return Utility.fuzzyItemSearch(internalName, qty);
+            }
             catch { return null; }
         }
 
