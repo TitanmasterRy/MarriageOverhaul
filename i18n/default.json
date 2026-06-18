@@ -572,6 +572,8 @@
   "config.PlayerBirthdayDay.tooltip": "The day of the month of your birthday (1-28). Set to 0 to disable the birthday system.",
   "config.PlayerBirthdaySeason.name": "Your Birthday Season",
   "config.PlayerBirthdaySeason.tooltip": "The season of your character's birthday (vanilla has no player birthday, so set it here).",
+  "config.PolyamoryCompat.name": "Polyamory / Multi-Spouse Compatibility",
+  "config.PolyamoryCompat.tooltip": "For multi-spouse mods like Polyamory Sweet Love or Free Love: also give your other spouses the overhaul's morning greetings. Off by default. The other relationship systems (feeding, anniversary, divorce, jealousy, etc.) still apply to your primary spouse only.",
   "config.SicknessChancePerSeason.name": "Sickness Chance (per season)",
   "config.SicknessChancePerSeason.tooltip": "The chance the spouse gets sick at some point each season (0.0 - 1.0).",
   "config.section.compatibility": "Compatibility",

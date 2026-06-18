@@ -29,6 +29,8 @@ namespace MarriageOverhaul
         public bool FeedingSearchExtraStorage { get; set; } = false;
         /// <summary>Apply the marriage overhaul to a roommate (Krobus). Off by default so a roommate stays platonic with their normal dialogue.</summary>
         public bool EnableForRoommate { get; set; } = false;
+        /// <summary>Compatibility for multi-spouse mods (Polyamory Sweet Love, Free Love): also give the overhaul's morning greetings to your other spouses. Off by default. Stateful systems still apply to the primary spouse only.</summary>
+        public bool PolyamoryCompat { get; set; } = false;
 
         // ── Friendship-tiered morning dialogue ──────────────────────
         /// <summary>The spouse's morning greeting tone scales with your current friendship hearts (cold when low, loving when high). The mood system adds day-to-day variance on top.</summary>

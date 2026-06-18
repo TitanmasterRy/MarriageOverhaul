@@ -117,6 +117,11 @@ namespace MarriageOverhaul
                 () => I18n.Get("config.EnableForRoommate.name", "Overhaul a Roommate (Krobus)"),
                 () => I18n.Get("config.EnableForRoommate.tooltip", "Apply Marriage Overhaul's romantic dialogue and systems to a roommate (Krobus). Off by default, so a roommate stays platonic with their normal vanilla dialogue."));
 
+            api.AddBoolOption(manifest,
+                () => this.Config.PolyamoryCompat, v => this.Config.PolyamoryCompat = v,
+                () => I18n.Get("config.PolyamoryCompat.name", "Polyamory / Multi-Spouse Compatibility"),
+                () => I18n.Get("config.PolyamoryCompat.tooltip", "For multi-spouse mods like Polyamory Sweet Love or Free Love: also give your other spouses the overhaul's morning greetings. Off by default. The other relationship systems (feeding, anniversary, divorce, jealousy, etc.) still apply to your primary spouse only."));
+
             // ── Morning Dialogue ─────────────────────────────────────
             api.AddSectionTitle(manifest, () => I18n.Get("config.section.morningdialogue", "Morning Dialogue"));
 

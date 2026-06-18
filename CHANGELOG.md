@@ -4,6 +4,9 @@ All notable changes to Marriage Overhaul are documented here.
 
 ## 1.7.3
 
+### Added
+- **Polyamory / multi-spouse compatibility (optional).** For multi-spouse mods like **Polyamory Sweet Love** or **Free Love**, a new **Polyamory / Multi-Spouse Compatibility** option (off by default) gives every one of your spouses the overhaul's morning greetings, instead of only your primary spouse. Spouse detection reads vanilla friendship data, so it's mod-agnostic. The stateful relationship systems (feeding, anniversary, divorce, jealousy, makeup, requests, etc.) still apply to your primary spouse only, by design.
+
 ### Fixed
 - **Roommates (Krobus) are no longer forced into a romantic relationship.** The mod was treating a roommate exactly like a spouse, giving them romantic morning greetings, jealousy, anniversaries, and so on. Roommates are now left platonic with their normal vanilla dialogue. A new **Overhaul a Roommate (Krobus)** option (off by default) can re-enable the full overhaul for a roommate if you want it.
 - **"Spend quality time" spouse requests can now actually be completed by spending time together.** These requests (e.g. "spend a little time with me at home", "take a walk with me") previously could only be finished by handing over a gift, which contradicted the quest objective. Talking to your spouse on the request day now completes them (giving any gift still works too).

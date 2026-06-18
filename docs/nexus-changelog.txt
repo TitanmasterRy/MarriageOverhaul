@@ -1,5 +1,13 @@
 Version 1.7.3
 
+NEW
+- Polyamory / multi-spouse compatibility (optional). For multi-spouse mods like
+  Polyamory Sweet Love or Free Love, a new "Polyamory / Multi-Spouse
+  Compatibility" option (off by default) gives all of your spouses the overhaul's
+  morning greetings, not just your primary spouse. The other relationship systems
+  (feeding, anniversary, divorce, jealousy, etc.) still apply to the primary
+  spouse only.
+
 FIXES
 - Roommates (Krobus) are no longer forced into a romantic relationship. The mod
   was treating a roommate exactly like a spouse - romantic morning greetings,

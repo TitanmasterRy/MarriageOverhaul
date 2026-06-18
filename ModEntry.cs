@@ -132,6 +132,9 @@ namespace MarriageOverhaul
             this.Mood_OnDayStarted(spouse);
             this.Divorce_OnDayStarted(spouse);
             this.Extended_OnDayStarted(spouse);
+
+            // Multi-spouse compat: give the overhaul's morning greeting to any other spouses too.
+            this.Poly_GreetOtherSpouses(spouse);
         }
 
         private void OnDayEnding(object sender, DayEndingEventArgs e)

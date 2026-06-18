@@ -572,6 +572,8 @@
   "config.PlayerBirthdayDay.tooltip": "你生日是当月的第几天（1-28）。设为 0 可禁用生日系统。",
   "config.PlayerBirthdaySeason.name": "你的生日季节",
   "config.PlayerBirthdaySeason.tooltip": "你角色生日所在的季节（原版没有玩家生日，因此在此设置）。",
+  "config.PolyamoryCompat.name": "一夫多妻／多配偶兼容",
+  "config.PolyamoryCompat.tooltip": "适用于 Polyamory Sweet Love、Free Love 等多配偶模组：让你的其他配偶也获得本模组的早晨问候。默认关闭。其他关系系统（喂食、纪念日、离婚、嫉妒等）仍仅应用于你的主要配偶。",
   "config.SicknessChancePerSeason.name": "生病概率（每季）",
   "config.SicknessChancePerSeason.tooltip": "配偶在每个季节某个时候生病的概率（0.0 - 1.0）。",
   "config.section.compatibility": "兼容性",
