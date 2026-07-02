@@ -1,4 +1,4 @@
-Version 1.8.0
+Version 1.7.4
 
 IMPORTANT - please reinstall
 - Fixed the download packaging. The previous upload had its files zipped loose

@@ -13,7 +13,7 @@ themed **forage loot table**, and **behavior** (rain mood + favorite/least seaso
 match their SVE personalities.
 
 ## Requirements
-- [Marriage Overhaul](https://www.nexusmods.com/stardewvalley/mods/47395) **1.8.0+**
+- [Marriage Overhaul](https://www.nexusmods.com/stardewvalley/mods/47395) **1.7.4+**
 - [Stardew Valley Expanded](https://www.nexusmods.com/stardewvalley/mods/3753)
 
 ## Install

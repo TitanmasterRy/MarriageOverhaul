@@ -2,7 +2,7 @@
 
 All notable changes to Marriage Overhaul are documented here.
 
-## 1.8.0
+## 1.7.4
 
 ### Added — Custom NPC Framework: forage loot tables
 - Content packs can now give a custom NPC their own **forage loot table** via a new optional `Loot` section (Common / Uncommon / Rare tiers plus a Prismatic Shard jackpot reaction line). When that NPC does the forage chore, they bring back themed items from their own table instead of the generic one. Resolves through the same vanilla → custom → generic tier as everything else, so existing behavior is unchanged.
