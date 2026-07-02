@@ -100,6 +100,15 @@ That's it — SMAPI discovers the pack automatically and the NPC gets personaliz
 2. Download this mod and unzip it into your `Stardew Valley/Mods` folder.
 3. Run the game through SMAPI.
 
+**Make sure the folder structure is correct** — after extracting, you should have
+`Stardew Valley/Mods/MarriageOverhaul/manifest.json` (i.e. a `MarriageOverhaul` folder containing
+`manifest.json`, `MarriageOverhaul.dll`, and the `i18n` folder). If the files land loose directly in
+`Mods/` with no `MarriageOverhaul` folder around them, SMAPI will silently skip the mod — just move
+them into a `MarriageOverhaul` folder.
+
+**Android:** this is a standard C#/SMAPI mod and works on Android SMAPI. The same rule applies — the
+files must sit inside a `Mods/MarriageOverhaul/` folder, not loose in `Mods/`.
+
 ## Configuration
 
 Every system can be toggled and tuned. Edit `config.json` (created after the first run) or use Generic Mod Config Menu, where the options are organized under **Systems**, **Custom NPC Framework**, **Thresholds**, and **Jealousy** headers with tooltips.

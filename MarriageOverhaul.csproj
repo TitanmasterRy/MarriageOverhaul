@@ -67,4 +67,30 @@
     <Message Importance="high" Text="Deployed MarriageOverhaul to $(DeployPath)" />
   </Target>
 
+  <!--
+    Package a Nexus-ready release zip on Release builds. The zip always contains a single top-level
+    "MarriageOverhaul" folder (manifest + dll + i18n), so SMAPI (PC and Android) recognizes it — this
+    prevents the "files zipped loose / SMAPI skips the mod" mistake. Output: dist/MarriageOverhaul.zip
+  -->
+  <Target Name="PackageMod" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
+    <PropertyGroup>
+      <PkgStageRoot>$(ProjectDir)dist\stage</PkgStageRoot>
+      <PkgStage>$(PkgStageRoot)\MarriageOverhaul</PkgStage>
+      <PkgZip>$(ProjectDir)dist\MarriageOverhaul.zip</PkgZip>
+    </PropertyGroup>
+    <RemoveDir Directories="$(PkgStageRoot)" />
+    <MakeDir Directories="$(PkgStage)\i18n" />
+    <ItemGroup>
+      <PkgFiles Include="$(TargetDir)$(AssemblyName).dll" />
+      <PkgFiles Include="$(ProjectDir)manifest.json" />
+      <PkgI18n Include="$(ProjectDir)i18n\*.json" />
+    </ItemGroup>
+    <Copy SourceFiles="@(PkgFiles)" DestinationFolder="$(PkgStage)" />
+    <Copy SourceFiles="@(PkgI18n)" DestinationFolder="$(PkgStage)\i18n" />
+    <Delete Files="$(PkgZip)" />
+    <ZipDirectory SourceDirectory="$(PkgStageRoot)" DestinationFile="$(PkgZip)" />
+    <RemoveDir Directories="$(PkgStageRoot)" />
+    <Message Importance="high" Text="Packaged Nexus-ready zip: $(PkgZip) (contains MarriageOverhaul/...)" />
+  </Target>
+
 </Project>
