@@ -1,5 +1,12 @@
 Version 1.8.0
 
+IMPORTANT - please reinstall
+- Fixed the download packaging. The previous upload had its files zipped loose
+  instead of inside a "MarriageOverhaul" folder, which made SMAPI skip the mod
+  (on PC and Android). This version is packaged correctly. If a recent version
+  wasn't loading for you, delete the old files from your Mods folder and install
+  this one - you should now have Mods/MarriageOverhaul/manifest.json.
+
 NEW
 - Custom NPC Framework now supports forage loot tables. Content packs can give a
   custom/modded spouse their own forage loot (Common/Uncommon/Rare tiers + a
